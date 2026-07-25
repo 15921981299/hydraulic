@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BreadcrumbHero from '../components/BreadcrumbHero.astro';
+import { hydraulicPages } from '../data/hydraulic-pages';
+import { breadcrumbSchema, site } from '../data/site';
+import '../styles/resource-page.css';
+
+export function getStaticPaths() {
+  return hydraulicPages.map((page) => ({ params: { importedPage: page.slug }, props: { page } }));
+}
+
+const { page } = Astro.props;
+const pageUrl = `${site.url}/${page.slug}/`;
+const trail = page.slug.split('/');
+const isResource = trail[0] === 'resources';
+const isAlternative = trail[0] === 'alternatives';
+const parentLabel = isResource ? 'Resources' : isAlternative ? 'Alternatives' : '';
+const parentHref = isResource ? '/resources/' : isAlternative ? '/alternatives/rexroth/' : '';
+---
+
+<BaseLayout
+  title={page.seoTitle}
+  description={page.description}
+  currentPath={`/${trail[0]}`}
+  jsonLd={breadcrumbSchema([
+    { name: 'Home', url: site.url },
+    ...(parentLabel ? [{ name: parentLabel, url: `${site.url}${parentHref}` }] : []),
+    { name: page.title, url: pageUrl },
+  ])}
+>
+  <BreadcrumbHero
+    title={page.title}
+    trail={[
+      { label: 'Home', href: '/' },
+      ...(parentLabel ? [{ label: parentLabel, href: parentHref }] : []),
+      { label: page.title },
+    ]}
+    variant={isResource ? '3' : isAlternative ? '2' : '5'}
+  />
+  <section class="hm-content-page">
+    <div class="container hm-content-page__layout">
+      <main>
+        <header class="hm-content-page__intro">
+          <p class="hm-kicker">{page.kicker}</p>
+          <p>{page.intro}</p>
+        </header>
+        {page.sections.map((section, index) => (
+          <section class="hm-content-section">
+            <div class="hm-content-section__number">{String(index + 1).padStart(2, '0')}</div>
+            <div>
+              <h2>{section.title}</h2>
+              {section.intro && <p>{section.intro}</p>}
+              {section.items && <ul>{section.items.map((item) => <li>{item}</li>)}</ul>}
+              {section.note && <p class="hm-content-note">{section.note}</p>}
+            </div>
+          </section>
+        ))}
+        <p class="hm-legal-note">Manufacturer names, trademarks and model numbers are used for identification and cross-reference purposes only. Compatibility must be confirmed for each application.</p>
+      </main>
+      <aside>
+        <div class="hm-content-aside">
+          <p class="hm-kicker">NEED A REVIEW?</p>
+          <h2>{page.ctaTitle ?? 'Send the original reference.'}</h2>
+          <p>{page.ctaText ?? 'Include the complete model code, quantity, destination and available photos or drawings.'}</p>
+          <a href={`/request-a-quote/?source=${page.slug.replaceAll('/', '-')}`} class="primary-button"><span class="button-text">Request a Match</span></a>
+        </div>
+        <div class="hm-content-links">
+          <strong>Related pages</strong>
+          <a href="/products/">Product categories</a>
+          <a href="/matching-process/">Matching process</a>
+          <a href="/quality/">Quality & verification</a>
+          <a href="/resources/">Technical guides</a>
+          <a href="/trademark-disclaimer/">Disclaimer</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hm-content-page{padding:80px 0 100px;background:#fff}.hm-content-page__layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:65px;align-items:start}.hm-kicker{color:var(--color-primary);font-size:12px;font-weight:600;letter-spacing:.13em}.hm-content-page__intro>p:last-child{font:500 25px/1.5 var(--font-title);color:var(--color-title);margin:14px 0 52px}.hm-content-section{display:grid;grid-template-columns:60px 1fr;gap:22px;padding:34px 0;border-top:1px solid var(--color-stroke)}.hm-content-section__number{color:var(--color-primary);font:600 13px var(--font-title);padding-top:9px}.hm-content-section h2{margin:0 0 14px;font-size:30px}.hm-content-section p,.hm-content-section li{font-size:16px;line-height:1.75;color:#536071}.hm-content-section ul{padding-left:20px;margin:12px 0}.hm-content-note{padding:16px 18px;background:#eef3fa;border-left:3px solid var(--color-primary)}.hm-legal-note{margin:30px 0 0;padding:20px;border:1px solid var(--color-stroke);font-size:13px!important;color:#667181}.hm-content-page aside{position:sticky;top:120px;display:grid;gap:16px}.hm-content-aside{padding:28px;background:var(--color-title);color:#fff}.hm-content-aside h2{color:#fff;font-size:25px;margin:12px 0}.hm-content-aside p:not(.hm-kicker){color:#adb6c3;font-size:15px;line-height:1.6;margin-bottom:24px}.hm-content-links{padding:24px;border:1px solid var(--color-stroke);display:grid}.hm-content-links strong{margin-bottom:10px}.hm-content-links a{padding:11px 0;border-bottom:1px solid var(--color-stroke);color:var(--color-title);font-size:14px;text-decoration:none}.hm-content-links a:last-child{border:0}@media(max-width:991px){.hm-content-page__layout{grid-template-columns:1fr}.hm-content-page aside{position:static;grid-template-columns:1fr 1fr}}@media(max-width:600px){.hm-content-section{grid-template-columns:38px 1fr;gap:10px}.hm-content-section h2{font-size:25px}.hm-content-page aside{grid-template-columns:1fr}.hm-content-page{padding:60px 0}.hm-content-page__intro>p:last-child{font-size:21px}}
+</style>

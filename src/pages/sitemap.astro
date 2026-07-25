@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BreadcrumbHero from '../components/BreadcrumbHero.astro';
+import { products } from '../data/products';
+import { hydraulicPages } from '../data/hydraulic-pages';
+---
+<BaseLayout title="Sitemap" description="Browse Hydraulic Match product, matching, quality, alternative, guide and inquiry pages." currentPath="/sitemap">
+  <BreadcrumbHero title="Sitemap" trail={[{ label: 'Home', href: '/' }, { label: 'Sitemap' }]} variant="5" />
+  <section class="hm-sitemap"><div class="container">
+    <section><h2>Main Pages</h2><a href="/">Home</a><a href="/about/">About</a><a href="/matching-process/">Matching Process</a><a href="/quality/">Quality</a><a href="/distributor-support/">Distributor Support</a><a href="/request-a-quote/">Request a Match</a><a href="/contact/">Contact</a></section>
+    <section><h2>Products</h2><a href="/products/">All Products</a>{products.map((product) => <><a href={`/products/${product.slug}/`}>{product.title}</a>{product.subcategories.map((subcategory) => <a class="hm-sitemap__child" href={`/products/${product.slug}/${subcategory.slug}/`}>{subcategory.title}</a>)}</>)}</section>
+    <section><h2>Alternatives</h2>{hydraulicPages.filter((page) => page.slug.startsWith('alternatives/')).map((page) => <a href={`/${page.slug}/`}>{page.title}</a>)}</section>
+    <section><h2>Technical Guides</h2><a href="/resources/">All Guides</a>{hydraulicPages.filter((page) => page.slug.startsWith('resources/')).map((page) => <a href={`/${page.slug}/`}>{page.title}</a>)}</section>
+    <section><h2>Policies</h2><a href="/shipping/">Shipping</a><a href="/warranty/">Warranty</a><a href="/trademark-disclaimer/">Trademark Disclaimer</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></section>
+  </div></section>
+</BaseLayout>
+<style>.hm-sitemap{padding:80px 0 100px;background:#fff}.hm-sitemap>.container{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.hm-sitemap section{padding:26px;border:1px solid var(--color-stroke);display:flex;flex-direction:column}.hm-sitemap h2{font-size:23px;margin:0 0 16px}.hm-sitemap a{padding:8px 0;color:var(--color-title);text-decoration:none;font-size:15px}.hm-sitemap a:hover{color:var(--color-primary)}.hm-sitemap__child{padding-left:18px!important;color:#667181!important;font-size:14px!important}@media(max-width:800px){.hm-sitemap>.container{grid-template-columns:1fr 1fr}}@media(max-width:520px){.hm-sitemap>.container{grid-template-columns:1fr}}</style>

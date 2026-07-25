@@ -1,0 +1,21 @@
+# Hydraulic Match — LLM / AI crawler index
+# https://hydraulicmatch.com
+
+> Hydraulic Match is an independent China sourcing service for hydraulic valve, pump and cylinder alternatives. It reviews complete model codes, technical parameters and application conditions before proposing a sourcing option.
+
+## Primary pages
+
+- [Home](https://hydraulicmatch.com/)
+- [Hydraulic products](https://hydraulicmatch.com/products/)
+- [Matching process](https://hydraulicmatch.com/matching-process/)
+- [Quality and verification](https://hydraulicmatch.com/quality/)
+- [Technical guides](https://hydraulicmatch.com/resources/)
+- [Request a match](https://hydraulicmatch.com/request-a-quote/)
+
+## Important qualification
+
+Manufacturer names, trademarks and model numbers are used for identification and cross-reference only. Hydraulic Match is not affiliated with or endorsed by referenced manufacturers. Compatibility must be confirmed for each complete model and application.
+
+## Contact
+
+- Email: sales@hydraulicmatch.com

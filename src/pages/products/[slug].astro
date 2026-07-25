@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BreadcrumbHero from '../../components/BreadcrumbHero.astro';
+import DetailRfqStrip from '../../components/DetailRfqStrip.astro';
+import { products } from '../../data/products';
+import { breadcrumbSchema, itemListSchema, serviceSchema, site } from '../../data/site';
+import '../../styles/resource-page.css';
+
+export function getStaticPaths() {
+  return products.map((product) => ({ params: { slug: product.slug }, props: { product } }));
+}
+
+const { product } = Astro.props;
+const pageUrl = `${site.url}/products/${product.slug}/`;
+---
+
+<BaseLayout
+  title={product.seoTitle}
+  description={product.summary}
+  currentPath="/products"
+  jsonLd={[
+    breadcrumbSchema([{ name: 'Home', url: site.url }, { name: 'Products', url: `${site.url}/products/` }, { name: product.title, url: pageUrl }]),
+    serviceSchema({ name: product.title, description: product.summary, url: pageUrl }),
+    itemListSchema(product.subcategories.map((item) => ({ name: item.title, url: `${pageUrl}${item.slug}/` }))),
+  ]}
+>
+  <BreadcrumbHero title={product.h1Title} trail={[{ label: 'Home', href: '/' }, { label: 'Products', href: '/products/' }, { label: product.title }]} variant="2" />
+  <section class="hm-detail">
+    <div class="container hm-detail__layout">
+      <main>
+        <p class="hm-detail__lead">{product.summary}</p>
+        <p>{product.intro}</p>
+        <DetailRfqStrip
+          quoteHref={`/request-a-quote/?product=${product.slug}`}
+          title={`Request a ${product.title.toLowerCase()} match`}
+          text="Send the original brand, complete model code, quantity, destination and a nameplate photo when available."
+          modalContext={`${product.title} matching request`}
+          modalSource={`product-${product.slug}`}
+        />
+
+        {product.subcategories.length > 0 && (
+          <section class="hm-detail__section">
+            <h2>{product.title} Categories</h2>
+            <div class="hm-subgrid">
+              {product.subcategories.map((item) => (
+                <a href={`/products/${product.slug}/${item.slug}/`}>
+                  <h3>{item.title}</h3>
+                  <p>{item.summary}</p>
+                  <span>View selection points →</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section class="hm-detail__section">
+          <h2>Parameters We Review</h2>
+          <div class="hm-parameter-grid">
+            {product.parameterGroups.map((item, index) => <div><span>{String(index + 1).padStart(2, '0')}</span><strong>{item}</strong></div>)}
+          </div>
+        </section>
+
+        <section class="hm-detail__section hm-detail__twocol">
+          <div>
+            <h2>Common Applications</h2>
+            <ul>{product.applications.map((item) => <li>{item}</li>)}</ul>
+          </div>
+          <div>
+            <h2>Reference Brands</h2>
+            <p>Brand names identify the customer's original component. They do not imply affiliation or authorization.</p>
+            <ul>{product.brandReferences.map((item) => <li>{item}</li>)}</ul>
+          </div>
+        </section>
+
+        <section class="hm-detail__section hm-warning">
+          <p class="hm-kicker">BEFORE WE QUOTE</p>
+          <h2>Information required for technical review</h2>
+          <ol>{product.verification.map((item) => <li>{item}</li>)}</ol>
+          <p>Compatibility is confirmed only after reviewing the complete model code, technical parameters and application conditions.</p>
+        </section>
+      </main>
+      <aside class="hm-detail__aside">
+        <div class="hm-aside-card">
+          <p class="hm-kicker">QUICK LINKS</p>
+          <a href="/matching-process/">Matching process</a>
+          <a href="/quality/">Quality & verification</a>
+          <a href="/resources/">Technical guides</a>
+          <a href="/trademark-disclaimer/">Compatibility disclaimer</a>
+        </div>
+        <div class="hm-aside-card hm-aside-card--dark">
+          <h3>Have a complete code?</h3>
+          <p>Send it with quantity and destination for a sourcing review.</p>
+          <a href={`/request-a-quote/?product=${product.slug}`}>Request a Match →</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hm-detail { padding:80px 0 100px; background:#fff; }
+  .hm-detail__layout { display:grid; grid-template-columns:minmax(0,1fr) 310px; gap:55px; align-items:start; }
+  .hm-detail__lead { font:500 26px/1.45 var(--font-title); color:var(--color-title); margin-top:0; }
+  .hm-detail main > p:not(.hm-detail__lead) { color:#536071; }
+  .hm-detail__section { margin-top:70px; }
+  .hm-detail__section h2 { margin:0 0 24px; }
+  .hm-subgrid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .hm-subgrid a { padding:24px; border:1px solid var(--color-stroke); color:inherit; text-decoration:none; cursor:pointer; transition:border-color .2s,box-shadow .2s; }
+  .hm-subgrid a:hover { border-color:var(--color-primary); box-shadow:0 10px 28px rgba(15,23,42,.07); }
+  .hm-subgrid h3 { font-size:21px; margin:0 0 10px; }
+  .hm-subgrid p { font-size:15px; color:#596575; line-height:1.55; min-height:70px; }
+  .hm-subgrid span { color:var(--color-primary); font-size:14px; font-weight:600; }
+  .hm-parameter-grid { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--color-stroke); border-left:1px solid var(--color-stroke); }
+  .hm-parameter-grid div { min-height:78px; display:flex; gap:14px; align-items:center; padding:18px; border-right:1px solid var(--color-stroke); border-bottom:1px solid var(--color-stroke); }
+  .hm-parameter-grid span { color:var(--color-primary); font:600 12px var(--font-title); }
+  .hm-parameter-grid strong { font-size:15px; }
+  .hm-detail__twocol { display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+  .hm-detail__twocol ul,.hm-warning ol { padding-left:20px; line-height:1.8; }
+  .hm-detail__twocol p,.hm-detail__twocol li,.hm-warning li,.hm-warning > p:last-child { font-size:16px; color:#536071; }
+  .hm-warning { padding:34px; background:#eef3fa; border-left:4px solid var(--color-primary); }
+  .hm-kicker { color:var(--color-primary); font-size:12px; font-weight:600; letter-spacing:.12em; }
+  .hm-detail__aside { position:sticky; top:120px; display:grid; gap:16px; }
+  .hm-aside-card { padding:24px; border:1px solid var(--color-stroke); display:grid; gap:0; }
+  .hm-aside-card > a { padding:12px 0; border-bottom:1px solid var(--color-stroke); color:var(--color-title); text-decoration:none; font-size:15px; }
+  .hm-aside-card > a:last-child { border-bottom:0; }
+  .hm-aside-card--dark { background:var(--color-title); color:#fff; border:0; }
+  .hm-aside-card--dark h3 { color:#fff; margin:0 0 12px; }
+  .hm-aside-card--dark p { font-size:15px; color:#adb6c3; line-height:1.55; }
+  .hm-aside-card--dark a { color:#75aaff; border:0; font-weight:600; }
+  @media(max-width:991px){.hm-detail__layout{grid-template-columns:1fr}.hm-detail__aside{position:static;grid-template-columns:1fr 1fr}.hm-subgrid{grid-template-columns:1fr 1fr}}
+  @media(max-width:650px){.hm-subgrid,.hm-parameter-grid,.hm-detail__twocol,.hm-detail__aside{grid-template-columns:1fr}.hm-detail{padding:65px 0}.hm-detail__lead{font-size:22px}}
+  @media(prefers-reduced-motion:reduce){.hm-subgrid a{transition:none}}
+</style>

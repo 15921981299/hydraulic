@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BreadcrumbHero from '../../components/BreadcrumbHero.astro';
+import { site } from '../../data/site';
+---
+<BaseLayout title="Terms of Use and Inquiry" description="Terms for using Hydraulic Match content, model references, RFQ information and quotations." currentPath="/terms" noindex>
+  <BreadcrumbHero title="Terms of Use and Inquiry" trail={[{ label: 'Home', href: '/' }, { label: 'Terms' }]} variant="5" />
+  <article class="hm-terms container">
+    <h2>Independent information service</h2><p>Hydraulic Match provides sourcing, identification and quotation support. Website content is general information and is not an engineering approval for a specific installation.</p>
+    <h2>Model and brand references</h2><p>Manufacturer names, trademarks and model numbers are used only for identification and cross-reference. No affiliation, authorization or endorsement is implied.</p>
+    <h2>Compatibility and customer approval</h2><p>Compatibility depends on the complete model code, technical data and application. The customer is responsible for final approval, safe installation, commissioning and compliance.</p>
+    <h2>Quotations</h2><p>Price, MOQ, lead time, warranty, inspection, packing, shipping and validity are governed by the written quotation. Availability and lead time can change until an order is accepted.</p>
+    <h2>Accuracy</h2><p>We aim to keep content accurate but do not guarantee that every general page applies to every model or revision. Product-specific confirmation takes priority.</p>
+    <h2>Contact</h2><p>Questions may be sent to <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+  </article>
+</BaseLayout>
+<style>.hm-terms{max-width:900px;padding-top:75px;padding-bottom:100px}.hm-terms h2{margin:44px 0 12px;font-size:28px}.hm-terms p{color:#536071;line-height:1.75;font-size:17px}.hm-terms a{color:var(--color-primary)}</style>

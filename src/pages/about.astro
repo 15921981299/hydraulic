@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BreadcrumbHero from '../components/BreadcrumbHero.astro';
+import { aboutPageSchema, breadcrumbSchema, site } from '../data/site';
+---
+<BaseLayout
+  title="About Hydraulic Match"
+  description="Hydraulic Match helps overseas distributors, repair shops and MRO teams review model codes, compare parameters and source suitable Chinese hydraulic alternatives."
+  currentPath="/about"
+  jsonLd={[breadcrumbSchema([{ name: 'Home', url: site.url }, { name: 'About', url: `${site.url}/about/` }]), aboutPageSchema({ name: 'About Hydraulic Match', description: site.defaultDescription, url: `${site.url}/about/` })]}
+>
+  <BreadcrumbHero title="About Hydraulic Match" trail={[{ label: 'Home', href: '/' }, { label: 'About' }]} variant="5" />
+  <section class="hm-about">
+    <div class="container">
+      <header><p>OUR ROLE</p><h2>Reduce the time and risk of finding a suitable Chinese hydraulic alternative.</h2><span>Hydraulic Match is built as a technical sourcing and inquiry platform—not a generic catalog of unverified parts.</span></header>
+      <div class="hm-about__grid">
+        <section><span>01</span><h2>What we do</h2><p>We organize requests around the original brand, complete model code, nameplate, drawing and application. The goal is to present a sourcing route that can be reviewed rather than a vague “equivalent” claim.</p></section>
+        <section><span>02</span><h2>Who we support</h2><p>Our primary customers are overseas hydraulic distributors, repair shops, service companies, factory MRO buyers and equipment manufacturers managing obsolete, costly or long-lead components.</p></section>
+        <section><span>03</span><h2>How we work</h2><p>Model-code review, supplier confirmation, parameter comparison, risk grading, pre-shipment verification and export support are connected in one RFQ workflow.</p></section>
+        <section><span>04</span><h2>What we do not claim</h2><p>We do not assume direct compatibility from a series name, invent technical data, imply authorization by original manufacturers or present unrelated factories and certificates as our own.</p></section>
+      </div>
+      <div class="hm-about__principle"><p>CORE PRINCIPLE</p><h2>Compatibility is confirmed after reviewing the complete model code, technical parameters and application conditions.</h2><a href="/matching-process/">See our matching process →</a></div>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .hm-about{padding:90px 0 100px;background:#fff}.hm-about header{max-width:980px;margin-bottom:60px}.hm-about header>p,.hm-about__principle>p{color:var(--color-primary);font-size:12px;font-weight:600;letter-spacing:.13em}.hm-about header h2{font-size:48px;line-height:1.1;margin:14px 0 20px}.hm-about header>span{color:#596575}.hm-about__grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--color-stroke);border-left:1px solid var(--color-stroke)}.hm-about__grid section{min-height:300px;padding:32px;border-right:1px solid var(--color-stroke);border-bottom:1px solid var(--color-stroke)}.hm-about__grid section>span{color:var(--color-primary);font:600 12px var(--font-title)}.hm-about__grid h2{font-size:26px;margin:60px 0 14px}.hm-about__grid p{color:#536071;font-size:16px;line-height:1.7}.hm-about__principle{margin-top:36px;padding:44px;background:var(--color-title);color:#fff}.hm-about__principle h2{color:#fff;max-width:950px;font-size:34px}.hm-about__principle a{color:#75aaff;font-weight:600}@media(max-width:650px){.hm-about__grid{grid-template-columns:1fr}.hm-about header h2{font-size:34px}.hm-about{padding:65px 0}.hm-about__principle{padding:28px}.hm-about__principle h2{font-size:27px}}
+</style>

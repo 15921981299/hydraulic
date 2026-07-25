@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BreadcrumbHero from '../components/BreadcrumbHero.astro';
+import { site } from '../data/site';
+---
+<BaseLayout title="Privacy Policy" description="How Hydraulic Match handles contact details, hydraulic product data and files submitted through RFQ forms." currentPath="/privacy" noindex>
+  <BreadcrumbHero title="Privacy Policy" trail={[{ label: 'Home', href: '/' }, { label: 'Privacy' }]} variant="5" />
+  <article class="hm-policy container">
+    <p class="hm-policy__date">Effective: July 25, 2026</p>
+    <h2>Information we collect</h2><p>We collect the contact, company, destination, product, model-code, application and file information you submit through our RFQ forms, email or messaging channels.</p>
+    <h2>How we use it</h2><p>Information is used to review the inquiry, communicate with you, contact relevant suppliers, prepare a quotation, coordinate inspection and shipping, maintain order records and improve the website.</p>
+    <h2>Technical files</h2><p>Nameplate photos, product photos, drawings, datasheets and RFQ lists are used only for the relevant sourcing and quotation workflow unless you authorize another use.</p>
+    <h2>Sharing</h2><p>Relevant product and technical information may be shared with suppliers, inspection providers or logistics partners needed to process the inquiry. We do not sell inquiry data.</p>
+    <h2>Retention and security</h2><p>Records are retained as reasonably needed for quotations, repeat orders, legal obligations and dispute handling. No online transmission or storage method can be guaranteed completely secure.</p>
+    <h2>Your choices</h2><p>To request access, correction or deletion of submitted information, contact <a href={`mailto:${site.email}`}>{site.email}</a>. Some records may be retained where legally or commercially required.</p>
+  </article>
+</BaseLayout>
+<style>.hm-policy{max-width:900px;padding-top:75px;padding-bottom:100px}.hm-policy__date{color:#667181}.hm-policy h2{margin:44px 0 12px;font-size:28px}.hm-policy p{color:#536071;line-height:1.75;font-size:17px}.hm-policy a{color:var(--color-primary)}</style>

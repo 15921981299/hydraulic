@@ -1,0 +1,66 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="footer">
+  <div class="section-gap">
+    <div class="container">
+      <div class="footer-wrapper">
+        <div class="footer-content-block">
+          <a href="/" class="footer-logo-link-block hydraulic-footer-brand" aria-label="Hydraulic Match home">
+            <span>HM</span><strong>HYDRAULIC MATCH</strong>
+          </a>
+          <p class="footer-title">Chinese Hydraulic Alternatives<br />Matched to Your Application</p>
+          <p class="footer-summary">Model-code review, parameter comparison and export sourcing for hydraulic valves, pumps and cylinders.</p>
+          <a href="/request-a-quote/" class="primary-button footer"><span class="button-text">Request a Match</span></a>
+        </div>
+
+        <div class="footer-link-wrapper">
+          <div class="footer-link-block">
+            <p class="footer-link-title">Products</p>
+            <a href="/products/hydraulic-valves/" class="footer-link">Hydraulic Valves</a>
+            <a href="/products/hydraulic-pumps/" class="footer-link">Hydraulic Pumps</a>
+            <a href="/products/hydraulic-cylinders/" class="footer-link">Hydraulic Cylinders</a>
+            <a href="/products/hydraulic-pump-parts/" class="footer-link">Pump Parts</a>
+          </div>
+          <div class="footer-link-block">
+            <p class="footer-link-title">Matching</p>
+            <a href="/matching-process/" class="footer-link">Matching Process</a>
+            <a href="/alternatives/rexroth/" class="footer-link">Rexroth Alternatives</a>
+            <a href="/alternatives/vickers/" class="footer-link">Vickers Alternatives</a>
+            <a href="/alternatives/parker/" class="footer-link">Parker Alternatives</a>
+          </div>
+          <div class="footer-link-block">
+            <p class="footer-link-title">Support</p>
+            <a href="/quality/" class="footer-link">Quality & Verification</a>
+            <a href="/distributor-support/" class="footer-link">Distributor Support</a>
+            <a href="/resources/" class="footer-link">Technical Guides</a>
+            <a href="/shipping/" class="footer-link">Shipping</a>
+            <a href="/warranty/" class="footer-link">Warranty</a>
+          </div>
+          <div class="footer-link-block">
+            <p class="footer-link-title">Company</p>
+            <a href="/about/" class="footer-link">About</a>
+            <a href="/contact/" class="footer-link">Contact</a>
+            <a href="/trademark-disclaimer/" class="footer-link">Trademark Disclaimer</a>
+            <a href="/privacy/" class="footer-link">Privacy</a>
+            <a href="/terms/" class="footer-link">Terms</a>
+            <a href={`mailto:${site.email}`} class="footer-link footer-link--email">{site.email}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>© {new Date().getFullYear()} Hydraulic Match. Independent sourcing service. Manufacturer names and model numbers are used for identification only.</p>
+  </div>
+</footer>
+
+<style>
+  .hydraulic-footer-brand { display:flex; align-items:center; gap:12px; color:#fff; text-decoration:none; margin-bottom:24px; }
+  .hydraulic-footer-brand span { display:grid; place-items:center; width:44px; height:44px; border:2px solid var(--color-primary); border-radius:50%; font:600 14px var(--font-title); color:var(--color-primary); }
+  .hydraulic-footer-brand strong { font:600 16px var(--font-title); letter-spacing:.08em; }
+  .footer-summary { max-width:500px; color:#b7bec9; margin-bottom:28px; }
+  .footer-bottom { padding:18px 0 28px; color:#98a2b3; border-top:1px solid rgba(255,255,255,.12); }
+  .footer-bottom p { margin:0; font-size:14px; }
+</style>

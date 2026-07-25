@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BreadcrumbHero from './BreadcrumbHero.astro';
+import FunnelPageView from './FunnelPageView.astro';
+import { breadcrumbSchema, contactPageSchema, howToSchema, site } from '../data/site';
+
+interface Props { currentPath?: string; }
+const { currentPath = '/request-a-quote' } = Astro.props;
+const steps = [
+  { name: 'Completeness check', text: 'We check the model, quantity, destination and available files.' },
+  { name: 'Technical review', text: 'The complete code and key application parameters are compared.' },
+  { name: 'Sourcing review', text: 'Suitable suppliers confirm model, price, MOQ, lead time and available evidence.' },
+  { name: 'Risk and quote', text: 'The quotation states differences, open confirmations and commercial terms.' },
+];
+const pageUrl = `${site.url}/request-a-quote/`;
+---
+
+<BaseLayout
+  title="Request a Hydraulic Component Match and Quote"
+  description="Upload a hydraulic nameplate, drawing or RFQ list. Send the original manufacturer, complete model code, quantity, destination and application details."
+  currentPath={currentPath}
+  hideFloatingCta
+  jsonLd={[
+    breadcrumbSchema([{ name: 'Home', url: site.url }, { name: 'Request a Match', url: pageUrl }]),
+    contactPageSchema({ name: 'Request a Hydraulic Component Match and Quote', description: 'Hydraulic component model-code review and sourcing inquiry.', url: pageUrl }),
+    howToSchema({ name: 'How to request a hydraulic component match', description: 'Submit technical details for review and quotation.', steps }),
+  ]}
+>
+  <FunnelPageView stage="quote" label="hydraulic-rfq" />
+  <BreadcrumbHero title="Request a Hydraulic Component Match and Quote" trail={[{ label: 'Home', href: '/' }, { label: 'Request a Match' }]} variant="5" />
+  <section class="hm-rfq">
+    <div class="container hm-rfq__layout">
+      <div class="hm-rfq__form-card">
+        <header>
+          <p class="hm-kicker">COMPLETE RFQ</p>
+          <h2>Tell us what must be matched.</h2>
+          <p>Fields marked * are required. If you do not have a complete model code, upload the nameplate and product photos.</p>
+        </header>
+        <form id="hydraulic-rfq-form" class="hm-rfq-form" data-endpoint="/api/rfq/" data-fallback-email={site.email}>
+          <fieldset>
+            <legend>Customer information</legend>
+            <div class="hm-rfq-grid">
+              <label>Name *<input name="name" autocomplete="name" required /></label>
+              <label>Company<input name="company" autocomplete="organization" /></label>
+              <label>Business Email *<input name="email" type="email" autocomplete="email" required /></label>
+              <label>Phone / WhatsApp<input name="phone" type="tel" autocomplete="tel" /></label>
+              <label>Destination Country *<input name="country" autocomplete="country-name" required /></label>
+              <label>Buyer Type<select name="role"><option value="">Select</option><option>Distributor</option><option>Repair / Service Company</option><option>MRO / Factory Maintenance</option><option>Equipment Manufacturer</option><option>Other Business Buyer</option></select></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Product information</legend>
+            <div class="hm-rfq-grid">
+              <label>Original Manufacturer *<input name="brand" placeholder="e.g. Rexroth, Vickers, Parker" required /></label>
+              <label>Full Model Code *<input name="model" placeholder="Enter the complete code" required /></label>
+              <label>Order / Part Number<input name="part_number" /></label>
+              <label>Product Type<select name="product_type"><option value="">Select</option><option>Hydraulic Valve</option><option>Hydraulic Pump</option><option>Hydraulic Pump Part</option><option>Hydraulic Cylinder</option><option>Other</option></select></label>
+              <label>Quantity *<input name="quantity" placeholder="e.g. 2 pcs" required /></label>
+              <label>Required Delivery Date<input name="deadline" type="date" /></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Technical information</legend>
+            <div class="hm-rfq-grid">
+              <label>Working Pressure<input name="working_pressure" placeholder="bar / MPa" /></label>
+              <label>Flow or Displacement<input name="flow_displacement" /></label>
+              <label>Voltage and Connector<input name="voltage_connector" /></label>
+              <label>Mounting and Port Details<input name="mounting_ports" /></label>
+              <label>Rotation and Shaft<input name="rotation_shaft" /></label>
+              <label>Fluid and Temperature<input name="fluid_temperature" /></label>
+              <label class="hm-rfq-full">Machine / Application<textarea name="application" rows="3"></textarea></label>
+              <label class="hm-rfq-full">Known Failure or Replacement Reason<textarea name="replacement_reason" rows="3"></textarea></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Files and message</legend>
+            <div class="hm-rfq-grid">
+              <label class="hm-rfq-full hm-file-label">Upload nameplate, product photo, drawing, datasheet or RFQ list
+                <input name="drawing" type="file" accept=".jpg,.jpeg,.png,.pdf,.xls,.xlsx,.csv,.zip" />
+                <span>JPG, PNG, PDF, Excel, CSV or ZIP. Maximum size depends on the active upload service.</span>
+              </label>
+              <label class="hm-rfq-full">Additional Message<textarea name="details" rows="4" placeholder="Add technical, commercial, packing or inspection requirements."></textarea></label>
+            </div>
+          </fieldset>
+          <input type="hidden" name="source" value="Hydraulic Match complete RFQ" />
+          <input type="hidden" name="message" />
+          <div class="hp-field" aria-hidden="true"><label>Leave empty<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+          <div class="hm-rfq-submit">
+            <button type="submit">Send Match Request</button>
+            <p>We review qualified inquiries within one business day. A quotation is not a compatibility guarantee until the required technical confirmation is complete.</p>
+          </div>
+          <div class="form-result" aria-live="polite"></div>
+        </form>
+      </div>
+      <aside>
+        <div class="hm-rfq__aside-card hm-rfq__aside-card--dark">
+          <p class="hm-kicker">WHAT HAPPENS NEXT</p>
+          <ol>{steps.map((step, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><strong>{step.name}</strong><p>{step.text}</p></div></li>)}</ol>
+        </div>
+        <div class="hm-rfq__aside-card">
+          <h3>Minimum useful information</h3>
+          <ul><li>Original brand</li><li>Complete model code</li><li>Quantity</li><li>Destination country</li><li>Nameplate or photos</li></ul>
+        </div>
+        <div class="hm-rfq__aside-card">
+          <h3>Prefer email?</h3>
+          <a href={`mailto:${site.email}`}>{site.email}</a>
+          <p>Attach the same model, quantity, destination and technical files.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const rfqForm = document.querySelector<HTMLFormElement>('#hydraulic-rfq-form');
+  rfqForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const result = rfqForm.querySelector<HTMLElement>('.form-result');
+    const submit = rfqForm.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const data = new FormData(rfqForm);
+    const lines = [
+      `Original manufacturer: ${data.get('brand')}`, `Full model code: ${data.get('model')}`,
+      `Order / part number: ${data.get('part_number') || '-'}`, `Product type: ${data.get('product_type') || '-'}`,
+      `Quantity: ${data.get('quantity')}`, `Required delivery date: ${data.get('deadline') || '-'}`, '',
+      `Working pressure: ${data.get('working_pressure') || '-'}`, `Flow / displacement: ${data.get('flow_displacement') || '-'}`,
+      `Voltage / connector: ${data.get('voltage_connector') || '-'}`, `Mounting / ports: ${data.get('mounting_ports') || '-'}`,
+      `Rotation / shaft: ${data.get('rotation_shaft') || '-'}`, `Fluid / temperature: ${data.get('fluid_temperature') || '-'}`,
+      `Machine / application: ${data.get('application') || '-'}`, `Failure / replacement reason: ${data.get('replacement_reason') || '-'}`, '',
+      `Additional message: ${data.get('details') || '-'}`,
+    ];
+    data.set('message', lines.join('\n'));
+    submit?.setAttribute('disabled', 'true');
+    if (submit) submit.textContent = 'Sending...';
+    try {
+      const response = await fetch(rfqForm.dataset.endpoint ?? '/api/rfq/', { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+      if (!response.ok) throw new Error('Request failed');
+      window.location.href = '/thank-you/?source=rfq';
+    } catch {
+      if (result) {
+        result.className = 'form-result is-visible is-error';
+        result.innerHTML = `<strong>The form could not be sent.</strong> Please email <a href="mailto:${rfqForm.dataset.fallbackEmail}">${rfqForm.dataset.fallbackEmail}</a> with your files.`;
+      }
+      submit?.removeAttribute('disabled');
+      if (submit) submit.textContent = 'Send Match Request';
+    }
+  });
+</script>
+
+<style>
+  .hm-rfq{padding:80px 0 100px;background:#f5f7fa}.hm-rfq__layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}.hm-rfq__form-card{background:#fff;border:1px solid var(--color-stroke);padding:38px}.hm-rfq__form-card header{max-width:760px;margin-bottom:36px}.hm-kicker{color:var(--color-primary);font-size:12px;font-weight:600;letter-spacing:.13em}.hm-rfq__form-card h2{margin:10px 0}.hm-rfq__form-card header p:last-child{color:#596575}.hm-rfq-form{display:grid;gap:30px}.hm-rfq-form fieldset{border:0;padding:0;margin:0}.hm-rfq-form legend{width:100%;padding:0 0 12px;border-bottom:1px solid var(--color-stroke);font:600 20px var(--font-title);margin-bottom:20px}.hm-rfq-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.hm-rfq-form label{display:grid;gap:8px;color:#2b333d;font-size:14px;font-weight:600}.hm-rfq-form input,.hm-rfq-form select,.hm-rfq-form textarea{width:100%;min-height:50px;padding:12px 13px;border:1px solid #d5dbe4;background:#fbfcfd;color:var(--color-title);font:400 15px var(--font-primary)}.hm-rfq-form textarea{resize:vertical}.hm-rfq-form input:focus-visible,.hm-rfq-form select:focus-visible,.hm-rfq-form textarea:focus-visible{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(20,110,245,.14)}.hm-rfq-full{grid-column:1/-1}.hm-file-label{padding:18px;border:1px dashed #aeb8c5;background:#f7f9fc}.hm-file-label input{border:0;background:transparent;padding:6px 0;min-height:auto}.hm-file-label span{color:#6b7480;font-size:12px;font-weight:400}.hm-rfq-submit{display:flex;align-items:center;gap:20px}.hm-rfq-submit button{min-width:220px;min-height:54px;border:0;background:var(--color-primary);color:#fff;font:600 16px var(--font-title);cursor:pointer}.hm-rfq-submit button:focus-visible{outline:3px solid rgba(20,110,245,.35);outline-offset:3px}.hm-rfq-submit button:disabled{opacity:.65;cursor:wait}.hm-rfq-submit p{margin:0;color:#687280;font-size:12px;line-height:1.5}.hp-field{position:absolute;left:-9999px}.hm-rfq aside{display:grid;gap:16px}.hm-rfq__aside-card{padding:26px;background:#fff;border:1px solid var(--color-stroke)}.hm-rfq__aside-card h3{margin-top:0}.hm-rfq__aside-card ul{padding-left:20px}.hm-rfq__aside-card li,.hm-rfq__aside-card p{font-size:14px;line-height:1.6;color:#596575}.hm-rfq__aside-card a{color:var(--color-primary);font-weight:600}.hm-rfq__aside-card--dark{background:var(--color-title);border:0;color:#fff}.hm-rfq__aside-card--dark ol{list-style:none;padding:0;margin:0}.hm-rfq__aside-card--dark li{display:flex;gap:14px;padding:18px 0;border-bottom:1px solid #303743}.hm-rfq__aside-card--dark li:last-child{border:0}.hm-rfq__aside-card--dark li>span{color:#75aaff;font:600 12px var(--font-title)}.hm-rfq__aside-card--dark strong{color:#fff}.hm-rfq__aside-card--dark p{color:#adb6c3;margin:5px 0 0}.form-result{grid-column:1/-1}@media(max-width:991px){.hm-rfq__layout{grid-template-columns:1fr}.hm-rfq aside{grid-template-columns:1fr 1fr}.hm-rfq__aside-card--dark{grid-column:1/-1}}@media(max-width:600px){.hm-rfq-grid{grid-template-columns:1fr}.hm-rfq-full{grid-column:auto}.hm-rfq__form-card{padding:22px}.hm-rfq-submit{align-items:flex-start;flex-direction:column}.hm-rfq-submit button{width:100%}.hm-rfq aside{grid-template-columns:1fr}.hm-rfq{padding:60px 0}}
+</style>
