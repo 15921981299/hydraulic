@@ -33,21 +33,33 @@ import { site } from '../data/site';
         <input type="tel" name="phone" autocomplete="tel" />
       </label>
       <label>
-        <span>Quantity / Destination</span>
-        <input type="text" name="quantity" placeholder="e.g. 2 pcs, 1 set, or unknown" />
+        <span>Destination Country *</span>
+        <input type="text" name="country" autocomplete="country-name" required />
+      </label>
+      <label>
+        <span>Original Brand *</span>
+        <input type="text" name="brand" placeholder="e.g. Rexroth, Vickers, Parker" required />
+      </label>
+      <label>
+        <span>Full Model Code</span>
+        <input type="text" name="model" placeholder="Or upload a clear nameplate" />
+      </label>
+      <label>
+        <span>Quantity *</span>
+        <input type="text" name="quantity" placeholder="e.g. 2 pcs or 1 set" required />
       </label>
       <label class="rfq-modal__full">
-        <span>Original Brand / Full Model Code *</span>
+        <span>Application or Additional Details</span>
         <textarea
           name="message"
           rows="4"
-          placeholder="Original brand, complete model code, application, pressure, flow, voltage, or known replacement reason."
-          required
+          placeholder="Application, pressure, flow, voltage, mounting, ports or known replacement reason."
         ></textarea>
       </label>
       <label class="rfq-modal__upload rfq-modal__full">
-        <span>Upload nameplate, drawing or RFQ list</span>
-        <input type="file" name="drawing" accept=".pdf,.xls,.xlsx,.csv,.jpg,.jpeg,.png" />
+        <span>Upload nameplates, drawings or an RFQ list</span>
+        <input type="file" name="attachments" accept=".pdf,.xls,.xlsx,.doc,.docx,.csv,.zip,.jpg,.jpeg,.png,.webp" multiple />
+        <small>Up to 5 files, 5 MB each and 20 MB combined.</small>
       </label>
       <input type="hidden" name="source" value="Modal RFQ" />
       <input type="hidden" name="page_url" />
@@ -74,7 +86,6 @@ import { site } from '../data/site';
   const contextEl = document.getElementById('rfq-modal-context');
   const submitBtn = form?.querySelector<HTMLButtonElement>('.rfq-modal__submit');
   const resultEl = form?.querySelector<HTMLElement>('.rfq-modal__result');
-  const messageEl = form?.querySelector<HTMLTextAreaElement>('textarea[name="message"]');
   let lastFocus: HTMLElement | null = null;
   let formStarted = false;
 
@@ -94,9 +105,6 @@ import { site } from '../data/site';
     setHidden('page_url', window.location.href);
     setHidden('page_title', document.title);
     setHidden('rfq_context', context);
-    if (messageEl && !messageEl.value.trim()) {
-      messageEl.value = `Inquiry page: ${context}\nPage URL: ${window.location.href}\n\nOriginal brand / full model code / quantity / destination: `;
-    }
     populateRfqAttributionFields(form);
 
     modal.classList.add('is-open');
@@ -190,12 +198,23 @@ import { site } from '../data/site';
 
     populateRfqAttributionFields(form);
     const formData = new FormData(form);
-    const attachment = formData.get('drawing');
-    if (attachment instanceof File && attachment.size > 10 * 1024 * 1024) {
+    const attachments = formData.getAll('attachments').filter((entry) => entry instanceof File && entry.size > 0) as File[];
+    const model = formData.get('model')?.toString().trim() ?? '';
+    const fileError =
+      attachments.length > 5
+        ? 'Please upload no more than 5 files.'
+        : attachments.some((file) => file.size > 5 * 1024 * 1024)
+          ? 'Each file must be 5 MB or smaller.'
+          : attachments.reduce((total, file) => total + file.size, 0) > 20 * 1024 * 1024
+            ? 'The combined attachment size must be 20 MB or smaller.'
+            : !model && attachments.length === 0
+              ? 'Enter the full model code or upload at least one clear reference file.'
+              : '';
+    if (fileError) {
       resultEl.className = 'form-result rfq-modal__result is-visible is-error';
-      resultEl.textContent = 'The attachment is larger than 10 MB. Please upload a smaller file or use the full contact form.';
+      resultEl.textContent = fileError;
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Send Inquiry';
+      submitBtn.textContent = 'Send Match Request';
       return;
     }
     if (formData.get('website')) {
@@ -220,7 +239,7 @@ import { site } from '../data/site';
           event_category: 'Funnel',
           event_label: source,
           funnel_stage: 'quote',
-          has_attachment: attachment instanceof File && attachment.size > 0 ? 'yes' : 'no',
+          has_attachment: attachments.length > 0 ? 'yes' : 'no',
         });
         window.gtag('event', 'generate_lead', {
           event_category: 'RFQ',
@@ -237,7 +256,7 @@ import { site } from '../data/site';
       resultEl.className = 'form-result rfq-modal__result is-visible is-error';
       resultEl.innerHTML = `<p>Something went wrong. Please email <a href="mailto:${fallbackEmail}">${fallbackEmail}</a> or use the <a href="/contact/?source=modal-error">full contact form</a>.</p>`;
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Send Inquiry';
+      submitBtn.textContent = 'Send Match Request';
     }
   });
 </script>
@@ -370,6 +389,11 @@ import { site } from '../data/site';
   .rfq-modal__upload input {
     padding: 10px;
     background: #f8fafc;
+  }
+
+  .rfq-modal__upload small {
+    color: #64748b;
+    font-weight: 400;
   }
 
   .rfq-modal__submit {

@@ -3,14 +3,37 @@
 
 > Hydraulic Match is an independent China sourcing service for hydraulic valve, pump and cylinder alternatives. It reviews complete model codes, technical parameters and application conditions before proposing a sourcing option.
 
+The site combines exact-code catalog depth, priced service parts,
+remanufacturing capability and broad application coverage. Current stock, MOQ,
+price and lead time are reconfirmed in the quotation.
+
 ## Primary pages
 
 - [Home](https://hydraulicmatch.com/)
 - [Hydraulic products](https://hydraulicmatch.com/products/)
+- [Hydraulic motors](https://hydraulicmatch.com/products/hydraulic-motors/)
+- [Hydraulic repair kits and service parts](https://hydraulicmatch.com/products/hydraulic-repair-kits/)
+- [Alternative and cross-reference reviews](https://hydraulicmatch.com/alternatives/)
+- [Hydraulic brand review center](https://hydraulicmatch.com/brands/)
+- [Brand and series directory](https://hydraulicmatch.com/series/)
+- [A10VO series evidence](https://hydraulicmatch.com/series/a10vo/)
+- [PVH series evidence](https://hydraulicmatch.com/series/pvh/)
+- [Denison T6CC series evidence](https://hydraulicmatch.com/series/t6cc/)
+- [Model code review](https://hydraulicmatch.com/cross-reference/)
+- [Exact model records](https://hydraulicmatch.com/models/)
+- [Industry applications](https://hydraulicmatch.com/industries/)
 - [Matching process](https://hydraulicmatch.com/matching-process/)
 - [Quality and verification](https://hydraulicmatch.com/quality/)
+- [Trust and verification center](https://hydraulicmatch.com/trust/)
 - [Technical guides](https://hydraulicmatch.com/resources/)
+- [Hydraulic calculators](https://hydraulicmatch.com/tools/)
+- [RFQ templates and checklists](https://hydraulicmatch.com/downloads/)
+- [Documented case studies](https://hydraulicmatch.com/case-studies/)
+- [Technical review team](https://hydraulicmatch.com/authors/technical-review-team/)
+- [Technical editorial policy](https://hydraulicmatch.com/editorial-policy/)
 - [Request a match](https://hydraulicmatch.com/request-a-quote/)
+- [Contact Hydraulic Match](https://hydraulicmatch.com/contact/)
+- [Inventory and credentials](https://hydraulicmatch.com/commercial-proof/)
 
 ## Important qualification
 

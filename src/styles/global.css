@@ -506,7 +506,7 @@ blockquote {
 .nav-dropdown-list {
     background-color: transparent;
     border-radius: 8px;
-    min-width: 180px;
+    min-width: 280px;
     margin-top: 0;
     padding-top: 20px;
     position: absolute;
@@ -1390,7 +1390,7 @@ blockquote {
     grid-column-gap: 80px;
     grid-row-gap: 80px;
     background-color: var(--color-title);
-    background-image: linear-gradient(#0000, #000 96%), url(/images/mtu-part-number-verification.webp);
+    background-image: linear-gradient(#0000, #000 96%), url(/images/hydraulic/hydraulic-inspection-packing.webp);
     background-position: 0 0, 50%;
     background-size: auto, cover;
     border-radius: 4px;
@@ -2104,7 +2104,7 @@ blockquote {
 }
 
 .cta-section {
-    background-image: linear-gradient(#0000 21%, #000 95%), url(/images/mtu-engine-parts-hero.webp);
+    background-image: linear-gradient(#0000 21%, #000 95%), url(/images/hydraulic/hydraulic-match-hero.webp);
     background-position: 0 0, 50%;
     background-size: auto, cover;
     border-radius: 4px;

@@ -1,4 +1,1250 @@
 ---
-import RfqPage from '../components/RfqPage.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../components/BreadcrumbHero.astro";
+import FunnelPageView from "../components/FunnelPageView.astro";
+import {
+  breadcrumbSchema,
+  contactPageSchema,
+  faqSchema,
+  howToSchema,
+  site,
+} from "../data/site";
+
+const pageTitle = "Contact Hydraulic Match | Hydraulic Parts Inquiry";
+const pageDescription =
+  "Contact Hydraulic Match for valve, pump and cylinder identification, supply-route review, technical comparison and international quotation support.";
+const pageUrl = `${site.url}/contact/`;
+const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
+
+const inquirySteps = [
+  {
+    name: "Send the reference",
+    text: "Share the complete model code, nameplate, photos, drawing or RFQ list.",
+  },
+  {
+    name: "Technical verification",
+    text: "We review the code, configuration, operating parameters and evidence needed to classify a candidate.",
+  },
+  {
+    name: "Stock and supply confirmation",
+    text: "Exact availability, supplier identity, authorization evidence when relevant, lead time, inspection scope and commercial terms are checked.",
+  },
+  {
+    name: "Receive a clear quotation",
+    text: "Your reply identifies the proposed supply, compatibility status, price, lead time and open confirmations.",
+  },
+];
+
+const contactFaqs = [
+  {
+    question: "What information should I include in a hydraulic parts inquiry?",
+    answer:
+      "Send the original manufacturer, complete model code, quantity and destination country. A clear nameplate photo, product photos, drawing, datasheet or RFQ list helps us verify the configuration faster.",
+  },
+  {
+    question: "Can you identify a component without the complete model code?",
+    answer:
+      "Often, yes. Upload clear photos of the nameplate, ports, shaft, mounting interface and connector. We may request pressure, flow, displacement, voltage or machine information before confirming a match.",
+  },
+  {
+    question: "How quickly will Hydraulic Match reply?",
+    answer:
+      "Response timing depends on the completeness of the inquiry, supplier confirmation and time-zone overlap. Complex cross-reference, supply-route or application checks may require additional technical evidence before a quotation can be issued.",
+  },
+  {
+    question: "Do you ship hydraulic parts internationally?",
+    answer:
+      "Yes. We support international quotation, export packing and shipping coordination. Provide the destination country and preferred shipping method so freight and documentation can be reviewed.",
+  },
+  {
+    question: "How is warranty coverage determined?",
+    answer:
+      "Warranty exists only when the accepted quotation or warranty document identifies the covered item, duration, start point, exclusions, claim evidence and available remedies.",
+  },
+  {
+    question: "When is a replacement considered directly compatible?",
+    answer:
+      "Direct-fit wording is appropriate only when the original and offered items have been compared for the recorded function, interfaces, ratings and application. Any difference or unresolved parameter must remain visible in the quotation.",
+  },
+];
+
+const quoteResponse = [
+  "Proposed brand, series and complete model code",
+  "Stock or confirmed supply status",
+  "Compatibility status, evidence basis and any stated differences",
+  "Unit price, lead time, MOQ and quotation validity",
+  "Warranty scope when included in the quotation",
+  "Packing, inspection and international shipping options",
+];
+
+const shipmentChecks = [
+  "Model code and quantity checked against the approved order",
+  "Visible condition and available nameplate details recorded",
+  "Ports, shafts, connectors or interfaces checked when applicable",
+  "Protective packing selected for product type and shipping method",
+  "Commercial documents prepared for the agreed export terms",
+  "Inspection evidence supplied when included in the quotation",
+];
 ---
-<RfqPage currentPath="/contact" />
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  currentPath="/contact"
+  image="/images/hydraulic/hydraulic-inspection-packing.webp"
+  hideFloatingCta
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Contact", url: pageUrl },
+    ]),
+    contactPageSchema({
+      name: pageTitle,
+      description: pageDescription,
+      url: pageUrl,
+    }),
+    howToSchema({
+      name: "How to request a hydraulic component match",
+      description:
+        "Send identification and application information for technical verification, supply confirmation and quotation.",
+      steps: inquirySteps,
+    }),
+    faqSchema(contactFaqs),
+  ]}
+>
+  <FunnelPageView stage="quote" label="contact-rfq" />
+  <BreadcrumbHero
+    title="Contact Hydraulic Match"
+    trail={[{ label: "Home", href: "/" }, { label: "Contact" }]}
+    variant="5"
+  />
+
+  <section class="contact-seo-intro" aria-labelledby="contact-intro-heading">
+    <div class="contact-seo-intro-inner">
+      <p class="contact-seo-kicker">HYDRAULIC PARTS INQUIRY</p>
+      <h2 id="contact-intro-heading" class="contact-seo-intro-title">
+        Send one inquiry for identification, compatibility, stock and quotation.
+      </h2>
+      <p class="contact-seo-intro-text">
+        Contact our team for hydraulic valves, pumps, pump parts and cylinders.
+        We can review an original model code, identify a component from clear
+        reference files, verify a
+        <a href="/cross-reference/">direct replacement</a>, or process a
+        multi-item RFQ. Complete information helps us return a more precise
+        technical and commercial reply.
+      </p>
+      <p class="contact-seo-intro-meta">
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+        <span aria-hidden="true">•</span>
+        <a href={`tel:${site.phone}`}>{site.phone}</a>
+        <span aria-hidden="true">•</span>
+        <span>Worldwide inquiry support</span>
+      </p>
+    </div>
+    <nav
+      class="contact-resource-links"
+      aria-label="Contact supporting resources"
+    >
+      <a href="/commercial-proof/">Inventory &amp; Commercial Proof</a>
+      <a href="/series/">Supported Series</a>
+      <a href="/cross-reference/">Cross-Reference</a>
+      <a href="/quality/">Quality Control</a>
+      <a href="/warranty/">Warranty Terms</a>
+      <a href="/shipping/">Shipping Support</a>
+    </nav>
+  </section>
+
+  <section class="contact-form-section" aria-labelledby="contact-form-heading">
+    <div class="container">
+      <div class="contact-form-wrapper">
+        <div class="contact-leftside-block">
+          <div class="contact-form-block">
+            <div class="contact-form-title-block">
+              <p class="contact-seo-kicker">
+                REQUEST A TECHNICAL &amp; COMMERCIAL REVIEW
+              </p>
+              <h2 id="contact-form-heading" class="contact-form-title">
+                Tell us what you need matched.
+              </h2>
+              <p class="contact-form-lead">
+                Fields marked * are required. Enter the full model code or
+                upload at least one clear reference file.
+              </p>
+              <ul class="contact-trust-badges" aria-label="Supply assurances">
+                <li>
+                  <span class="contact-trust-check" aria-hidden="true">✓</span
+                  >Exact-code review
+                </li>
+                <li>
+                  <span class="contact-trust-check" aria-hidden="true">✓</span
+                  >Supplier evidence stated
+                </li>
+                <li>
+                  <span class="contact-trust-check" aria-hidden="true">✓</span
+                  >Written warranty scope
+                </li>
+                <li>
+                  <span class="contact-trust-check" aria-hidden="true">✓</span
+                  >Visible compatibility status
+                </li>
+              </ul>
+              <div class="quote-package-card">
+                <p class="quote-package-kicker">Your reply includes</p>
+                <ul>
+                  <li>Identification and proposed supply status</li>
+                  <li>Compatibility result and stated differences</li>
+                  <li>Price, lead time, warranty and shipping terms</li>
+                </ul>
+              </div>
+            </div>
+
+            <form
+              id="contact-rfq-form"
+              class="contact-form"
+              data-endpoint="/api/rfq/"
+              data-fallback-email={site.email}
+            >
+              <div class="contact-form-column">
+                <label class="contact-field-label" for="contact-name"
+                  >Name *</label
+                >
+                <input
+                  id="contact-name"
+                  class="contact-form-input-field"
+                  name="name"
+                  autocomplete="name"
+                  required
+                />
+              </div>
+              <div class="contact-form-column">
+                <label class="contact-field-label" for="contact-company"
+                  >Company</label
+                >
+                <input
+                  id="contact-company"
+                  class="contact-form-input-field"
+                  name="company"
+                  autocomplete="organization"
+                />
+              </div>
+              <div class="contact-form-column">
+                <label class="contact-field-label" for="contact-email"
+                  >Business email *</label
+                >
+                <input
+                  id="contact-email"
+                  class="contact-form-input-field"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  required
+                />
+              </div>
+              <div class="contact-form-column">
+                <label class="contact-field-label" for="contact-phone"
+                  >Phone / WhatsApp</label
+                >
+                <input
+                  id="contact-phone"
+                  class="contact-form-input-field"
+                  name="phone"
+                  type="tel"
+                  autocomplete="tel"
+                />
+              </div>
+              <div class="contact-form-column">
+                <label class="contact-field-label" for="contact-country"
+                  >Destination country *</label
+                >
+                <input
+                  id="contact-country"
+                  class="contact-form-input-field"
+                  name="country"
+                  autocomplete="country-name"
+                  required
+                />
+              </div>
+              <div class="contact-form-column">
+                <label class="contact-field-label" for="contact-role"
+                  >Buyer type</label
+                >
+                <select
+                  id="contact-role"
+                  class="contact-form-input-field is-2"
+                  name="role"
+                >
+                  <option value="">Select buyer type</option>
+                  <option>Distributor</option>
+                  <option>Repair / Service Company</option>
+                  <option>MRO / Factory Maintenance</option>
+                  <option>Equipment Manufacturer</option>
+                  <option>Other Business Buyer</option>
+                </select>
+              </div>
+              <div class="contact-form-column">
+                <label class="contact-field-label" for="contact-brand"
+                  >Original manufacturer *</label
+                >
+                <input
+                  id="contact-brand"
+                  class="contact-form-input-field"
+                  name="brand"
+                  placeholder="e.g. Rexroth, Vickers, Parker"
+                  required
+                />
+              </div>
+              <div class="contact-form-column">
+                <label class="contact-field-label" for="contact-model"
+                  >Complete model code</label
+                >
+                <input
+                  id="contact-model"
+                  class="contact-form-input-field"
+                  name="model"
+                  placeholder="Or upload a clear nameplate / file"
+                />
+              </div>
+              <div class="contact-form-column">
+                <label class="contact-field-label" for="contact-type"
+                  >Product type</label
+                >
+                <select
+                  id="contact-type"
+                  class="contact-form-input-field is-2"
+                  name="product_type"
+                >
+                  <option value="">Select product type</option>
+                  <option>Hydraulic Valve</option>
+                  <option>Hydraulic Pump</option>
+                  <option>Hydraulic Pump Part</option>
+                  <option>Hydraulic Cylinder</option>
+                  <option>Other Hydraulic Component</option>
+                </select>
+              </div>
+              <div class="contact-form-column">
+                <label class="contact-field-label" for="contact-quantity"
+                  >Quantity *</label
+                >
+                <input
+                  id="contact-quantity"
+                  class="contact-form-input-field"
+                  name="quantity"
+                  placeholder="e.g. 2 pcs"
+                  required
+                />
+              </div>
+              <div class="contact-form-column contact-form-column--full">
+                <label class="contact-field-label" for="contact-details"
+                  >Application and requirements</label
+                >
+                <textarea
+                  id="contact-details"
+                  class="contact-form-input-field large"
+                  name="details"
+                  placeholder="Add machine, pressure, flow, displacement, voltage, ports, shaft, failure reason, delivery deadline or commercial requirements."
+                ></textarea>
+              </div>
+              <div class="contact-form-column file-upload-column">
+                <span class="contact-field-label">Reference files</span>
+                <label class="file-upload-label" for="contact-attachments">
+                  <input
+                    id="contact-attachments"
+                    class="file-upload-input"
+                    name="attachments"
+                    type="file"
+                    accept=".jpg,.jpeg,.png,.webp,.pdf,.xls,.xlsx,.doc,.docx,.csv,.zip"
+                    multiple
+                  />
+                  <span class="file-upload-icon" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M12 16V4m0 0L7 9m5-5 5 5M5 14v5h14v-5"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"></path>
+                    </svg>
+                  </span>
+                  <span class="file-upload-content">
+                    <span class="file-upload-title"
+                      >Upload nameplates, photos, drawings or an RFQ list</span
+                    >
+                    <span class="file-upload-hint"
+                      >Up to 5 files; 5 MB each and 20 MB combined.</span
+                    >
+                    <span
+                      class="file-upload-filename"
+                      data-placeholder="No files selected"
+                      >No files selected</span
+                    >
+                  </span>
+                </label>
+              </div>
+              <input
+                type="hidden"
+                name="source"
+                value="Hydraulic Match contact page"
+              />
+              <input type="hidden" name="message" />
+              <div class="hp-field" aria-hidden="true">
+                <label
+                  >Leave this field empty<input
+                    name="website"
+                    tabindex="-1"
+                    autocomplete="off"
+                  /></label
+                >
+              </div>
+              <div class="contact-form-button-block">
+                <button class="contact-form-button" type="submit"
+                  >Send Hydraulic Parts Inquiry</button
+                >
+                <p class="contact-form-submit-note">
+                  Qualified inquiries are normally reviewed within one business
+                  day.
+                </p>
+              </div>
+              <div class="form-result" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+
+        <aside class="contact-rightside-block" aria-label="Inquiry process">
+          <div class="contact-image-block">
+            <img
+              class="contact-form-image"
+              src="/images/hydraulic/hydraulic-inspection-packing.webp"
+              alt="Hydraulic component inspection and export packing"
+              width="1200"
+              height="900"
+              loading="lazy"
+            />
+          </div>
+          <div class="contact-form-image-overlay"></div>
+          <div class="contact-image-contect-block">
+            <div class="contact-text-contect-block">
+              <p class="contact-seo-kicker contact-seo-kicker--light">
+                FROM REFERENCE TO QUOTATION
+              </p>
+              <h2 class="text-color-white">A clear four-step review.</h2>
+              <ol class="process-steps">
+                {
+                  inquirySteps.map((step, index) => (
+                    <li class="process-step">
+                      <span class="step-number">{index + 1}</span>
+                      <div>
+                        <strong class="text-color-white">{step.name}</strong>
+                        <p class="contact-form-summary">{step.text}</p>
+                      </div>
+                    </li>
+                  ))
+                }
+              </ol>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="contact-info-section"
+    aria-labelledby="direct-contact-heading"
+  >
+    <div class="container">
+      <h2 id="direct-contact-heading" class="contact-nap-heading">
+        Contact our hydraulic sourcing team.
+      </h2>
+      <p class="contact-nap-lead">
+        Use the form for structured technical review, or contact us directly for
+        inventory, warranty, authorization and urgent sourcing questions.
+      </p>
+      <div class="contact-info-wrapper">
+        <article class="contact-info-single-block">
+          <span class="contact-info-icon-block" aria-hidden="true">
+            <svg class="contact-info-icon" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M3 6.5h18v11H3v-11Zm1 1 8 6 8-6"
+                stroke="white"
+                stroke-width="1.8"
+                stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          <div class="contact-info-content-block">
+            <p class="contact-seo-kicker">EMAIL</p>
+            <h3 class="contact-info-title">Sales &amp; technical inquiries</h3>
+            <a class="contact-info-link" href={`mailto:${site.email}`}
+              >{site.email}</a
+            >
+            <p class="contact-info-note">
+              Attach the model code, quantity, destination and available files.
+            </p>
+          </div>
+        </article>
+        <article class="contact-info-single-block">
+          <span class="contact-info-icon-block" aria-hidden="true">
+            <svg class="contact-info-icon" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M7.2 3.5 10 8 7.8 9.8c1.3 2.8 3.6 5.1 6.4 6.4L16 14l4.5 2.8-.8 3.7c-.2.8-.9 1.4-1.8 1.3C9.7 21 3 14.3 2.2 6.1c-.1-.9.5-1.6 1.3-1.8l3.7-.8Z"
+                stroke="white"
+                stroke-width="1.7"
+                stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          <div class="contact-info-content-block">
+            <p class="contact-seo-kicker">PHONE &amp; WHATSAPP</p>
+            <h3 class="contact-info-title">Fast commercial communication</h3>
+            <a class="contact-info-link" href={`tel:${site.phone}`}
+              >{site.phone}</a
+            >
+            <a
+              class="contact-info-link"
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer">Open WhatsApp</a
+            >
+            <p class="contact-info-note">
+              For urgent stock and shipment coordination.
+            </p>
+          </div>
+        </article>
+        <article class="contact-info-single-block">
+          <span class="contact-info-icon-block" aria-hidden="true">
+            <svg class="contact-info-icon" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 21s6-5.8 6-11a6 6 0 1 0-12 0c0 5.2 6 11 6 11Zm0-8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"
+                stroke="white"
+                stroke-width="1.7"
+                stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          <div class="contact-info-content-block">
+            <p class="contact-seo-kicker">CHINA SUPPLY OFFICE</p>
+            <h3 class="contact-info-title">Hydraulic sourcing coordination</h3>
+            <address class="contact-address">
+              China-based inventory, supplier coordination, inspection, export
+              packing and international shipping support.
+            </address>
+            <a class="contact-info-link" href="/about/">About Hydraulic Match</a
+            >
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section
+    class="contact-standards"
+    aria-labelledby="contact-standards-heading"
+  >
+    <div class="container">
+      <div class="contact-section-heading">
+        <p class="contact-seo-kicker">WHAT TO EXPECT</p>
+        <h2 id="contact-standards-heading">
+          Quotation clarity and shipment control.
+        </h2>
+        <p>
+          We separate confirmed facts, compatibility conditions and open
+          questions before an order proceeds.
+        </p>
+      </div>
+      <div class="contact-standard-grid">
+        <article class="contact-standard-card">
+          <h3>A complete quotation can state</h3>
+          <ul>{quoteResponse.map((item) => <li>{item}</li>)}</ul>
+        </article>
+        <article class="contact-standard-card">
+          <h3>Pre-shipment checks can include</h3>
+          <ul>{shipmentChecks.map((item) => <li>{item}</li>)}</ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-faq" aria-labelledby="contact-faq-heading">
+    <div class="container">
+      <div class="contact-section-heading">
+        <p class="contact-seo-kicker">CONTACT FAQ</p>
+        <h2 id="contact-faq-heading">Before you send an inquiry.</h2>
+      </div>
+      <div class="contact-faq-list">
+        {
+          contactFaqs.map((faq) => (
+            <details class="contact-faq-item">
+              <summary>
+                {faq.question}
+                <span aria-hidden="true">+</span>
+              </summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#contact-rfq-form");
+  const fileInput = document.querySelector<HTMLInputElement>(
+    "#contact-attachments",
+  );
+  const fileLabel =
+    document.querySelector<HTMLLabelElement>(".file-upload-label");
+  const fileName = document.querySelector<HTMLElement>(".file-upload-filename");
+
+  const updateFiles = () => {
+    const files = Array.from(fileInput?.files ?? []);
+    fileLabel?.classList.toggle("has-file", files.length > 0);
+    if (fileName) {
+      fileName.textContent = files.length
+        ? files.length === 1
+          ? files[0].name
+          : `${files.length} files selected`
+        : (fileName.dataset.placeholder ?? "No files selected");
+    }
+  };
+
+  fileInput?.addEventListener("change", updateFiles);
+  ["dragenter", "dragover"].forEach((eventName) => {
+    fileLabel?.addEventListener(eventName, (event) => {
+      event.preventDefault();
+      fileLabel.classList.add("is-dragover");
+    });
+  });
+  ["dragleave", "drop"].forEach((eventName) => {
+    fileLabel?.addEventListener(eventName, () =>
+      fileLabel.classList.remove("is-dragover"),
+    );
+  });
+  fileLabel?.addEventListener("drop", (event) => {
+    event.preventDefault();
+    if (!fileInput || !event.dataTransfer?.files.length) return;
+    const transfer = new DataTransfer();
+    Array.from(event.dataTransfer.files)
+      .slice(0, 5)
+      .forEach((file) => transfer.items.add(file));
+    fileInput.files = transfer.files;
+    updateFiles();
+  });
+
+  if (form) {
+    const params = new URLSearchParams(window.location.search);
+    ["brand", "model"].forEach((name) => {
+      const value = params.get(name);
+      const field = form.querySelector<HTMLInputElement>(
+        `input[name="${name}"]`,
+      );
+      if (value && field) field.value = value;
+    });
+    const source = params.get("source");
+    const sourceField = form.querySelector<HTMLInputElement>(
+      'input[name="source"]',
+    );
+    if (source && sourceField) sourceField.value = `Contact page: ${source}`;
+  }
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const result = form.querySelector<HTMLElement>(".form-result");
+    const submit = form.querySelector<HTMLButtonElement>(
+      'button[type="submit"]',
+    );
+    const data = new FormData(form);
+
+    if (data.get("website")) {
+      window.location.href = "/thank-you/?source=contact";
+      return;
+    }
+
+    const attachments = data
+      .getAll("attachments")
+      .filter((entry) => entry instanceof File && entry.size > 0) as File[];
+    const model = data.get("model")?.toString().trim() ?? "";
+    const validationError =
+      attachments.length > 5
+        ? "Please upload no more than 5 files."
+        : attachments.some((file) => file.size > 5 * 1024 * 1024)
+          ? "Each file must be 5 MB or smaller."
+          : attachments.reduce((total, file) => total + file.size, 0) >
+              20 * 1024 * 1024
+            ? "The combined attachment size must be 20 MB or smaller."
+            : !model && attachments.length === 0
+              ? "Enter the complete model code or upload at least one clear reference file."
+              : "";
+
+    if (validationError) {
+      if (result) {
+        result.className = "form-result is-visible is-error";
+        result.textContent = validationError;
+      }
+      return;
+    }
+
+    const message = [
+      `Company: ${data.get("company") || "-"}`,
+      `Phone / WhatsApp: ${data.get("phone") || "-"}`,
+      `Destination country: ${data.get("country")}`,
+      `Buyer type: ${data.get("role") || "-"}`,
+      "",
+      `Original manufacturer: ${data.get("brand")}`,
+      `Complete model code: ${model || "See attachments"}`,
+      `Product type: ${data.get("product_type") || "-"}`,
+      `Quantity: ${data.get("quantity")}`,
+      "",
+      `Application and requirements: ${data.get("details") || "-"}`,
+    ].join("\n");
+    data.set("message", message);
+
+    submit?.setAttribute("disabled", "true");
+    if (submit) submit.textContent = "Sending...";
+    if (result) {
+      result.className = "form-result";
+      result.textContent = "";
+    }
+
+    try {
+      const response = await fetch(form.dataset.endpoint ?? "/api/rfq/", {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" },
+      });
+      if (!response.ok) throw new Error("Request failed");
+      window.location.href = "/thank-you/?source=contact";
+    } catch {
+      if (result) {
+        result.className = "form-result is-visible is-error";
+        result.innerHTML = `<strong>The form could not be sent.</strong> Please email <a href="mailto:${form.dataset.fallbackEmail}">${form.dataset.fallbackEmail}</a> with your files.`;
+      }
+      submit?.removeAttribute("disabled");
+      if (submit) submit.textContent = "Send Hydraulic Parts Inquiry";
+    }
+  });
+</script>
+
+<style>
+  .contact-seo-intro {
+    padding: 72px 0 34px;
+    background: #fff;
+  }
+  .contact-seo-intro-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+  }
+  .contact-seo-kicker {
+    margin: 0 0 9px;
+    color: var(--color-primary);
+    font-family: var(--font-title);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .contact-seo-intro-title {
+    margin: 0 0 12px;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    text-transform: none;
+  }
+  .contact-seo-intro-text {
+    max-width: 95ch;
+    margin: 0 auto;
+    color: #536071;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .contact-seo-intro-text a,
+  .contact-seo-intro-meta a {
+    color: var(--color-title);
+    font-weight: 600;
+    text-underline-offset: 3px;
+  }
+  .contact-seo-intro-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 10px;
+    margin: 16px 0 0;
+    color: #758194;
+    font-size: 13px;
+  }
+  .contact-resource-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    max-width: 1220px;
+    margin: 24px auto 0;
+    padding: 0 20px;
+  }
+  .contact-resource-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 8px 14px;
+    border: 1px solid rgba(20, 110, 245, 0.2);
+    border-radius: 999px;
+    background: #fff;
+    color: #273446;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s;
+  }
+  .contact-resource-links a:hover {
+    border-color: var(--color-primary);
+    background: rgba(20, 110, 245, 0.06);
+    color: var(--color-primary);
+  }
+  .contact-form-section {
+    padding: 38px 0 92px;
+    background: #f4f6f9;
+  }
+  .contact-form-wrapper {
+    border: 1px solid var(--color-stroke);
+    box-shadow: 0 18px 50px rgba(15, 23, 42, 0.07);
+  }
+  .contact-form-title {
+    font-size: clamp(1.5rem, 2.3vw, 2rem);
+    text-transform: none;
+  }
+  .contact-form-lead {
+    margin: 12px 0 0;
+    color: #536071;
+    line-height: 1.65;
+  }
+  .contact-trust-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .contact-trust-badges li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 30px;
+    padding: 4px 10px 4px 6px;
+    border: 1px solid rgba(20, 110, 245, 0.14);
+    border-radius: 999px;
+    background: rgba(20, 110, 245, 0.05);
+    color: #334155;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .contact-trust-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(20, 110, 245, 0.12);
+    color: var(--color-primary);
+  }
+  .quote-package-card {
+    margin-top: 16px;
+    padding: 14px 16px;
+    border: 1px solid rgba(20, 110, 245, 0.16);
+    border-radius: 8px;
+    background: rgba(20, 110, 245, 0.04);
+  }
+  .quote-package-kicker {
+    margin: 0 0 7px;
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .quote-package-card ul {
+    margin: 0;
+    padding-left: 19px;
+    color: #465466;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .contact-field-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-title);
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .contact-form-column--full,
+  .file-upload-column {
+    grid-column: 1/-1;
+  }
+  .contact-form-section .contact-form-input-field {
+    border-radius: 7px;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+  .contact-form-section .contact-form-input-field:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(20, 110, 245, 0.13);
+  }
+  .contact-form-section .contact-form-button {
+    min-height: 50px;
+    border-radius: 7px;
+  }
+  .contact-form-submit-note {
+    margin: 10px 0 0;
+    color: #687587;
+    font-size: 13px;
+    text-align: center;
+  }
+  .file-upload-label {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-height: 82px;
+    padding: 15px 18px;
+    border: 1.5px dashed rgba(20, 110, 245, 0.3);
+    border-radius: 8px;
+    background: rgba(20, 110, 245, 0.03);
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .file-upload-label:hover,
+  .file-upload-label.is-dragover {
+    border-color: var(--color-primary);
+    background: rgba(20, 110, 245, 0.07);
+  }
+  .file-upload-label.has-file {
+    border-style: solid;
+    border-color: var(--color-primary);
+  }
+  .file-upload-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+  .file-upload-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    flex: none;
+    border-radius: 8px;
+    background: rgba(20, 110, 245, 0.1);
+    color: var(--color-primary);
+  }
+  .file-upload-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+  }
+  .file-upload-title {
+    color: var(--color-title);
+    font-weight: 600;
+  }
+  .file-upload-hint,
+  .file-upload-filename {
+    color: #6a7788;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+  }
+  .contact-rightside-block {
+    min-height: 940px;
+  }
+  .contact-seo-kicker--light {
+    color: #8eb8ff;
+  }
+  .contact-image-contect-block {
+    padding: 30px;
+  }
+  .contact-text-contect-block {
+    max-width: 440px;
+  }
+  .contact-text-contect-block h2 {
+    margin: 0;
+    font-size: 28px;
+    text-transform: none;
+  }
+  .process-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .process-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 11px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(4px);
+  }
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .process-step strong {
+    font-size: 14px;
+  }
+  .process-step .contact-form-summary {
+    margin: 4px 0 0;
+    color: #d6deea;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .contact-info-section {
+    padding: 88px 0;
+    background: #fff;
+  }
+  .contact-nap-heading {
+    margin: 0 0 9px;
+    text-align: center;
+    font-size: clamp(1.55rem, 2.5vw, 2.1rem);
+    text-transform: none;
+  }
+  .contact-nap-lead {
+    max-width: 62ch;
+    margin: 0 auto 30px;
+    color: #536071;
+    text-align: center;
+    line-height: 1.7;
+  }
+  .contact-info-single-block {
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+    transition: 0.2s;
+  }
+  .contact-info-single-block:hover {
+    border-color: rgba(20, 110, 245, 0.35);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  }
+  .contact-info-title {
+    font-size: 20px;
+    text-transform: none;
+  }
+  .contact-info-link {
+    color: var(--color-primary);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .contact-info-note,
+  .contact-address {
+    margin: 4px 0 0;
+    color: #647185;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .contact-address {
+    font-style: normal;
+  }
+  .contact-standards {
+    padding: 88px 0;
+    background: #f4f6f9;
+  }
+  .contact-section-heading {
+    max-width: 760px;
+    margin: 0 auto 32px;
+    text-align: center;
+  }
+  .contact-section-heading h2 {
+    margin: 0 0 10px;
+    font-size: clamp(1.55rem, 2.5vw, 2.1rem);
+    text-transform: none;
+  }
+  .contact-section-heading > p:last-child {
+    color: #536071;
+    line-height: 1.7;
+  }
+  .contact-standard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+  .contact-standard-card {
+    padding: 28px;
+    border: 1px solid var(--color-stroke);
+    border-radius: 7px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  }
+  .contact-standard-card h3 {
+    margin: 0 0 16px;
+    font-size: 20px;
+    text-transform: none;
+  }
+  .contact-standard-card ul {
+    display: grid;
+    gap: 10px;
+    margin: 0;
+    padding-left: 20px;
+    color: #526073;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .contact-faq {
+    padding: 88px 0 100px;
+    background: #fff;
+  }
+  .contact-faq-list {
+    max-width: 920px;
+    margin: 0 auto;
+    border-top: 1px solid var(--color-stroke);
+  }
+  .contact-faq-item {
+    border-bottom: 1px solid var(--color-stroke);
+  }
+  .contact-faq-item summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 21px 0;
+    color: var(--color-title);
+    font-family: var(--font-title);
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+  .contact-faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .contact-faq-item summary span {
+    color: var(--color-primary);
+    font-size: 24px;
+    line-height: 1;
+  }
+  .contact-faq-item[open] summary span {
+    transform: rotate(45deg);
+  }
+  .contact-faq-item p {
+    margin: -4px 0 22px;
+    max-width: 82ch;
+    color: #536071;
+    line-height: 1.7;
+  }
+  .form-result {
+    grid-column: 1/-1;
+    min-height: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .form-result.is-error {
+    color: #a21919;
+  }
+  .form-result.is-error a {
+    color: inherit;
+  }
+  .hp-field {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  a:focus-visible,
+  button:focus-visible,
+  summary:focus-visible,
+  .file-upload-label:focus-within {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  @media (max-width: 991px) {
+    .contact-form-wrapper {
+      flex-direction: column;
+    }
+    .contact-rightside-block {
+      max-width: none;
+      min-height: 680px;
+    }
+    .contact-info-wrapper {
+      grid-template-columns: 1fr;
+    }
+    .contact-info-single-block {
+      min-height: 260px;
+    }
+  }
+  @media (max-width: 640px) {
+    .contact-seo-intro {
+      padding-top: 56px;
+    }
+    .contact-seo-intro-inner,
+    .contact-section-heading {
+      text-align: left;
+    }
+    .contact-seo-intro-meta,
+    .contact-resource-links {
+      justify-content: flex-start;
+    }
+    .contact-form-section {
+      padding-bottom: 64px;
+    }
+    .contact-form-wrapper {
+      padding: 10px;
+    }
+    .contact-form-block {
+      padding: 22px;
+    }
+    .contact-form {
+      grid-template-columns: 1fr;
+    }
+    .contact-form-column--full,
+    .file-upload-column {
+      grid-column: auto;
+    }
+    .contact-rightside-block {
+      min-height: 720px;
+    }
+    .contact-info-section,
+    .contact-standards,
+    .contact-faq {
+      padding: 64px 0;
+    }
+    .contact-nap-heading,
+    .contact-nap-lead {
+      text-align: left;
+    }
+    .contact-standard-grid {
+      grid-template-columns: 1fr;
+    }
+    .contact-standard-card {
+      padding: 22px;
+    }
+    .contact-faq-item summary {
+      font-size: 16px;
+    }
+    .contact-resource-links a {
+      min-height: 44px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .contact-resource-links a,
+    .contact-form-input-field,
+    .file-upload-label,
+    .contact-info-single-block,
+    .contact-faq-item summary span {
+      transition: none;
+    }
+  }
+</style>

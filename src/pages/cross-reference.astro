@@ -1,0 +1,328 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../components/BreadcrumbHero.astro";
+import DetailPageShell from "../components/DetailPageShell.astro";
+import HydraulicProductSidebar from "../components/HydraulicProductSidebar.astro";
+import { breadcrumbSchema, serviceSchema, site } from "../data/site";
+import "../styles/resource-page.css";
+
+const pageUrl = `${site.url}/cross-reference/`;
+---
+
+<BaseLayout
+  title="Hydraulic Pump, Motor & Valve Cross-Reference"
+  description="Submit a complete hydraulic pump, motor or valve model code for replacement cross-reference review, with compatibility, stock, lead time and warranty confirmed by quotation."
+  currentPath="/cross-reference"
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Alternatives", url: `${site.url}/alternatives/` },
+      { name: "Cross-Reference Review", url: pageUrl },
+    ]),
+    serviceSchema({
+      name: "Hydraulic model code cross-reference review",
+      description:
+        "Application-specific technical and sourcing review for hydraulic component model codes.",
+      url: pageUrl,
+      image: `${site.url}/images/hydraulic/hydraulic-match-hero.webp`,
+    }),
+  ]}
+>
+  <BreadcrumbHero
+    title="Hydraulic Pump, Motor & Valve Cross-Reference"
+    trail={[
+      { label: "Home", href: "/" },
+      { label: "Alternatives", href: "/alternatives/" },
+      { label: "Cross-Reference Review" },
+    ]}
+    variant="2"
+  />
+
+  <DetailPageShell
+    intro="Enter the original manufacturer and complete model code for a hydraulic pump cross-reference, hydraulic motor cross-reference or hydraulic valve cross-reference. The next step opens a prefilled RFQ for application and compatibility review."
+  >
+    <img
+      slot="hero"
+      src="/images/hydraulic/hydraulic-match-hero.webp"
+      alt="Unbranded hydraulic valve, pump and cylinder prepared for model-code review"
+      width="1536"
+      height="1024"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+
+    <form class="cross-reference-form" action="/request-a-quote/" method="get">
+      <div>
+        <label for="cross-brand">Original manufacturer</label>
+        <input
+          id="cross-brand"
+          name="brand"
+          placeholder="e.g. Rexroth, Vickers, Parker"
+          required
+        />
+      </div>
+      <div>
+        <label for="cross-model">Complete model code</label>
+        <input
+          id="cross-model"
+          name="model"
+          placeholder="Include every suffix, slash and revision"
+          required
+        />
+      </div>
+      <input type="hidden" name="source" value="cross-reference-search" />
+      <button type="submit">Start Technical Review</button>
+    </form>
+
+    <section>
+      <h2>What the review returns</h2>
+      <ul class="resource-list">
+        <li>Identification of the product family and key model-code fields</li>
+        <li>
+          A proposed supply route only when useful technical evidence is
+          available
+        </li>
+        <li>Known differences and missing confirmations</li>
+        <li>MOQ, lead time, inspection and commercial scope by quotation</li>
+        <li>
+          A direct-compatibility statement or a clear list of required changes
+        </li>
+        <li>
+          Exact availability, condition and any written warranty scope for the
+          offered route
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Cross-reference routes by component</h2>
+      <div class="cross-reference-routes">
+        <a href="/products/hydraulic-pumps/">
+          <strong>Hydraulic pump replacement</strong>
+          <span
+            >Compare displacement, control, rotation, flange, shaft and ports.</span
+          >
+        </a>
+        <a href="/products/hydraulic-motors/">
+          <strong>Hydraulic motor replacement</strong>
+          <span
+            >Compare displacement, shaft, mounting, ports, brake and duty.</span
+          >
+        </a>
+        <a href="/products/hydraulic-valves/">
+          <strong>Hydraulic valve replacement</strong>
+          <span
+            >Compare function, spool, interface, pressure, voltage and seals.</span
+          >
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Why no unverified instant result is shown</h2>
+      <p>
+        A shared series name or similar appearance does not prove
+        interchangeability. Valve function, voltage and mounting—or pump
+        displacement, control, rotation, flange, shaft and ports—can change
+        within the same family.
+      </p>
+      <div class="resource-note">
+        Verified model pages can be added after supplier data, drawings and
+        actual supply records support the reference. Until then, a model remains
+        an inquiry rather than a published direct-replacement claim.
+      </div>
+    </section>
+
+    <section>
+      <h2>Possible review outcomes</h2>
+      <div class="resource-table-wrap">
+        <table class="resource-table">
+          <thead>
+            <tr>
+              <th scope="col">Status</th>
+              <th scope="col">Meaning</th>
+              <th scope="col">Buyer action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Identified only</strong></td>
+              <td
+                >The family or original configuration is understood, but no
+                supply route has been validated.</td
+              >
+              <td>Provide missing suffixes, dimensions or application data.</td>
+            </tr>
+            <tr>
+              <td><strong>Conditional candidate</strong></td>
+              <td
+                >An offered item is plausible, with differences or open
+                confirmations still visible.</td
+              >
+              <td
+                >Review the comparison and approve further verification or a
+                sample.</td
+              >
+            </tr>
+            <tr>
+              <td><strong>Direct-fit evidence available</strong></td>
+              <td
+                >The submitted and offered configurations agree on the defined
+                technical interfaces.</td
+              >
+              <td>Confirm commercial terms and the agreed inspection scope.</td>
+            </tr>
+            <tr>
+              <td><strong>No responsible match</strong></td>
+              <td
+                >Evidence is insufficient or a critical function/interface
+                conflict remains.</td
+              >
+              <td
+                >Retain the original route, redesign with engineering approval
+                or collect better evidence.</td
+              >
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Evidence strength used in the comparison</h2>
+      <ol class="cross-reference-evidence">
+        <li>
+          <strong>Installed evidence</strong><span
+            >Clear nameplate, complete code, machine context and interface
+            photographs.</span
+          >
+        </li>
+        <li>
+          <strong>Technical documents</strong><span
+            >Manufacturer datasheets, dimension drawings, circuit information
+            and electrical details tied to the exact code.</span
+          >
+        </li>
+        <li>
+          <strong>Supplier evidence</strong><span
+            >Offered-unit label, drawing, test scope and written confirmation
+            linked to the quotation.</span
+          >
+        </li>
+        <li>
+          <strong>Physical or sample verification</strong><span
+            >Agreed measurements, functional checks or controlled trial when
+            documentary comparison is not enough.</span
+          >
+        </li>
+      </ol>
+      <div class="resource-note">
+        Search results, marketplace titles and visual similarity can help locate
+        a lead, but they are not release evidence. Hydraulic Match is
+        independent from referenced manufacturers, and submission of a code does
+        not establish authorization, stock or a guaranteed replacement.
+      </div>
+    </section>
+
+    <HydraulicProductSidebar
+      slot="sidebar"
+      activeSlug=""
+      quoteHref="/request-a-quote/?source=cross-reference-sidebar"
+    />
+  </DetailPageShell>
+</BaseLayout>
+
+<style>
+  .cross-reference-form {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr auto;
+    gap: 14px;
+    align-items: end;
+    margin: 0 0 30px;
+    padding: 24px;
+    background: #f5f7fa;
+    border: 1px solid var(--color-stroke);
+  }
+  .cross-reference-form div {
+    display: grid;
+    gap: 7px;
+  }
+  .cross-reference-form label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-title);
+  }
+  .cross-reference-form input {
+    min-height: 48px;
+    padding: 11px 13px;
+    border: 1px solid #cfd6df;
+    background: #fff;
+    color: var(--color-title);
+    font: 400 15px var(--font-primary);
+  }
+  .cross-reference-form input:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(20, 110, 245, 0.14);
+  }
+  .cross-reference-form button {
+    min-height: 48px;
+    padding: 11px 20px;
+    border: 0;
+    background: var(--color-primary);
+    color: #fff;
+    font: 600 14px var(--font-title);
+    cursor: pointer;
+  }
+  .cross-reference-routes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .cross-reference-routes a {
+    display: grid;
+    gap: 8px;
+    padding: 20px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+    color: var(--color-title);
+    text-decoration: none;
+  }
+  .cross-reference-routes a:hover {
+    border-color: var(--color-primary);
+  }
+  .cross-reference-routes span {
+    color: #536071;
+    line-height: 1.6;
+  }
+  .cross-reference-evidence {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 0 0 18px;
+    padding: 0;
+    list-style: none;
+  }
+  .cross-reference-evidence li {
+    display: grid;
+    gap: 7px;
+    padding: 20px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+  }
+  .cross-reference-evidence span {
+    color: #536071;
+    line-height: 1.6;
+  }
+  @media (max-width: 760px) {
+    .cross-reference-form,
+    .cross-reference-routes,
+    .cross-reference-evidence {
+      grid-template-columns: 1fr;
+    }
+    .cross-reference-form button {
+      width: 100%;
+    }
+  }
+</style>

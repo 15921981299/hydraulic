@@ -1,0 +1,374 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../components/BreadcrumbHero.astro";
+import DetailPageShell from "../../components/DetailPageShell.astro";
+import DetailRfqStrip from "../../components/DetailRfqStrip.astro";
+import HydraulicProductSidebar from "../../components/HydraulicProductSidebar.astro";
+import { modelRecords } from "../../data/model-records";
+import { articleSchema, breadcrumbSchema, site } from "../../data/site";
+import "../../styles/resource-page.css";
+
+export function getStaticPaths() {
+  return modelRecords.map((record) => ({
+    params: { slug: record.slug },
+    props: { record },
+  }));
+}
+
+const { record } = Astro.props;
+const pageUrl = `${site.url}/models/${record.slug}/`;
+const quoteHref = `/contact/?source=model-${record.slug}&brand=${encodeURIComponent(record.brand)}&model=${encodeURIComponent(record.model)}`;
+const isD1vw020 = record.slug === "parker-d1vw020bnjw";
+const seoTitle = isD1vw020
+  ? "D1VW020BNJW Parker Hydraulic Valve Replacement"
+  : record.slug === "cat-169-4883-259-0815-295-9426-153-9426-10r3805"
+    ? "Caterpillar Pump 169-4883 & Cross References"
+    : record.slug.startsWith("hydparts-")
+      ? `${record.model.split(" · ")[0]} Hydraulic Part`
+      : `${record.model} Replacement`;
+const h1Title = isD1vw020
+  ? "D1VW020BNJW Parker Valve Replacement"
+  : `${record.model} Replacement Review`;
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={record.description}
+  currentPath="/alternatives"
+  image={record.image}
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Model Records", url: `${site.url}/models/` },
+      { name: record.model, url: pageUrl },
+    ]),
+    articleSchema({
+      title: `${record.brand} ${record.model} identification review`,
+      description: record.description,
+      url: pageUrl,
+      image: `${site.url}${record.image}`,
+      authorName: "Hydraulic Match Editorial Review",
+      authorUrl: `${site.url}/authors/technical-review-team/`,
+      authorType: "Organization",
+    }),
+  ]}
+>
+  <BreadcrumbHero
+    title={h1Title}
+    trail={[
+      { label: "Home", href: "/" },
+      { label: "Model Records", href: "/models/" },
+      { label: record.model },
+    ]}
+    variant={record.productType.includes("pump") ? "3" : "2"}
+  />
+  <DetailPageShell intro={record.description}>
+    <img
+      slot="hero"
+      src={record.image}
+      alt={`${record.brand} ${record.model} hydraulic ${record.productType} reference family`}
+      width="1200"
+      height="900"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+
+    <div class="resource-meta">
+      <span><strong>Brand reference</strong> {record.brand}</span>
+      <span><strong>Series</strong> {record.series}</span>
+      <span><strong>Product</strong> {record.productType}</span>
+      <span
+        ><strong>Supply</strong>
+        {record.commercial?.status ?? "Quote and suffix confirmation"}</span
+      >
+    </div>
+
+    <section class="model-summary">
+      <p class="model-summary__kicker">MODEL RECORD</p>
+      <h2>{record.originalReference}</h2>
+      <dl>
+        <div><dt>Proposed route</dt><dd>{record.matchedRoute}</dd></div>
+        <div>
+          <dt>Compatibility status</dt><dd>{record.compatibilityStatus}</dd>
+        </div>
+        <div><dt>Warranty route</dt><dd>{record.warranty}</dd></div>
+      </dl>
+      <p>
+        {
+          record.recordKind === "external-catalog-reference" ||
+          record.recordKind === "owned-site-catalog"
+            ? record.evidenceNote
+            : "This page is an independent identification and sourcing record. It is not an original manufacturer product listing and does not state that an unnamed alternative is compatible."
+        }
+      </p>
+    </section>
+
+    {
+      isD1vw020 && (
+        <section class="resource-note">
+          <h2>D1VW020BNJW purchasing intent</h2>
+          <p>
+            This record supports exact-code inquiries for the Parker D1VW020BNJW
+            directional valve. The quotation confirms spool function, mounting
+            interface, pressure and flow, solenoid voltage, connector, exact
+            availability, supplier identity, lead time, compatibility status and
+            any written warranty scope.
+          </p>
+          <p>
+            Related routes: <a href="/series/d1vw/">D1VW series</a>,{" "}
+            <a href="/brands/parker/">Parker hydraulic valves</a> and{" "}
+            <a href="/products/hydraulic-valves/solenoid-directional-valves/">
+              directional control valves
+            </a>
+            .
+          </p>
+        </section>
+      )
+    }
+
+    {
+      record.commercial && (
+        <section class="model-commercial" aria-labelledby="commercial-status">
+          <div class="model-commercial__heading">
+            <p>COMMERCIAL AVAILABILITY</p>
+            <h2 id="commercial-status">Supply status for this exact record</h2>
+            <span>
+              Current quantity, final price and dispatch date are reconfirmed in
+              writing before order acceptance.
+            </span>
+          </div>
+          <dl>
+            <div>
+              <dt>Status</dt>
+              <dd>{record.commercial.status}</dd>
+            </div>
+            <div>
+              <dt>Published price</dt>
+              <dd>{record.commercial.price ?? "Quotation required"}</dd>
+            </div>
+            <div>
+              <dt>MOQ</dt>
+              <dd>{record.commercial.moq}</dd>
+            </div>
+            <div>
+              <dt>Lead time</dt>
+              <dd>{record.commercial.leadTime}</dd>
+            </div>
+            <div>
+              <dt>Condition</dt>
+              <dd>{record.commercial.condition}</dd>
+            </div>
+          </dl>
+        </section>
+      )
+    }
+
+    <DetailRfqStrip
+      quoteHref={quoteHref}
+      title={`Request a ${record.model} match`}
+      text="Send the original nameplate, quantity, destination and application information. The reply states exact inventory, supply route, differences and warranty."
+      modalContext={`${record.model} exact model inquiry`}
+      modalSource={`model-${record.slug}`}
+    />
+
+    <section>
+      <h2>Complete Model-Code Review</h2>
+      <div class="resource-table-wrap">
+        <table class="resource-table">
+          <thead>
+            <tr
+              ><th scope="col">Code group</th><th scope="col"
+                >Reference meaning</th
+              ><th scope="col">What we verify</th></tr
+            >
+          </thead>
+          <tbody>
+            {
+              record.codeGroups.map((group) => (
+                <tr>
+                  <>
+                    <td>
+                      <strong>{group.label}</strong>
+                    </td>
+                    <td>{group.value}</td>
+                    <td>{group.review}</td>
+                  </>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Required Evidence Before Candidate Approval</h2>
+      <div class="resource-checklist-grid">
+        {
+          record.requiredChecks.map((item) => (
+            <div class="resource-checklist-card">
+              <strong>{item}</strong>
+            </div>
+          ))
+        }
+      </div>
+      <p class="resource-note">
+        A public model record does not approve an unnamed replacement. Any
+        direct-fit wording must be limited to the exact offered item, recorded
+        application and interfaces supported by the quotation evidence.
+      </p>
+    </section>
+
+    <section class="model-context-grid">
+      <article class="resource-checklist-card">
+        <h2>Common Applications</h2>
+        <ul class="resource-list">
+          {record.applications.map((item) => <li>{item}</li>)}
+        </ul>
+      </article>
+      <article class="resource-checklist-card">
+        <h2>Order Approval Basis</h2>
+        <p>
+          The physical nameplate, complete model code, confirmed interfaces and
+          approved quotation control the final order.
+        </p>
+        <p>
+          Any difference affecting installation or operation is stated before
+          order acceptance.
+        </p>
+      </article>
+    </section>
+
+    <p class="resource-related">
+      <a href={record.relatedHref}>{record.series} series review</a>
+      <span aria-hidden="true">·</span>
+      <a href="/models/">All model records</a>
+      <span aria-hidden="true">·</span>
+      <a href="/matching-process/">Matching process</a>
+      <span aria-hidden="true">·</span>
+      <a href="/commercial-proof/">Inventory and credentials</a>
+    </p>
+    <HydraulicProductSidebar
+      slot="sidebar"
+      activeSlug=""
+      quoteHref={quoteHref}
+    />
+  </DetailPageShell>
+</BaseLayout>
+
+<style>
+  .model-summary {
+    padding: 26px;
+    border: 1px solid rgba(20, 110, 245, 0.18);
+    background: linear-gradient(180deg, rgba(20, 110, 245, 0.06), #fff);
+  }
+  .model-summary__kicker {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .model-summary h2 {
+    margin: 9px 0 18px;
+    font-size: 28px;
+    overflow-wrap: anywhere;
+    text-transform: none;
+  }
+  .model-summary dl {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 0 0 16px;
+  }
+  .model-summary dl > div {
+    padding: 15px;
+    background: #fff;
+    border: 1px solid var(--color-stroke);
+  }
+  .model-summary dt {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .model-summary dd {
+    margin: 6px 0 0;
+    color: #273446;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .model-summary > p:last-child {
+    margin: 0;
+    color: #536071;
+    line-height: 1.65;
+  }
+  .model-context-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .model-commercial {
+    padding: 26px;
+    border: 1px solid #cfd9e7;
+    background: #f7f9fc;
+  }
+  .model-commercial__heading p {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .model-commercial__heading h2 {
+    margin: 8px 0;
+    text-transform: none;
+  }
+  .model-commercial__heading span {
+    color: #536071;
+    line-height: 1.6;
+  }
+  .model-commercial dl {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin: 22px 0 0;
+    background: #cfd9e7;
+    border: 1px solid #cfd9e7;
+  }
+  .model-commercial dl > div {
+    min-height: 104px;
+    padding: 18px;
+    background: #fff;
+  }
+  .model-commercial dt {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .model-commercial dd {
+    margin: 7px 0 0;
+    color: var(--color-title);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .model-context-grid h2 {
+    margin-top: 0;
+  }
+  .model-context-grid a {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+  @media (max-width: 760px) {
+    .model-summary dl,
+    .model-commercial dl,
+    .model-context-grid {
+      grid-template-columns: 1fr;
+    }
+    .model-summary {
+      padding: 20px;
+    }
+  }
+</style>

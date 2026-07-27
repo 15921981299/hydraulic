@@ -1,45 +1,55 @@
 export const site = {
-  name: 'Hydraulic Match',
+  name: "Hydraulic Match",
   company: {
-    legalName: 'Hydraulic Match',
-    legalNameEn: 'Hydraulic Match',
+    legalName: "Hydraulic Match",
+    legalNameEn: "Hydraulic Match",
   },
-  url: 'https://hydraulicmatch.com',
-  email: 'sales@hydraulicmatch.com',
-  phone: '+8615921981299',
-  whatsapp: '+8615921981299',
-  tagline: 'Chinese Hydraulic Alternatives, Matched to Your Application',
+  url: "https://hydraulicmatch.com",
+  email: "sales@hydraulicmatch.com",
+  phone: "+8615921981299",
+  whatsapp: "+8615921981299",
+  tagline: "Chinese Hydraulic Alternatives, Matched to Your Application",
   logo: {
-    default: '/og.png',
-    compact: '/og.png',
-    icon: '/og.png',
-    width: 258,
-    height: 40,
+    default: "/hydraulic-match-logo.svg",
+    compact: "/hydraulic-match-logo.svg",
+    icon: "/favicon.svg",
+    width: 516,
+    height: 96,
   },
   /** Set your GA4 Measurement ID (e.g. G-XXXXXXXX) to enable analytics. Leave empty to disable. */
-  gaMeasurementId: '',
+  gaMeasurementId:
+    (typeof import.meta.env.PUBLIC_GA_MEASUREMENT_ID === "string" &&
+      import.meta.env.PUBLIC_GA_MEASUREMENT_ID.trim()) ||
+    "",
   /** Paste the content value from Google Search Console HTML verification. Leave empty to skip. */
-  googleSiteVerification: '',
+  googleSiteVerification:
+    (typeof import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION === "string" &&
+      import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION.trim()) ||
+    "",
   /** Google Tag Manager container ID (e.g. GTM-XXXXXXX). Leave empty to disable GTM. */
-  gtmContainerId: '',
+  gtmContainerId:
+    (typeof import.meta.env.PUBLIC_GTM_CONTAINER_ID === "string" &&
+      import.meta.env.PUBLIC_GTM_CONTAINER_ID.trim()) ||
+    "",
   social: {
     /** Company LinkedIn — set here or via PUBLIC_LINKEDIN_URL in .env. */
     linkedin:
-      (typeof import.meta.env.PUBLIC_LINKEDIN_URL === 'string' && import.meta.env.PUBLIC_LINKEDIN_URL.trim()) ||
-      '',
+      (typeof import.meta.env.PUBLIC_LINKEDIN_URL === "string" &&
+        import.meta.env.PUBLIC_LINKEDIN_URL.trim()) ||
+      "",
     /** Optional company video. */
-    youtube: '',
+    youtube: "",
   },
   /** Author external profiles — fill URLs when live; used in Person schema sameAs. */
   authorSocial: {
     weiChenLinkedIn:
-      (typeof import.meta.env.PUBLIC_AUTHOR_WEI_CHEN_LINKEDIN === 'string' &&
+      (typeof import.meta.env.PUBLIC_AUTHOR_WEI_CHEN_LINKEDIN === "string" &&
         import.meta.env.PUBLIC_AUTHOR_WEI_CHEN_LINKEDIN.trim()) ||
-      '',
+      "",
     lisaHuangLinkedIn:
-      (typeof import.meta.env.PUBLIC_AUTHOR_LISA_HUANG_LINKEDIN === 'string' &&
+      (typeof import.meta.env.PUBLIC_AUTHOR_LISA_HUANG_LINKEDIN === "string" &&
         import.meta.env.PUBLIC_AUTHOR_LISA_HUANG_LINKEDIN.trim()) ||
-      '',
+      "",
   },
   /**
    * Quality claims shown on site — keep wording accurate.
@@ -47,36 +57,42 @@ export const site = {
    * otherwise we state partner-facility ISO 9001 (default).
    */
   quality: {
-    iso9001Label: 'Reviewed Supplier Facilities',
+    iso9001Label: "Reviewed Supplier Facilities",
     iso9001Description:
-      'Hydraulic components are sourced through reviewed suppliers. We document model-code checks, supplier communication, packing requirements, and shipment details for qualified inquiries.',
-    iso9001CertNumber: '',
-    iso9001CertBody: '',
+      "Hydraulic components are sourced through reviewed suppliers. We document model-code checks, supplier communication, packing requirements, and shipment details for qualified inquiries.",
+    iso9001CertNumber: "",
+    iso9001CertBody: "",
     /** Shown on certifications when no direct cert number is on file. */
     iso9001VerificationNote:
-      'Available supplier documents and inspection notes can be requested for qualified hydraulic component inquiries.',
+      "Available supplier documents and inspection notes can be requested for qualified hydraulic component inquiries.",
     /** Industry workflows we support. */
     industryPrograms: [
-      { label: 'Industrial machinery', href: '/industries/industrial-machinery/' },
-      { label: 'Construction equipment', href: '/industries/construction-equipment/' },
-      { label: 'Metal forming', href: '/industries/metal-forming/' },
-      { label: 'Plastics machinery', href: '/industries/plastics-machinery/' },
+      {
+        label: "Industrial machinery",
+        href: "/industries/industrial-machinery/",
+      },
+      {
+        label: "Construction equipment",
+        href: "/industries/construction-equipment/",
+      },
+      { label: "Metal forming", href: "/industries/metal-forming/" },
+      { label: "Plastics machinery", href: "/industries/plastics-machinery/" },
     ],
     /** Optional YouTube tour (fills VideoObject on proof pages). */
     inspectionMedia: {
       /** YouTube video ID only (not full URL). Leave empty to hide embed. */
-      youtubeVideoId: '',
+      youtubeVideoId: "",
     },
   },
   defaultDescription:
-    'Model-code review, parameter comparison and export sourcing for hydraulic valves, pumps and cylinders from China.',
+    "Model-code review, parameter comparison and export sourcing for hydraulic valves, pumps and cylinders from China.",
 };
 
 const organizationLogoUrl = `${site.url}${site.logo.default}`;
 
 export const organizationSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
+  "@context": "https://schema.org",
+  "@type": "Organization",
   name: site.company.legalNameEn,
   alternateName: [site.name, site.company.legalName],
   url: site.url,
@@ -84,28 +100,28 @@ export const organizationSchema = {
   telephone: site.phone,
   description: site.defaultDescription,
   logo: organizationLogoUrl,
-  areaServed: 'Worldwide',
+  areaServed: "Worldwide",
   address: {
-    '@type': 'PostalAddress',
-    addressCountry: 'CN',
+    "@type": "PostalAddress",
+    addressCountry: "CN",
   },
   contactPoint: [
     {
-      '@type': 'ContactPoint',
-      contactType: 'sales',
+      "@type": "ContactPoint",
+      contactType: "sales",
       email: site.email,
       telephone: site.phone,
-      areaServed: 'Worldwide',
-      availableLanguage: ['English', 'Chinese'],
+      areaServed: "Worldwide",
+      availableLanguage: ["English", "Chinese"],
     },
   ],
   knowsAbout: [
-    'Hydraulic Valves',
-    'Hydraulic Pumps',
-    'Hydraulic Cylinders',
-    'Model-Code Matching',
-    'Hydraulic Component Cross-Reference',
-    'Export Sourcing',
+    "Hydraulic Valves",
+    "Hydraulic Pumps",
+    "Hydraulic Cylinders",
+    "Model-Code Matching",
+    "Hydraulic Component Cross-Reference",
+    "Export Sourcing",
   ],
   // sameAs is populated only with non-empty social URLs to avoid emitting empty links.
   ...(Object.values(site.social).some(Boolean)
@@ -121,19 +137,19 @@ export function serviceSchema(service: {
   image?: string;
 }) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
+    "@context": "https://schema.org",
+    "@type": "Service",
     serviceType: service.name,
     name: service.name,
     description: service.description,
     url: service.url,
     ...(service.image ? { image: service.image } : {}),
     provider: {
-      '@type': 'Organization',
+      "@type": "Organization",
       name: site.name,
       url: site.url,
     },
-    areaServed: 'Worldwide',
+    areaServed: "Worldwide",
   };
 }
 
@@ -151,14 +167,16 @@ export function productSchema(product: {
   category?: string;
   /** Only emit availability when it has been checked for this specific item. */
   availability?: string;
+  /** Quote-led pages can omit an Offer until item-level price/availability is confirmed. */
+  quoteOnly?: boolean;
 }) {
   const description = product.material
     ? `${product.description} Reference groups: ${product.material}.`
     : product.description;
   const sku = product.sku ?? product.model;
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
+    "@context": "https://schema.org",
+    "@type": "Product",
     name: product.name,
     description,
     url: product.url,
@@ -166,7 +184,7 @@ export function productSchema(product: {
     ...(product.brandName
       ? {
           brand: {
-            '@type': 'Brand',
+            "@type": "Brand",
             name: product.brandName,
           },
         }
@@ -175,25 +193,31 @@ export function productSchema(product: {
     ...(product.manufacturerName
       ? {
           manufacturer: {
-            '@type': 'Organization',
+            "@type": "Organization",
             name: product.manufacturerName,
           },
         }
       : {}),
-    offers: {
-      '@type': 'Offer',
-      url: product.url,
-      priceCurrency: 'USD',
-      ...(product.availability ? { availability: product.availability } : {}),
-      itemCondition: 'https://schema.org/NewCondition',
-      description:
-        'Quote based on part number, engine model, serial number, quantity, stock status, and shipping destination.',
-      seller: {
-        '@type': 'Organization',
-        name: site.name,
-        url: site.url,
-      },
-    },
+    ...(!product.quoteOnly
+      ? {
+          offers: {
+            "@type": "Offer",
+            url: product.url,
+            priceCurrency: "USD",
+            ...(product.availability
+              ? { availability: product.availability }
+              : {}),
+            itemCondition: "https://schema.org/NewCondition",
+            description:
+              "Quote based on the complete hydraulic model code, technical parameters, quantity, supplier confirmation, and shipping destination.",
+            seller: {
+              "@type": "Organization",
+              name: site.name,
+              url: site.url,
+            },
+          },
+        }
+      : {}),
     ...(sku
       ? {
           sku,
@@ -201,21 +225,19 @@ export function productSchema(product: {
           model: product.model ?? sku,
         }
       : {}),
-
-
   };
 }
 
 /** schema.org FAQPage markup for pages with Q&A sections. */
 export function faqSchema(faqs: { question: string; answer: string }[]) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
     mainEntity: faqs.map((faq) => ({
-      '@type': 'Question',
+      "@type": "Question",
       name: faq.question,
       acceptedAnswer: {
-        '@type': 'Answer',
+        "@type": "Answer",
         text: faq.answer,
       },
     })),
@@ -224,10 +246,10 @@ export function faqSchema(faqs: { question: string; answer: string }[]) {
 
 export function breadcrumbSchema(items: { name: string; url: string }[]) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
     itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
+      "@type": "ListItem",
       position: index + 1,
       name: item.name,
       item: item.url,
@@ -242,18 +264,18 @@ export function aboutPageSchema(page: {
   url: string;
 }) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'AboutPage',
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
     name: page.name,
     description: page.description,
     url: page.url,
     isPartOf: {
-      '@type': 'WebSite',
+      "@type": "WebSite",
       name: site.name,
       url: site.url,
     },
     mainEntity: {
-      '@type': 'Organization',
+      "@type": "Organization",
       name: site.company.legalNameEn,
       alternateName: [site.name, site.company.legalName],
       url: site.url,
@@ -261,16 +283,16 @@ export function aboutPageSchema(page: {
       telephone: site.phone,
       description: site.defaultDescription,
       address: {
-        '@type': 'PostalAddress',
-        addressCountry: 'CN',
+        "@type": "PostalAddress",
+        addressCountry: "CN",
       },
       contactPoint: {
-        '@type': 'ContactPoint',
-        contactType: 'sales',
+        "@type": "ContactPoint",
+        contactType: "sales",
         email: site.email,
         telephone: site.phone,
-        areaServed: 'Worldwide',
-        availableLanguage: ['English', 'Chinese'],
+        areaServed: "Worldwide",
+        availableLanguage: ["English", "Chinese"],
       },
     },
   };
@@ -283,34 +305,34 @@ export function contactPageSchema(page: {
   url: string;
 }) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'ContactPage',
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
     name: page.name,
     description: page.description,
     url: page.url,
     isPartOf: {
-      '@type': 'WebSite',
+      "@type": "WebSite",
       name: site.name,
       url: site.url,
     },
     about: {
-      '@type': 'Organization',
+      "@type": "Organization",
       name: site.company.legalNameEn,
       alternateName: [site.name, site.company.legalName],
       url: site.url,
       email: site.email,
       telephone: site.phone,
       address: {
-        '@type': 'PostalAddress',
-        addressCountry: 'CN',
+        "@type": "PostalAddress",
+        addressCountry: "CN",
       },
       contactPoint: {
-        '@type': 'ContactPoint',
-        contactType: 'sales',
+        "@type": "ContactPoint",
+        contactType: "sales",
         email: site.email,
         telephone: site.phone,
-        areaServed: 'Worldwide',
-        availableLanguage: ['English', 'Chinese'],
+        areaServed: "Worldwide",
+        availableLanguage: ["English", "Chinese"],
       },
     },
   };
@@ -323,12 +345,12 @@ export function howToSchema(howto: {
   steps: { name: string; text: string }[];
 }) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'HowTo',
+    "@context": "https://schema.org",
+    "@type": "HowTo",
     name: howto.name,
     description: howto.description,
     step: howto.steps.map((step, index) => ({
-      '@type': 'HowToStep',
+      "@type": "HowToStep",
       position: index + 1,
       name: step.name,
       text: step.text,
@@ -339,11 +361,11 @@ export function howToSchema(howto: {
 /** schema.org ItemList for collection pages. */
 export function itemListSchema(items: { name: string; url: string }[]) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
+    "@context": "https://schema.org",
+    "@type": "ItemList",
     numberOfItems: items.length,
     itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
+      "@type": "ListItem",
       position: index + 1,
       name: item.name,
       url: item.url,
@@ -361,8 +383,8 @@ export function videoSchema(video: {
   uploadDate?: string;
 }) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'VideoObject',
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
     name: video.name,
     description: video.description,
     thumbnailUrl: video.thumbnailUrl,
@@ -370,10 +392,10 @@ export function videoSchema(video: {
     ...(video.embedUrl ? { embedUrl: video.embedUrl } : {}),
     ...(video.uploadDate ? { uploadDate: video.uploadDate } : {}),
     publisher: {
-      '@type': 'Organization',
+      "@type": "Organization",
       name: site.name,
       logo: {
-        '@type': 'ImageObject',
+        "@type": "ImageObject",
         url: organizationLogoUrl,
       },
     },
@@ -394,8 +416,8 @@ export function caseStudySchema(study: {
   authorJobTitle: string;
 }) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
+    "@context": "https://schema.org",
+    "@type": "Article",
     headline: study.title,
     description: study.description,
     image: study.image,
@@ -403,26 +425,26 @@ export function caseStudySchema(study: {
     ...(study.dateModified ? { dateModified: study.dateModified } : {}),
     articleSection: study.industry,
     about: {
-      '@type': 'Thing',
+      "@type": "Thing",
       name: `${study.industry} hydraulic components`,
     },
     author: {
-      '@type': 'Person',
+      "@type": "Person",
       name: study.authorName,
       url: study.authorUrl,
       jobTitle: study.authorJobTitle,
       worksFor: {
-        '@type': 'Organization',
+        "@type": "Organization",
         name: site.name,
         url: site.url,
       },
     },
     publisher: {
-      '@type': 'Organization',
+      "@type": "Organization",
       name: site.name,
       url: site.url,
       logo: {
-        '@type': 'ImageObject',
+        "@type": "ImageObject",
         url: organizationLogoUrl,
       },
     },
@@ -435,35 +457,35 @@ export function articleSchema(article: {
   description: string;
   url: string;
   image: string;
-  datePublished: string;
+  datePublished?: string;
   dateModified?: string;
   authorName: string;
   authorUrl?: string;
   authorJobTitle?: string;
   authorSameAs?: string[];
-  authorType?: 'Person' | 'Organization';
+  authorType?: "Person" | "Organization";
 }) {
-  const authorType = article.authorType ?? 'Organization';
+  const authorType = article.authorType ?? "Organization";
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
+    "@context": "https://schema.org",
+    "@type": "Article",
     headline: article.title,
     description: article.description,
     image: article.image,
-    datePublished: article.datePublished,
+    ...(article.datePublished ? { datePublished: article.datePublished } : {}),
     ...(article.dateModified ? { dateModified: article.dateModified } : {}),
     author: {
-      '@type': authorType,
+      "@type": authorType,
       name: article.authorName,
       ...(article.authorUrl ? { url: article.authorUrl } : {}),
-      ...(authorType === 'Person' && article.authorJobTitle
+      ...(authorType === "Person" && article.authorJobTitle
         ? { jobTitle: article.authorJobTitle }
         : {}),
       ...(article.authorSameAs?.length ? { sameAs: article.authorSameAs } : {}),
-      ...(authorType === 'Person'
+      ...(authorType === "Person"
         ? {
             worksFor: {
-              '@type': 'Organization',
+              "@type": "Organization",
               name: site.name,
               url: site.url,
             },
@@ -471,10 +493,10 @@ export function articleSchema(article: {
         : {}),
     },
     publisher: {
-      '@type': 'Organization',
+      "@type": "Organization",
       name: site.name,
       logo: {
-        '@type': 'ImageObject',
+        "@type": "ImageObject",
         url: organizationLogoUrl,
       },
     },
@@ -491,13 +513,13 @@ export function personProfileSchema(person: {
   knowsAbout?: string[];
 }) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'ProfilePage',
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
     name: person.name,
     description: person.description,
     url: person.url,
     mainEntity: {
-      '@type': 'Person',
+      "@type": "Person",
       name: person.name,
       jobTitle: person.jobTitle,
       description: person.description,
@@ -505,7 +527,7 @@ export function personProfileSchema(person: {
       ...(person.sameAs?.length ? { sameAs: person.sameAs } : {}),
       ...(person.knowsAbout?.length ? { knowsAbout: person.knowsAbout } : {}),
       worksFor: {
-        '@type': 'Organization',
+        "@type": "Organization",
         name: site.name,
         url: site.url,
       },

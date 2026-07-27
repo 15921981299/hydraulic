@@ -6,29 +6,21 @@ export interface BreadcrumbItem {
 
 interface Props {
   title: string;
-  /** @deprecated Use `trail` for multi-level breadcrumbs. */
-  current?: string;
   trail?: BreadcrumbItem[];
-  variant?: '1' | '2' | '3' | '5';
+  variant?: '1' | '2' | '3' | '4' | '5';
   image?: string;
 }
 
-const { title, current, trail, variant = '1', image } = Astro.props;
+const { title, trail, variant = '1', image } = Astro.props;
 
-const items: BreadcrumbItem[] =
-  trail ??
-  (current
-    ? [
-        { label: 'Home', href: '/' },
-        { label: current },
-      ]
-    : [{ label: 'Home', href: '/' }]);
+const items: BreadcrumbItem[] = trail ?? [{ label: 'Home', href: '/' }];
 
 const bgMap: Record<string, string> = {
-  '1': '/images/mtu-engine-parts-hero.webp',
-  '2': '/images/marine-diesel-engine-parts.webp',
-  '3': '/images/mtu-4000-series-overhaul-parts.webp',
-  '5': '/images/global-engine-parts-delivery.webp',
+  '1': '/images/hydraulic/hydraulic-match-hero.webp',
+  '2': '/images/hydraulic/hydraulic-valves.webp',
+  '3': '/images/hydraulic/hydraulic-pumps.webp',
+  '4': '/images/hydraulic/hydraulic-cylinders.webp',
+  '5': '/images/hydraulic/hydraulic-inspection-packing.webp',
 };
 const bgImage = image ?? bgMap[variant];
 const bgStyle = `background-image: linear-gradient(90deg, #000, rgba(255,255,255,0) 50%), linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('${bgImage}')`;

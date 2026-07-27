@@ -1,38 +1,80 @@
 ---
-import { site } from '../data/site';
-
 interface Props {
   currentPath?: string;
 }
 
-const { currentPath = '/' } = Astro.props;
-const isActive = (path: string) => currentPath === path || (path !== '/' && currentPath.startsWith(path));
-const productsActive = isActive('/products');
-const alternativesActive = isActive('/alternatives') || isActive('/cross-reference');
-const resourcesActive = isActive('/resources');
+const { currentPath = "/" } = Astro.props;
+const isActive = (path: string) =>
+  currentPath === path || (path !== "/" && currentPath.startsWith(path));
+const productsActive = isActive("/products");
+const alternativesActive =
+  isActive("/alternatives") ||
+  isActive("/cross-reference") ||
+  isActive("/series") ||
+  isActive("/brands") ||
+  isActive("/search");
+const resourcesActive =
+  isActive("/resources") ||
+  isActive("/trust") ||
+  isActive("/commercial-proof") ||
+  isActive("/quality") ||
+  isActive("/editorial-policy") ||
+  isActive("/models") ||
+  isActive("/case-studies") ||
+  isActive("/tools") ||
+  isActive("/downloads") ||
+  isActive("/authors") ||
+  isActive("/industries");
 ---
 
 <header class="header">
   <div class="container">
     <nav class="navbar" aria-label="Main navigation">
       <div class="navbar-wrapper">
-        <a href="/" class="navbar-brand hydraulic-wordmark" aria-label="Hydraulic Match home">
-          <span class="hydraulic-wordmark__mark" aria-hidden="true">HM</span>
-          <span class="hydraulic-wordmark__text">
-            <strong>HYDRAULIC</strong>
-            <span>MATCH</span>
-          </span>
+        <a
+          href="/"
+          class="navbar-brand hydraulic-wordmark"
+          aria-label="Hydraulic Match home"
+        >
+          <img
+            src="/hydraulic-match-logo.svg"
+            alt="Hydraulic Match"
+            width="840"
+            height="112"
+          />
         </a>
 
         <div class="nav-menu-block" id="nav-menu">
           <div class="nav-mobile-brand">
-            <a href="/" class="navbar-brand hydraulic-wordmark" aria-label="Hydraulic Match home">
-              <span class="hydraulic-wordmark__mark" aria-hidden="true">HM</span>
-              <span class="hydraulic-wordmark__text"><strong>HYDRAULIC</strong><span>MATCH</span></span>
+            <a
+              href="/"
+              class="navbar-brand hydraulic-wordmark"
+              aria-label="Hydraulic Match home"
+            >
+              <img
+                src="/hydraulic-match-logo.svg"
+                alt="Hydraulic Match"
+                width="840"
+                height="112"
+              />
             </a>
-            <button class="nav-close-btn" aria-label="Close menu" id="nav-close">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            <button
+              class="nav-close-btn"
+              aria-label="Close menu"
+              id="nav-close"
+            >
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M18 6L6 18M6 6l12 12"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"></path>
               </svg>
             </button>
           </div>
@@ -40,30 +82,116 @@ const resourcesActive = isActive('/resources');
           <ul class="nav-menu">
             <li class="nav-menu-list nav-desktop-hide">
               <div class="nav-menu-link-wrapper">
-                <a href="/" class:list={['nav-menu-link', { active: isActive('/') }]}>Home</a>
+                <a
+                  href="/"
+                  class:list={["nav-menu-link", { active: isActive("/") }]}
+                  >Home</a
+                >
                 <div class="nav-link-line-shape"></div>
               </div>
             </li>
 
             <li class="nav-menu-list">
               <div class="nav-dropdown">
-                <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                  <span class:list={['nav-menu-link', { active: productsActive }]}>Products</span>
-                  <svg class="nav-dropdown-icon" width="14" height="8" viewBox="0 0 14 8" fill="none" aria-hidden="true">
-                    <path d="M13 1S8.581 7 7 7 1 1 1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <button
+                  class="nav-dropdown-toggle"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                >
+                  <span
+                    class:list={["nav-menu-link", { active: productsActive }]}
+                    >Products</span
+                  >
+                  <svg
+                    class="nav-dropdown-icon"
+                    width="14"
+                    height="8"
+                    viewBox="0 0 14 8"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M13 1S8.581 7 7 7 1 1 1 1"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
                   </svg>
                   <div class="nav-link-line-shape"></div>
                 </button>
                 <div class="nav-dropdown-list nav-dropdown-list--grid">
                   <div class="nav-dropdown-panel">
-                    <a href="/products/hydraulic-valves/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Hydraulic Valves</span></a>
-                    <a href="/products/hydraulic-valves/solenoid-directional-valves/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Directional Valves</span></a>
-                    <a href="/products/hydraulic-valves/pressure-control-valves/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Pressure Control Valves</span></a>
-                    <a href="/products/hydraulic-valves/modular-valves/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Modular Valves</span></a>
-                    <a href="/products/hydraulic-pumps/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Hydraulic Pumps</span></a>
-                    <a href="/products/hydraulic-pumps/axial-piston-pumps/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Axial Piston Pumps</span></a>
-                    <a href="/products/hydraulic-cylinders/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Hydraulic Cylinders</span></a>
-                    <a href="/products/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">All Product Categories</span></a>
+                    <a
+                      href="/products/hydraulic-valves/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Hydraulic Valves</span
+                      ></a
+                    >
+                    <a
+                      href="/products/hydraulic-valves/solenoid-directional-valves/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Directional Valves</span
+                      ></a
+                    >
+                    <a
+                      href="/products/hydraulic-valves/pressure-control-valves/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Pressure Control Valves</span
+                      ></a
+                    >
+                    <a
+                      href="/products/hydraulic-valves/modular-valves/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Modular Valves</span
+                      ></a
+                    >
+                    <a
+                      href="/products/hydraulic-pumps/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Hydraulic Pumps</span
+                      ></a
+                    >
+                    <a
+                      href="/products/hydraulic-pumps/axial-piston-pumps/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Axial Piston Pumps</span
+                      ></a
+                    >
+                    <a
+                      href="/products/hydraulic-cylinders/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Hydraulic Cylinders</span
+                      ></a
+                    >
+                    <a
+                      href="/products/hydraulic-motors/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Hydraulic Motors</span
+                      ></a
+                    >
+                    <a
+                      href="/products/hydraulic-repair-kits/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Repair Kits &amp; Service Parts</span
+                      ></a
+                    >
+                    <a href="/products/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >All Product Categories</span
+                      ></a
+                    >
                   </div>
                 </div>
               </div>
@@ -71,20 +199,119 @@ const resourcesActive = isActive('/resources');
 
             <li class="nav-menu-list">
               <div class="nav-dropdown">
-                <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                  <span class:list={['nav-menu-link', { active: alternativesActive }]}>Alternatives</span>
-                  <svg class="nav-dropdown-icon" width="14" height="8" viewBox="0 0 14 8" fill="none" aria-hidden="true">
-                    <path d="M13 1S8.581 7 7 7 1 1 1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <button
+                  class="nav-dropdown-toggle"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                >
+                  <span
+                    class:list={[
+                      "nav-menu-link",
+                      { active: alternativesActive },
+                    ]}>Alternatives</span
+                  >
+                  <svg
+                    class="nav-dropdown-icon"
+                    width="14"
+                    height="8"
+                    viewBox="0 0 14 8"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M13 1S8.581 7 7 7 1 1 1 1"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
                   </svg>
                   <div class="nav-link-line-shape"></div>
                 </button>
                 <div class="nav-dropdown-list">
                   <div class="nav-dropdown-panel">
-                    <a href="/alternatives/rexroth/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Bosch Rexroth Alternatives</span></a>
-                    <a href="/alternatives/rexroth/4we6/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">4WE6 Valve Alternatives</span></a>
-                    <a href="/alternatives/rexroth/a10vso/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">A10VSO Pump Options</span></a>
-                    <a href="/alternatives/vickers/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Eaton / Vickers Alternatives</span></a>
-                    <a href="/alternatives/parker/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Parker Alternatives</span></a>
+                    <a href="/alternatives/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >All Alternative Reviews</span
+                      ></a
+                    >
+                    <a href="/series/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Brand &amp; Series Directory</span
+                      ></a
+                    >
+                    <a href="/brands/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >All Supported Brand References</span
+                      ></a
+                    >
+                    <a href="/cross-reference/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Model Code Review</span
+                      ></a
+                    >
+                    <a href="/search/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Search Brands, Series &amp; Models</span
+                      ></a
+                    >
+                    <a
+                      href="/alternatives/rexroth/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Bosch Rexroth Alternatives</span
+                      ></a
+                    >
+                    <a
+                      href="/alternatives/rexroth/directional-valves/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Directional Valve Alternatives</span
+                      ></a
+                    >
+                    <a
+                      href="/alternatives/rexroth/modular-valves/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Modular Valve Alternatives</span
+                      ></a
+                    >
+                    <a
+                      href="/alternatives/rexroth/4we6/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >4WE6 Valve Alternatives</span
+                      ></a
+                    >
+                    <a
+                      href="/alternatives/rexroth/a10vso/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">A10VSO Pump Options</span
+                      ></a
+                    >
+                    <a
+                      href="/alternatives/vickers/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Eaton / Vickers Alternatives</span
+                      ></a
+                    >
+                    <a
+                      href="/alternatives/parker/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Parker Alternatives</span
+                      ></a
+                    >
                   </div>
                 </div>
               </div>
@@ -92,42 +319,192 @@ const resourcesActive = isActive('/resources');
 
             <li class="nav-menu-list">
               <div class="nav-menu-link-wrapper">
-                <a href="/matching-process/" class:list={['nav-menu-link', { active: isActive('/matching-process') }]}>How It Works</a>
+                <a
+                  href="/matching-process/"
+                  class:list={[
+                    "nav-menu-link",
+                    { active: isActive("/matching-process") },
+                  ]}>How It Works</a
+                >
                 <div class="nav-link-line-shape"></div>
               </div>
             </li>
 
             <li class="nav-menu-list">
               <div class="nav-dropdown">
-                <button class="nav-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
-                  <span class:list={['nav-menu-link', { active: resourcesActive }]}>Resources</span>
-                  <svg class="nav-dropdown-icon" width="14" height="8" viewBox="0 0 14 8" fill="none" aria-hidden="true">
-                    <path d="M13 1S8.581 7 7 7 1 1 1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <button
+                  class="nav-dropdown-toggle"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                >
+                  <span
+                    class:list={["nav-menu-link", { active: resourcesActive }]}
+                    >Resources</span
+                  >
+                  <svg
+                    class="nav-dropdown-icon"
+                    width="14"
+                    height="8"
+                    viewBox="0 0 14 8"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M13 1S8.581 7 7 7 1 1 1 1"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
                   </svg>
                   <div class="nav-link-line-shape"></div>
                 </button>
                 <div class="nav-dropdown-list">
                   <div class="nav-dropdown-panel">
-                    <a href="/resources/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Technical Guides</span></a>
-                    <a href="/quality/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Quality & Verification</span></a>
-                    <a href="/distributor-support/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">Distributor Support</span></a>
-                    <a href="/about/" class="nav-dropdown-link-block"><div class="nav-dropdown-shape"></div><span class="nav-dropdown-link-text">About Hydraulic Match</span></a>
+                    <a href="/resources/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Technical Guides</span
+                      ></a
+                    >
+                    <a href="/models/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Exact Model Records</span
+                      ></a
+                    >
+                    <a href="/case-studies/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Case Studies</span
+                      ></a
+                    >
+                    <a href="/tools/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Hydraulic Calculators</span
+                      ></a
+                    >
+                    <a href="/downloads/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">RFQ Templates</span
+                      ></a
+                    >
+                    <a href="/trust/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Trust &amp; Verification Center</span
+                      ></a
+                    >
+                    <a href="/commercial-proof/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Inventory &amp; Credentials</span
+                      ></a
+                    >
+                    <a href="/quality/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Quality & Verification</span
+                      ></a
+                    >
+                    <a href="/editorial-policy/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Technical Editorial Policy</span
+                      ></a
+                    >
+                    <a
+                      href="/distributor-support/"
+                      class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text">Distributor Support</span
+                      ></a
+                    >
+                    <a href="/industries/" class="nav-dropdown-link-block"
+                      ><div class="nav-dropdown-shape"></div><span
+                        class="nav-dropdown-link-text"
+                        >Industry Applications</span
+                      ></a
+                    >
                   </div>
                 </div>
+              </div>
+            </li>
+
+            <li class="nav-menu-list">
+              <div class="nav-menu-link-wrapper">
+                <a
+                  href="/about/"
+                  class:list={["nav-menu-link", { active: isActive("/about") }]}
+                  >About Us</a
+                >
+                <div class="nav-link-line-shape"></div>
+              </div>
+            </li>
+
+            <li class="nav-menu-list">
+              <div class="nav-menu-link-wrapper">
+                <a
+                  href="/contact/"
+                  class:list={[
+                    "nav-menu-link",
+                    { active: isActive("/contact") },
+                  ]}>Contact</a
+                >
+                <div class="nav-link-line-shape"></div>
               </div>
             </li>
           </ul>
         </div>
 
-        <div class="contact-number-block">
-          <a href="/request-a-quote/" class:list={['nav-menu-link', 'nav-menu-link--cta', { active: isActive('/request-a-quote') || isActive('/contact') }]}>Request a Match</a>
-          <a href={`mailto:${site.email}`} class="contact-number-block contact-number-block--compact" aria-label={`Email ${site.email}`}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4V6Z" stroke="currentColor" stroke-width="1.7"></path><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.7"></path></svg>
-          </a>
-        </div>
+        <a
+          href="/contact/"
+          class="contact-number-block contact-number-block--compact"
+          aria-label="Contact Hydraulic Match"
+        >
+          <div class="contact-icon-block">
+            <div class="contact-icon-circle-one"></div>
+            <div class="contact-icon-circle-two"></div>
+            <div class="contact-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 6h16v12H4V6Z"
+                  stroke="currentColor"
+                  stroke-width="1.7"></path>
+                <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="1.7"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <div class="contact-text-block contact-text-block--desktop">
+            <p class="contact-text">Hydraulic inquiry</p>
+            <span class="contact-text hover">Contact Us</span>
+          </div>
+        </a>
 
-        <button class="menu-button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu" id="nav-open">
-          <span></span><span></span><span></span>
+        <button
+          class="menu-button"
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="nav-menu"
+          id="menu-toggle"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 12h18M3 6h18M3 18h18"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"></path>
+          </svg>
         </button>
       </div>
     </nav>
@@ -135,10 +512,231 @@ const resourcesActive = isActive('/resources');
 </header>
 
 <style>
-  .hydraulic-wordmark { display:flex; align-items:center; gap:10px; text-decoration:none; width:max-content; }
-  .hydraulic-wordmark__mark { display:grid; place-items:center; width:42px; height:42px; border:2px solid var(--color-title); border-radius:50%; color:var(--color-primary); font:600 14px/1 var(--font-title); letter-spacing:-.04em; position:relative; }
-  .hydraulic-wordmark__mark::after { content:""; position:absolute; inset:5px; border:2px solid var(--color-primary); border-left-color:transparent; border-radius:50%; }
-  .hydraulic-wordmark__text { display:flex; flex-direction:column; font:600 16px/0.95 var(--font-title); letter-spacing:.08em; color:var(--color-title); }
-  .hydraulic-wordmark__text span { color:var(--color-primary); letter-spacing:.2em; font-size:11px; margin-top:5px; }
-  @media (max-width:479px) { .hydraulic-wordmark__text { font-size:14px; } }
+  .hydraulic-wordmark {
+    display: block;
+    width: 240px;
+    max-width: 26vw;
+    text-decoration: none;
+  }
+  .hydraulic-wordmark img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .nav-mobile-brand .hydraulic-wordmark {
+    max-width: 210px;
+  }
+  .nav-dropdown-link-block {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block::before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    flex: 0 0 20px;
+    background-color: currentColor;
+    opacity: 0.78;
+    -webkit-mask: var(--menu-icon) center / contain no-repeat;
+    mask: var(--menu-icon) center / contain no-repeat;
+    transition:
+      opacity 0.2s ease,
+      background-color 0.2s ease;
+  }
+  .nav-dropdown-link-block:hover::before,
+  .nav-dropdown-link-block:focus-visible::before {
+    opacity: 1;
+  }
+  .nav-dropdown-link-block .nav-dropdown-shape {
+    display: none;
+  }
+
+  /* Product icons */
+  .nav-dropdown-link-block[href*="hydraulic-valves"],
+  .nav-dropdown-link-block[href*="directional-valves"],
+  .nav-dropdown-link-block[href*="modular-valves"],
+  .nav-dropdown-link-block[href*="/4we6/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 8h18M6 5v6m12-6v6M3 16h18M8 13v6m8-6v6' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href*="hydraulic-pumps"],
+  .nav-dropdown-link-block[href*="a10vso"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8' fill='none' stroke='black' stroke-width='1.8'/%3E%3Cpath d='M8 15l4-7 4 7M10 13h4M4 12H2m20 0h-2' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href*="hydraulic-cylinders"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 8h11v8H3zM14 10h5v4h-5M19 12h3M6 6v12' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href*="hydraulic-motors"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='8' fill='none' stroke='black' stroke-width='1.8'/%3E%3Cpath d='M8 15V9l4 4 4-4v6M4 12H2m20 0h-2' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href*="hydraulic-repair-kits"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M14 6a4 4 0 01-5 5L4 16l4 4 5-5a4 4 0 005-5l-3 2-3-3 2-3z' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+
+  /* Alternative and catalog icons */
+  .nav-dropdown-link-block[href="/alternatives/"],
+  .nav-dropdown-link-block[href="/alternatives/rexroth/"],
+  .nav-dropdown-link-block[href="/alternatives/vickers/"],
+  .nav-dropdown-link-block[href="/alternatives/parker/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 7h12l-3-3m3 3l-3 3M19 17H7l3 3m-3-3l3-3' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/series/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 16l9 5 9-5' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/brands/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 5h10l6 7-6 7H4z' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'/%3E%3Ccircle cx='8' cy='12' r='1.5' fill='black'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/cross-reference/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 5h4a3 3 0 013 3v8a3 3 0 003 3h4M16 16l3 3-3 3M16 2l3 3-3 3M5 19h4a3 3 0 003-3V8a3 3 0 013-3h4' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/search/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5' fill='none' stroke='black' stroke-width='1.8'/%3E%3Cpath d='M15.5 15.5L21 21' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  }
+
+  /* Resource icons */
+  .nav-dropdown-link-block[href="/resources/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 5a3 3 0 013-2h5v17H7a3 3 0 00-3 2V5zm16 0a3 3 0 00-3-2h-5v17h5a3 3 0 013 2V5z' fill='none' stroke='black' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/models/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 3h10l4 4v14H5zM15 3v5h4M8 12h8M8 16h6' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/case-studies/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 8h18v12H3zM8 8V5h8v3M3 12h18M10 12v2h4v-2' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/tools/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='4' y='3' width='16' height='18' rx='2' fill='none' stroke='black' stroke-width='1.8'/%3E%3Cpath d='M7 7h10M8 12h1m3 0h1m3 0h1M8 16h1m3 0h1m3 0h1' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/downloads/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3v12m-4-4l4 4 4-4M4 19h16' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/trust/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3l8 3v5c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-3zM8 12l2.5 2.5L16 9' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/commercial-proof/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4 7l8-4 8 4-8 4-8-4zm0 0v10l8 4 8-4V7M12 11v10M7 14h2' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/quality/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='10' r='7' fill='none' stroke='black' stroke-width='1.8'/%3E%3Cpath d='M8 10l2.5 2.5L16 7M8 16l-1 5 5-3 5 3-1-5' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/editorial-policy/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 3h10l4 4v14H5zM15 3v5h4M8 12h8M8 16h5' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M16 17l2 2 3-4' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/distributor-support/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='8' cy='8' r='3' fill='none' stroke='black' stroke-width='1.8'/%3E%3Ccircle cx='17' cy='9' r='2.5' fill='none' stroke='black' stroke-width='1.8'/%3E%3Cpath d='M3 20v-2a5 5 0 0110 0v2M14 20v-1.5a4 4 0 017-2.7V20' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+  }
+  .nav-dropdown-link-block[href="/industries/"] {
+    --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 21V9l6 3V8l6 4V4h6v17H3zM7 17h2m3 0h2m3 0h2' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  }
+
+  /* Concrete product-photo thumbnails */
+  .nav-dropdown-link-block {
+    --menu-photo: url("/images/hydraulic/hydraulic-match-hero.webp");
+  }
+  .nav-dropdown-link-block::before {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border: 1px solid #d9e1ea;
+    border-radius: 5px;
+    background-color: #f5f7fa;
+    background-image: var(--menu-photo);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 0 1px 3px rgba(12, 31, 51, 0.1);
+    opacity: 1;
+    -webkit-mask: none;
+    mask: none;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .nav-dropdown-link-block:hover::before,
+  .nav-dropdown-link-block:focus-visible::before {
+    border-color: rgba(3, 105, 161, 0.55);
+    box-shadow: 0 2px 7px rgba(12, 31, 51, 0.18);
+  }
+
+  /* Products */
+  .nav-dropdown-link-block[href*="/hydraulic-valves/"] {
+    --menu-photo: url("/images/hydraulic/hydraulic-valves.webp");
+  }
+  .nav-dropdown-link-block[href*="/hydraulic-pumps/"] {
+    --menu-photo: url("/images/hydraulic/hydraulic-pumps.webp");
+  }
+  .nav-dropdown-link-block[href*="/hydraulic-cylinders/"] {
+    --menu-photo: url("/images/hydraulic/hydraulic-cylinders.webp");
+  }
+  .nav-dropdown-link-block[href*="/hydraulic-motors/"] {
+    --menu-photo: url("/images/owned-network/hydraulic-travel-motor.webp");
+  }
+  .nav-dropdown-link-block[href*="/hydraulic-repair-kits/"] {
+    --menu-photo: url("/images/owned-network/service-mcr03.jpg");
+  }
+  .nav-dropdown-link-block[href="/products/"] {
+    --menu-photo: url("/images/hydraulic/hydraulic-match-hero.webp");
+  }
+
+  /* Alternative families and exact series */
+  .nav-dropdown-link-block[href="/alternatives/"],
+  .nav-dropdown-link-block[href="/brands/"] {
+    --menu-photo: url("/images/hydraulic/hydraulic-match-hero.webp");
+  }
+  .nav-dropdown-link-block[href="/series/"],
+  .nav-dropdown-link-block[href="/alternatives/rexroth/"],
+  .nav-dropdown-link-block[href="/alternatives/rexroth/a10vso/"] {
+    --menu-photo: url("/images/owned-network/rexroth-a10v.webp");
+  }
+  .nav-dropdown-link-block[href="/cross-reference/"],
+  .nav-dropdown-link-block[href="/search/"] {
+    --menu-photo: url("/images/owned-network/rexroth-a4v.png");
+  }
+  .nav-dropdown-link-block[href="/alternatives/rexroth/directional-valves/"],
+  .nav-dropdown-link-block[href="/alternatives/rexroth/modular-valves/"],
+  .nav-dropdown-link-block[href="/alternatives/rexroth/4we6/"] {
+    --menu-photo: url("/images/hydraulic/hydraulic-valves.webp");
+  }
+  .nav-dropdown-link-block[href="/alternatives/vickers/"] {
+    --menu-photo: url("/images/owned-network/service-pvh74.jpg");
+  }
+  .nav-dropdown-link-block[href="/alternatives/parker/"] {
+    --menu-photo: url("/images/owned-network/denison-t6dc.jpg");
+  }
+
+  /* Technical, quality and application evidence */
+  .nav-dropdown-link-block[href="/resources/"],
+  .nav-dropdown-link-block[href="/case-studies/"],
+  .nav-dropdown-link-block[href="/downloads/"],
+  .nav-dropdown-link-block[href="/trust/"],
+  .nav-dropdown-link-block[href="/quality/"],
+  .nav-dropdown-link-block[href="/editorial-policy/"],
+  .nav-dropdown-link-block[href="/distributor-support/"] {
+    --menu-photo: url("/images/hydraulic/hydraulic-inspection-packing.webp");
+  }
+  .nav-dropdown-link-block[href="/models/"] {
+    --menu-photo: url("/images/owned-network/service-a10v18.jpg");
+  }
+  .nav-dropdown-link-block[href="/tools/"] {
+    --menu-photo: url("/images/hydraulic/hydraulic-pumps.webp");
+  }
+  .nav-dropdown-link-block[href="/commercial-proof/"] {
+    --menu-photo: url("/images/owned-network/cat-piston-pump.png");
+  }
+  .nav-dropdown-link-block[href="/industries/"] {
+    --menu-photo: url("/images/hydraulic/hydraulic-cylinders.webp");
+  }
+
+  @media (max-width: 479px) {
+    .hydraulic-wordmark {
+      width: 190px;
+      max-width: 58vw;
+    }
+    .nav-dropdown-link-block::before {
+      width: 34px;
+      height: 34px;
+      flex-basis: 34px;
+    }
+  }
 </style>
+
+<script>
+  import "../scripts/nav.ts";
+</script>

@@ -1,0 +1,327 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../components/BreadcrumbHero.astro";
+import DetailRfqStrip from "../../components/DetailRfqStrip.astro";
+import { brandCoverage, brandCoverageStats } from "../../data/brand-coverage";
+import { breadcrumbSchema, itemListSchema, site } from "../../data/site";
+import "../../styles/resource-page.css";
+
+const pageUrl = `${site.url}/brands/`;
+---
+
+<BaseLayout
+  title="Hydraulic Brand and Series Review Center"
+  description={`Browse ${brandCoverageStats.brands} hydraulic manufacturer reference groups and ${brandCoverageStats.seriesReferences} series-level review entries for valves, pumps, motors and service parts.`}
+  currentPath="/brands"
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Brand Review Center", url: pageUrl },
+    ]),
+    itemListSchema(
+      brandCoverage.map((brand) => ({
+        name: `${brand.name} hydraulic reference review`,
+        url: `${pageUrl}${brand.slug}/`,
+      })),
+    ),
+  ]}
+>
+  <BreadcrumbHero
+    title="Hydraulic Brand Review Center"
+    trail={[{ label: "Home", href: "/" }, { label: "Brands" }]}
+    variant="2"
+  />
+
+  <section class="brand-index">
+    <div class="container">
+      <header class="brand-index__intro">
+        <p>BRAND → PRODUCT FAMILY → SERIES → COMPLETE CODE</p>
+        <h2>Broader brand coverage, with the same evidence threshold.</h2>
+        <span>
+          Use this directory to route valve, pump, motor and repair-part
+          inquiries. A listed brand or series means we accept the reference for
+          technical review—not that we are an authorized distributor, hold every
+          configuration in stock or have already confirmed a direct replacement.
+        </span>
+      </header>
+
+      <div class="brand-index__metrics" aria-label="Coverage summary">
+        <span><strong>{brandCoverageStats.brands}</strong> brand groups</span>
+        <span
+          ><strong>{brandCoverageStats.seriesReferences}</strong> series-level entries</span
+        >
+        <span
+          ><strong>{brandCoverageStats.productFamilies}</strong> product-family labels</span
+        >
+      </div>
+
+      <div class="brand-filter">
+        <label for="brand-search">Find a brand, alias, product or series</label>
+        <input
+          id="brand-search"
+          type="search"
+          placeholder="Example: Vickers, A10VSO, servo valve, orbital motor"
+          autocomplete="off"
+          data-brand-search
+        />
+        <p aria-live="polite" data-brand-count>
+          Showing {brandCoverage.length} brand groups.
+        </p>
+      </div>
+
+      <div class="brand-grid" data-brand-grid>
+        {
+          brandCoverage.map((brand) => (
+            <article
+              class="brand-card"
+              data-brand-card
+              data-search={[
+                brand.name,
+                ...brand.aliases,
+                ...brand.productFamilies,
+                ...brand.seriesReferences.map((item) => item.series),
+              ]
+                .join(" ")
+                .toLowerCase()}
+            >
+              <div class="brand-card__body">
+                <p>{brand.productFamilies.length} PRODUCT FAMILIES</p>
+                <h2>
+                  <a href={`/brands/${brand.slug}/`}>{brand.name}</a>
+                </h2>
+                <span>{brand.summary}</span>
+                <ul>
+                  {brand.seriesReferences.slice(0, 4).map((item) => (
+                    <li>
+                      <strong>{item.series}</strong>
+                      <span>{item.productType}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a class="brand-card__link" href={`/brands/${brand.slug}/`}>
+                  Review brand coverage →
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <p class="brand-index__empty" hidden data-brand-empty>
+        No published brand group matches this term. Send the full code and
+        nameplate for manual identification.
+      </p>
+
+      <div class="resource-note">
+        Manufacturer names and model references are used for identification and
+        cross-reference only. Hydraulic Match is independent from the listed
+        manufacturers.
+      </div>
+
+      <DetailRfqStrip
+        quoteHref="/request-a-quote/?source=brand-directory"
+        title="The brand or series is not listed?"
+        text="Send the manufacturer, complete code, nameplate, quantity and application. Unlisted references can still enter the manual review process."
+        modalContext="Unlisted hydraulic brand inquiry"
+        modalSource="brand-directory"
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const search = document.querySelector<HTMLInputElement>(
+    "[data-brand-search]",
+  );
+  const cards = [
+    ...document.querySelectorAll<HTMLElement>("[data-brand-card]"),
+  ];
+  const count = document.querySelector<HTMLElement>("[data-brand-count]");
+  const empty = document.querySelector<HTMLElement>("[data-brand-empty]");
+
+  search?.addEventListener("input", () => {
+    const query = search.value.trim().toLowerCase();
+    let visible = 0;
+    cards.forEach((card) => {
+      const matches = !query || card.dataset.search?.includes(query);
+      card.hidden = !matches;
+      if (matches) visible += 1;
+    });
+    if (count)
+      count.textContent = `Showing ${visible} brand group${visible === 1 ? "" : "s"}.`;
+    if (empty) empty.hidden = visible !== 0;
+  });
+</script>
+
+<style>
+  .brand-index {
+    padding: 80px 0 100px;
+    background: #f5f7fa;
+  }
+  .brand-index__intro {
+    max-width: 930px;
+  }
+  .brand-index__intro > p,
+  .brand-card__body > p {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+  }
+  .brand-index__intro h2 {
+    margin: 10px 0 14px;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.12;
+    text-transform: none;
+  }
+  .brand-index__intro > span {
+    color: #536071;
+    font-size: 17px;
+    line-height: 1.75;
+  }
+  .brand-index__metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    margin: 28px 0;
+    padding: 18px 20px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+    color: #536071;
+  }
+  .brand-index__metrics strong {
+    color: var(--color-title);
+  }
+  .brand-filter {
+    margin-bottom: 24px;
+    padding: 22px;
+    border-left: 3px solid var(--color-primary);
+    background: #fff;
+  }
+  .brand-filter label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-title);
+    font-weight: 700;
+  }
+  .brand-filter input {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    color: var(--color-title);
+    font: inherit;
+  }
+  .brand-filter input:focus {
+    border-color: var(--color-primary);
+    outline: 2px solid rgba(20, 110, 245, 0.18);
+  }
+  .brand-filter p {
+    margin: 8px 0 0;
+    color: #64748b;
+    font-size: 13px;
+  }
+  .brand-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 30px;
+  }
+  .brand-card {
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+  .brand-card:hover {
+    border-color: rgba(20, 110, 245, 0.4);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.07);
+  }
+  .brand-card__body {
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    padding: 26px;
+  }
+  .brand-card h2 {
+    margin: 10px 0;
+    font-size: 25px;
+    text-transform: none;
+  }
+  .brand-card h2 a {
+    color: var(--color-title);
+    text-decoration: none;
+  }
+  .brand-card__body > span {
+    min-height: 75px;
+    color: #536071;
+    line-height: 1.6;
+  }
+  .brand-card ul {
+    margin: 20px 0;
+    padding: 0;
+    list-style: none;
+  }
+  .brand-card li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 0;
+    border-top: 1px solid var(--color-stroke);
+    color: #64748b;
+    font-size: 12px;
+  }
+  .brand-card li strong {
+    color: #334155;
+  }
+  .brand-card li span {
+    text-align: right;
+  }
+  .brand-card__link {
+    width: max-content;
+    margin-top: auto;
+    color: var(--color-primary);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .brand-card a:hover {
+    text-decoration: underline;
+  }
+  .brand-card a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  .brand-index__empty {
+    padding: 24px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+    color: #536071;
+  }
+  @media (max-width: 1050px) {
+    .brand-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 680px) {
+    .brand-index {
+      padding: 56px 0 72px;
+    }
+    .brand-grid {
+      grid-template-columns: 1fr;
+    }
+    .brand-card__body > span {
+      min-height: 0;
+    }
+    .brand-card li {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .brand-card li span {
+      text-align: left;
+    }
+  }
+</style>

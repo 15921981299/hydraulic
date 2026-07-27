@@ -1,0 +1,741 @@
+---
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../components/BreadcrumbHero.astro";
+import DetailRfqStrip from "../../components/DetailRfqStrip.astro";
+import { brandCoverage } from "../../data/brand-coverage";
+import {
+  breadcrumbSchema,
+  itemListSchema,
+  serviceSchema,
+  site,
+} from "../../data/site";
+import "../../styles/resource-page.css";
+
+export const getStaticPaths = (() =>
+  brandCoverage.map((brand) => ({
+    params: { slug: brand.slug },
+    props: { brand },
+  }))) satisfies GetStaticPaths;
+
+const { brand } = Astro.props;
+const pageUrl = `${site.url}/brands/${brand.slug}/`;
+const quoteHref = `/request-a-quote/?brand=${encodeURIComponent(brand.name)}&source=brand-review`;
+const brandSeo: Record<
+  string,
+  {
+    title: string;
+    h1: string;
+    heading: string;
+    text: string;
+    links: { href: string; title: string; text: string }[];
+  }
+> = {
+  "bosch-rexroth": {
+    title: "Bosch Rexroth Hydraulic Pumps, Motors & Parts",
+    h1: "Bosch Rexroth Hydraulic Pumps, Motors & Parts",
+    heading: "Bosch Rexroth parts and replacement routes",
+    text: "Review Bosch Rexroth hydraulic pump, motor, valve, seal-kit and repair-part requirements by complete type code and material number.",
+    links: [
+      {
+        href: "/alternatives/rexroth/",
+        title: "Rexroth replacements",
+        text: "Pump and valve alternative coverage.",
+      },
+      {
+        href: "/products/hydraulic-pump-parts/",
+        title: "Rexroth pump parts",
+        text: "Rotating groups, seal kits and service parts.",
+      },
+      {
+        href: "/series/a10vo/",
+        title: "A10VO series",
+        text: "Exact model-code and supply records.",
+      },
+    ],
+  },
+  bucher: {
+    title: "Bucher Hydraulic Pump & Valve Sourcing",
+    h1: "Bucher Hydraulic Pumps & Valves",
+    heading: "Bucher pump and valve RFQ routing",
+    text: "Bucher hydraulic pump and valve references are reviewed by full code, displacement or function, mounting, ports and application.",
+    links: [
+      {
+        href: "/products/hydraulic-pumps/",
+        title: "Hydraulic pumps",
+        text: "Pump selection and replacement checks.",
+      },
+      {
+        href: "/products/hydraulic-valves/",
+        title: "Hydraulic valves",
+        text: "Valve function and interface checks.",
+      },
+      {
+        href: "/cross-reference/",
+        title: "Cross-reference",
+        text: "Submit a complete Bucher model code.",
+      },
+    ],
+  },
+  casappa: {
+    title: "Casappa Hydraulic Pump & Motor Sourcing",
+    h1: "Casappa Hydraulic Pumps & Motors",
+    heading: "Casappa pump and motor replacement review",
+    text: "Casappa gear pump, piston pump and hydraulic motor inquiries are routed by full model code, displacement, rotation, shaft, flange and ports.",
+    links: [
+      {
+        href: "/products/hydraulic-pumps/gear-pumps/",
+        title: "Hydraulic gear pumps",
+        text: "Gear-pump selection parameters.",
+      },
+      {
+        href: "/products/hydraulic-motors/",
+        title: "Hydraulic motors",
+        text: "Motor replacement and distributor support.",
+      },
+      {
+        href: "/cross-reference/",
+        title: "Cross-reference",
+        text: "Submit a complete Casappa model code.",
+      },
+    ],
+  },
+  poclain: {
+    title: "Poclain Hydraulic Motor & MCR Replacement",
+    h1: "Poclain Hydraulic Motors & MCR Replacements",
+    heading: "Poclain motor and service-part routes",
+    text: "Poclain hydraulic motor requirements, including MCR radial piston motors and MCR03 seal kits, are reviewed by exact code and application duty.",
+    links: [
+      {
+        href: "/series/mcr/",
+        title: "MCR replacement motors",
+        text: "MCR family compatibility and commercial review.",
+      },
+      {
+        href: "/models/poclain-mcr03-seal-kit/",
+        title: "MCR03 seal kit",
+        text: "Exact service-kit record.",
+      },
+      {
+        href: "/products/hydraulic-motors/radial-piston-motors/",
+        title: "Radial piston motors",
+        text: "High-torque motor selection.",
+      },
+    ],
+  },
+  atos: {
+    title: "Atos Hydraulic Valve Sourcing & Replacement",
+    h1: "Atos Hydraulic Valves",
+    heading: "Atos valve replacement review",
+    text: "Atos directional, proportional and pressure-control valves are reviewed by complete code, function, mounting size, electronics, pressure and flow.",
+    links: [
+      {
+        href: "/products/hydraulic-valves/",
+        title: "Hydraulic valves",
+        text: "Valve families and commercial scope.",
+      },
+      {
+        href: "/products/hydraulic-valves/proportional-servo-valves/",
+        title: "Proportional valves",
+        text: "Electronics and function review.",
+      },
+      {
+        href: "/cross-reference/",
+        title: "Cross-reference",
+        text: "Submit a complete Atos valve code.",
+      },
+    ],
+  },
+  hawe: {
+    title: "HAWE Hydraulic Valve Sourcing & Replacement",
+    h1: "HAWE Hydraulic Valves",
+    heading: "HAWE valve replacement review",
+    text: "HAWE pressure, directional and compact hydraulic valve requirements are reviewed from the full code, circuit function and installed interface.",
+    links: [
+      {
+        href: "/products/hydraulic-valves/",
+        title: "Hydraulic valves",
+        text: "Valve selection and supplier scope.",
+      },
+      {
+        href: "/products/hydraulic-valves/pressure-control-valves/",
+        title: "Pressure-control valves",
+        text: "Relief and reducing valve review.",
+      },
+      {
+        href: "/cross-reference/",
+        title: "Cross-reference",
+        text: "Submit a complete HAWE valve code.",
+      },
+    ],
+  },
+};
+const seo = brandSeo[brand.slug];
+const defaultBrandTitle = `${brand.name} Hydraulic Parts & Replacement`;
+const brandTitle =
+  defaultBrandTitle.length > 47
+    ? `${brand.name} Hydraulics`
+    : defaultBrandTitle;
+const brandDescription =
+  brand.summary.length < 90
+    ? `${brand.summary} Submit the complete model code for independent sourcing and replacement review.`
+    : brand.summary;
+const verificationRule = (productType: string, reviewFocus: string) => {
+  const normalized = `${productType} ${reviewFocus}`.toLowerCase();
+  if (normalized.includes("valve")) {
+    return {
+      failureRisk:
+        "The valve may mount but produce the wrong function, response or electrical behavior.",
+      releaseEvidence:
+        "Code breakdown, hydraulic function, interface drawing and electrical data.",
+    };
+  }
+  if (
+    normalized.includes("pump") ||
+    normalized.includes("piston") ||
+    normalized.includes("vane")
+  ) {
+    return {
+      failureRisk:
+        "Rotation, control, shaft, flange or port differences can prevent installation or damage the system.",
+      releaseEvidence:
+        "Code breakdown, displacement/control data and dimensional interface comparison.",
+    };
+  }
+  if (normalized.includes("motor") || normalized.includes("orbital")) {
+    return {
+      failureRisk:
+        "A similar motor can differ in displacement, speed, shaft load, brake or drain requirements.",
+      releaseEvidence:
+        "Duty data, displacement, mounting, shaft, ports and option comparison.",
+    };
+  }
+  return {
+    failureRisk:
+      "A shared family label does not prove that the part fits the exact parent assembly or revision.",
+    releaseEvidence:
+      "Parent-unit code, part number, dimensions and supplier confirmation for the stated application.",
+  };
+};
+---
+
+<BaseLayout
+  title={seo?.title ?? brandTitle}
+  description={brandDescription}
+  currentPath="/brands"
+  image={brand.image}
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Brands", url: `${site.url}/brands/` },
+      { name: brand.name, url: pageUrl },
+    ]),
+    serviceSchema({
+      name: `${brand.name} hydraulic model-code and sourcing review`,
+      description: brand.summary,
+      url: pageUrl,
+      image: `${site.url}${brand.image}`,
+    }),
+    itemListSchema(
+      brand.seriesReferences.map((item) => ({
+        name: `${brand.name} ${item.series} ${item.productType}`,
+        url: `${pageUrl}#${item.series.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`,
+      })),
+    ),
+  ]}
+>
+  <BreadcrumbHero
+    title={seo?.h1 ?? `${brand.name} Hydraulic Review`}
+    trail={[
+      { label: "Home", href: "/" },
+      { label: "Brands", href: "/brands/" },
+      { label: brand.name },
+    ]}
+    variant="2"
+  />
+
+  <section class="brand-detail">
+    <div class="container">
+      <header class="brand-detail__intro">
+        <div>
+          <p>INDEPENDENT MODEL-CODE AND SOURCING REVIEW</p>
+          <h2>{brand.name} references accepted for structured RFQ review.</h2>
+          <span>{brand.positioning}</span>
+        </div>
+        <aside>
+          <strong>Relationship statement</strong>
+          <p>
+            Hydraulic Match is not affiliated with, authorized by or endorsed by {
+              brand.name
+            }. Names and codes are used only to identify the customer’s
+            installed component.
+          </p>
+        </aside>
+      </header>
+
+      <div class="brand-detail__route">
+        <div>
+          <span>Published coverage</span>
+          <strong>{brand.seriesReferences.length} series-level entries</strong>
+        </div>
+        <div>
+          <span>Decision basis</span>
+          <strong>Complete code + interfaces + application</strong>
+        </div>
+        <div>
+          <span>Commercial status</span>
+          <strong>Price, stock and route confirmed per RFQ</strong>
+        </div>
+      </div>
+
+      <section class="brand-detail__section">
+        <div class="brand-detail__heading">
+          <p>PRODUCT COVERAGE</p>
+          <h2>What can enter the review process</h2>
+        </div>
+        <div class="brand-detail__chips">
+          {brand.productFamilies.map((family) => <span>{family}</span>)}
+        </div>
+      </section>
+
+      <section class="brand-detail__section">
+        <div class="brand-detail__heading">
+          <p>IDENTIFICATION HIERARCHY</p>
+          <h2>How a {brand.name} reference moves from a name to a decision</h2>
+          <span>
+            Brand recognition is only the first routing step. The review narrows
+            the inquiry from manufacturer name to product family, series,
+            complete code and finally the installed interfaces and duty.
+          </span>
+        </div>
+        <ol class="brand-detail__decision-path">
+          <li>
+            <strong>Brand and aliases</strong>
+            <span>{[brand.name, ...brand.aliases].join(", ")}</span>
+          </li>
+          <li>
+            <strong>Product family</strong>
+            <span>
+              Separate the reference into the relevant valve, pump, motor or
+              service-part group.
+            </span>
+          </li>
+          <li>
+            <strong>Complete identifier</strong>
+            <span>
+              Preserve every suffix, revision, material number and option
+              character visible on the nameplate or document.
+            </span>
+          </li>
+          <li>
+            <strong>Installed evidence</strong>
+            <span>
+              Compare interfaces, operating conditions and application before
+              any replacement statement is released.
+            </span>
+          </li>
+        </ol>
+      </section>
+
+      {
+        seo && (
+          <section class="brand-detail__section">
+            <div class="brand-detail__heading">
+              <p>PRODUCT AND REPLACEMENT ROUTES</p>
+              <h2>{seo.heading}</h2>
+              <span>{seo.text}</span>
+            </div>
+            <div class="brand-seo-routes">
+              {seo.links.map((link) => (
+                <a href={link.href}>
+                  <strong>{link.title}</strong>
+                  <span>{link.text}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      <section class="brand-detail__section">
+        <div class="brand-detail__heading">
+          <p>SERIES DIRECTORY</p>
+          <h2>Commonly submitted {brand.name} references</h2>
+          <span>
+            The table is an inquiry-routing index, not a compatibility chart.
+            Every suffix and installed interface remains subject to review.
+          </span>
+        </div>
+        <div class="resource-table-wrap">
+          <table class="resource-table">
+            <thead>
+              <tr>
+                <th scope="col">Series reference</th>
+                <th scope="col">Product type</th>
+                <th scope="col">Primary review focus</th>
+                <th scope="col">RFQ route</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                brand.seriesReferences.map((item) => (
+                  <tr
+                    id={item.series.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
+                  >
+                    <td>
+                      <strong>{item.series}</strong>
+                    </td>
+                    <td>{item.productType}</td>
+                    <td>{item.reviewFocus}</td>
+                    <td>
+                      <a
+                        href={`${quoteHref}&model=${encodeURIComponent(item.series)}`}
+                      >
+                        Send full code
+                      </a>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="brand-detail__section">
+        <div class="brand-detail__heading">
+          <p>FAILURE-MODE REVIEW</p>
+          <h2>Why the series rows need different evidence</h2>
+          <span>
+            These checks explain the decision risk behind each published
+            reference. They are review rules, not a claim that every listed
+            configuration is available.
+          </span>
+        </div>
+        <div class="resource-table-wrap">
+          <table class="resource-table">
+            <thead>
+              <tr>
+                <th scope="col">Reference</th>
+                <th scope="col">Mismatch risk</th>
+                <th scope="col">Evidence needed for release</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                brand.seriesReferences.map((item) => {
+                  const rule = verificationRule(
+                    item.productType,
+                    item.reviewFocus,
+                  );
+                  return (
+                    <tr>
+                      <td>
+                        <strong>{item.series}</strong>
+                      </td>
+                      <td>{rule.failureRisk}</td>
+                      <td>{rule.releaseEvidence}</td>
+                    </tr>
+                  );
+                })
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="brand-detail__columns">
+        <section>
+          <p>REQUIRED EVIDENCE</p>
+          <h2>Prepare before quotation</h2>
+          <ol>
+            {brand.requiredEvidence.map((item) => <li>{item}</li>)}
+          </ol>
+        </section>
+        <section>
+          <p>APPLICATION ROUTING</p>
+          <h2>Common inquiry environments</h2>
+          <ul>
+            {brand.applications.map((item) => <li>{item}</li>)}
+          </ul>
+        </section>
+      </div>
+
+      <section class="brand-detail__source">
+        <div>
+          <p>REVIEW BASIS</p>
+          <h2>
+            Use the manufacturer portfolio to identify the family—not to infer
+            an automatic replacement.
+          </h2>
+          <span>
+            The external source below provides manufacturer context for product
+            identification. Hydraulic Match's page independently organizes
+            customer-submitted references. It does not reproduce a full catalog,
+            certify current production status or establish authorization,
+            inventory or interchangeability.
+          </span>
+        </div>
+        <a href={brand.officialUrl} rel="noopener noreferrer">
+          {brand.officialLabel} →
+        </a>
+      </section>
+
+      <aside class="brand-detail__boundary">
+        <strong>Commercial evidence boundary</strong>
+        <p>
+          A published brand, product family or series means the reference can
+          enter review. Stock, condition, manufacturer identity, lead time,
+          warranty and the exact supply route exist only when stated on the
+          order-specific quotation. If the submitted evidence is incomplete, the
+          correct result is an open question—not a guessed match.
+        </p>
+      </aside>
+
+      {
+        brand.detailedHref && (
+          <div class="resource-note">
+            A deeper existing review center is available for this brand:{" "}
+            <a href={brand.detailedHref}>open detailed alternative coverage</a>.
+          </div>
+        )
+      }
+
+      <DetailRfqStrip
+        quoteHref={quoteHref}
+        title={`Submit a ${brand.name} reference for review.`}
+        text="Send the complete code, nameplate, quantity, destination and application. We separate confirmed facts, open points and conditional compatibility in the response."
+        modalContext={`${brand.name} hydraulic inquiry`}
+        modalSource={`brand-${brand.slug}`}
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .brand-detail {
+    padding: 80px 0 100px;
+    background: #fff;
+  }
+  .brand-detail__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.8fr);
+    gap: 40px;
+    align-items: start;
+  }
+  .brand-detail__intro > div > p,
+  .brand-detail__heading > p,
+  .brand-detail__columns section > p,
+  .brand-detail__source p {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+  }
+  .brand-detail__intro h2 {
+    margin: 10px 0 16px;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.12;
+    text-transform: none;
+  }
+  .brand-detail__intro > div > span,
+  .brand-detail__heading > span,
+  .brand-detail__source span {
+    color: #536071;
+    line-height: 1.75;
+  }
+  .brand-detail__intro aside {
+    padding: 24px;
+    border-top: 3px solid var(--color-primary);
+    background: #f5f7fa;
+  }
+  .brand-detail__intro aside p {
+    margin: 8px 0 0;
+    color: #536071;
+    line-height: 1.65;
+  }
+  .brand-detail__route {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 34px 0 54px;
+    border: 1px solid var(--color-stroke);
+    background: #f8fafc;
+  }
+  .brand-detail__route div {
+    padding: 20px;
+    border-right: 1px solid var(--color-stroke);
+  }
+  .brand-detail__route div:last-child {
+    border-right: 0;
+  }
+  .brand-detail__route span {
+    display: block;
+    margin-bottom: 5px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .brand-detail__route strong {
+    color: var(--color-title);
+  }
+  .brand-detail__section {
+    margin: 54px 0;
+  }
+  .brand-detail__heading {
+    max-width: 850px;
+    margin-bottom: 20px;
+  }
+  .brand-detail__heading h2,
+  .brand-detail__columns h2,
+  .brand-detail__source h2 {
+    margin: 8px 0 12px;
+    font-size: 30px;
+    text-transform: none;
+  }
+  .brand-detail__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .brand-seo-routes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .brand-seo-routes a {
+    display: grid;
+    gap: 8px;
+    padding: 20px;
+    border: 1px solid var(--color-stroke);
+    color: var(--color-title);
+    text-decoration: none;
+  }
+  .brand-seo-routes a:hover {
+    border-color: var(--color-primary);
+  }
+  .brand-seo-routes span {
+    color: #536071;
+    line-height: 1.55;
+  }
+  .brand-detail__chips span {
+    padding: 10px 13px;
+    border: 1px solid #cbd5e1;
+    background: #f8fafc;
+    color: #334155;
+    font-weight: 600;
+  }
+  .brand-detail__decision-path {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    margin: 0;
+    padding: 1px;
+    background: var(--color-stroke);
+    list-style: none;
+  }
+  .brand-detail__decision-path li {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    padding: 22px;
+    background: #fff;
+  }
+  .brand-detail__decision-path strong {
+    color: var(--color-title);
+  }
+  .brand-detail__decision-path span {
+    color: #536071;
+    line-height: 1.6;
+  }
+  .resource-table a,
+  .resource-note a {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+  .brand-detail__columns {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin: 54px 0;
+  }
+  .brand-detail__columns section {
+    padding: 28px;
+    border: 1px solid var(--color-stroke);
+    background: #f8fafc;
+  }
+  .brand-detail__columns ol,
+  .brand-detail__columns ul {
+    margin: 18px 0 0;
+    padding-left: 20px;
+    color: #536071;
+  }
+  .brand-detail__columns li {
+    margin: 10px 0;
+    line-height: 1.6;
+  }
+  .brand-detail__source {
+    display: flex;
+    justify-content: space-between;
+    gap: 32px;
+    align-items: center;
+    margin: 54px 0 28px;
+    padding: 30px;
+    border-left: 3px solid var(--color-primary);
+    background: #f5f7fa;
+  }
+  .brand-detail__source > div {
+    max-width: 760px;
+  }
+  .brand-detail__source a {
+    flex-shrink: 0;
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+  .brand-detail__boundary {
+    margin: 0 0 28px;
+    padding: 24px;
+    border: 1px solid #f1c88b;
+    background: #fff9ef;
+  }
+  .brand-detail__boundary p {
+    margin: 8px 0 0;
+    color: #536071;
+    line-height: 1.7;
+  }
+  a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  @media (max-width: 850px) {
+    .brand-detail__intro,
+    .brand-detail__columns,
+    .brand-seo-routes,
+    .brand-detail__decision-path {
+      grid-template-columns: 1fr;
+    }
+    .brand-detail__route {
+      grid-template-columns: 1fr;
+    }
+    .brand-detail__route div {
+      border-right: 0;
+      border-bottom: 1px solid var(--color-stroke);
+    }
+    .brand-detail__route div:last-child {
+      border-bottom: 0;
+    }
+    .brand-detail__source {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+  @media (max-width: 600px) {
+    .brand-detail {
+      padding: 56px 0 72px;
+    }
+    .resource-table {
+      min-width: 760px;
+    }
+  }
+</style>

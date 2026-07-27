@@ -1,28 +1,1167 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import BreadcrumbHero from '../components/BreadcrumbHero.astro';
-import { aboutPageSchema, breadcrumbSchema, site } from '../data/site';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../components/BreadcrumbHero.astro";
+import FunnelPageView from "../components/FunnelPageView.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import {
+  aboutPageSchema,
+  breadcrumbSchema,
+  howToSchema,
+  site,
+} from "../data/site";
+import {
+  credentials,
+  inventoryMetrics,
+  ownedNetworkEvidence,
+  warranty,
+} from "../data/commercial-proof";
+
+const pageUrl = `${site.url}/about/`;
+const pageTitle = "About Hydraulic Match | Hydraulic Parts Sourcing";
+const pageDescription =
+  "Learn how Hydraulic Match structures model verification, supplier review, inspection requirements and export inquiries for hydraulic distributors, repair companies and MRO buyers.";
+const phoneHref = `tel:${site.phone.replace(/\D/g, "")}`;
+const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
+
+const inquirySteps = [
+  {
+    name: "Receive the reference",
+    text: "Send the original brand, complete model code, quantity, destination and available nameplate, product or drawing files.",
+  },
+  {
+    name: "Verify the configuration",
+    text: "We compare model-code positions, interfaces and operating parameters before classifying a candidate or listing open checks.",
+  },
+  {
+    name: "Confirm the supply route",
+    text: "Stock, supplier identity, authorization evidence when relevant, lead time, inspection, warranty and shipping terms are reviewed for the specific quotation.",
+  },
+  {
+    name: "Quote with clear conditions",
+    text: "The reply separates confirmed facts, proposed supply, known differences and any buyer confirmation still required.",
+  },
+];
+
+const companyStandards = [
+  "Every quotation identifies the requested reference, proposed model, supply status, lead-time basis and open confirmation items.",
+  "Original, manufacturer-authorized and independent aftermarket routes are labelled only when the quoted product and supporting evidence justify that wording.",
+  "Compatibility language remains conditional until the complete code, relevant interfaces and recorded application have been reviewed.",
+  `Warranty is ${warranty.duration.toLowerCase()} and starts ${warranty.starts}; the accepted quotation must state duration, evidence and exclusions.`,
+  "Packing, inspection scope, destination, Incoterm and shipping route are checked before order release when applicable.",
+];
+
+const buyerScenarios = [
+  {
+    title: "Hydraulic distributors",
+    text: "Line-by-line RFQ review, neutral packing, repeat stock supply and supporting files for resale and customer approval.",
+  },
+  {
+    title: "Repair and service companies",
+    text: "Identification from old nameplates and installation photos, plus interface checks before a controlled replacement.",
+  },
+  {
+    title: "Factory MRO teams",
+    text: "Urgent replacement and obsolete-model sourcing with downtime deadline, technical risk and destination considered together.",
+  },
+  {
+    title: "Equipment manufacturers",
+    text: "Sample review, application parameters, repeatability and documentation for approved production or service supply.",
+  },
+];
+
+const differentiators = [
+  {
+    title: "Verification Before Price",
+    text: "We review the full model code, nameplate, interfaces and application before treating a component as ready to quote.",
+  },
+  {
+    title: "Visible Compatibility Conditions",
+    text: "Compatibility status, differences, adaptations and unresolved parameters are stated before order confirmation.",
+  },
+  {
+    title: "Commercial Proof With the Order",
+    text: "Relevant stock, supplier, authorization, inspection, packing and warranty evidence must be tied to the quoted supply route.",
+  },
+];
+
+const proofCards = [
+  {
+    kicker: "Published Coverage",
+    title: `${ownedNetworkEvidence.length} evidence groups`,
+    text: "Public model, series, resource and review-process records with stated limitations.",
+    href: "/commercial-proof/#network",
+    link: "Review operating capabilities",
+  },
+  {
+    kicker: "Model Research",
+    title: inventoryMetrics[0].value,
+    text: `${inventoryMetrics[0].label}; this is content coverage, not live stock.`,
+    href: "/commercial-proof/#inventory",
+    link: "Review inventory evidence",
+  },
+  {
+    kicker: "Credentials",
+    title: "Evidence status",
+    text: `${credentials.length} disclosure records explain which authorization, certification and business-identity evidence is not yet public.`,
+    href: "/commercial-proof/#credentials",
+    link: "Review authorization scope",
+  },
+  {
+    kicker: "Customer Proof",
+    title: "No invented reviews",
+    text: "Anonymous process examples are not presented as attributed customer testimonials or independent endorsements.",
+    href: "/commercial-proof/#credentials",
+    link: "Review certifications",
+  },
+  {
+    kicker: "Warranty",
+    title: warranty.duration,
+    text: `Duration, start point, claim handling and remedies must be stated in the accepted quotation.`,
+    href: "/warranty/",
+    link: "Read warranty terms",
+  },
+];
 ---
+
 <BaseLayout
-  title="About Hydraulic Match"
-  description="Hydraulic Match helps overseas distributors, repair shops and MRO teams review model codes, compare parameters and source suitable Chinese hydraulic alternatives."
+  title={pageTitle}
+  description={pageDescription}
   currentPath="/about"
-  jsonLd={[breadcrumbSchema([{ name: 'Home', url: site.url }, { name: 'About', url: `${site.url}/about/` }]), aboutPageSchema({ name: 'About Hydraulic Match', description: site.defaultDescription, url: `${site.url}/about/` })]}
+  image="/images/hydraulic/hydraulic-match-hero.webp"
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "About Us", url: pageUrl },
+    ]),
+    aboutPageSchema({
+      name: pageTitle,
+      description: pageDescription,
+      url: pageUrl,
+    }),
+    howToSchema({
+      name: "How Hydraulic Match handles a hydraulic component inquiry",
+      description:
+        "Send the component reference, complete technical verification, confirm the supply route and receive a conditional quotation.",
+      steps: inquirySteps,
+    }),
+  ]}
 >
-  <BreadcrumbHero title="About Hydraulic Match" trail={[{ label: 'Home', href: '/' }, { label: 'About' }]} variant="5" />
-  <section class="hm-about">
-    <div class="container">
-      <header><p>OUR ROLE</p><h2>Reduce the time and risk of finding a suitable Chinese hydraulic alternative.</h2><span>Hydraulic Match is built as a technical sourcing and inquiry platform—not a generic catalog of unverified parts.</span></header>
-      <div class="hm-about__grid">
-        <section><span>01</span><h2>What we do</h2><p>We organize requests around the original brand, complete model code, nameplate, drawing and application. The goal is to present a sourcing route that can be reviewed rather than a vague “equivalent” claim.</p></section>
-        <section><span>02</span><h2>Who we support</h2><p>Our primary customers are overseas hydraulic distributors, repair shops, service companies, factory MRO buyers and equipment manufacturers managing obsolete, costly or long-lead components.</p></section>
-        <section><span>03</span><h2>How we work</h2><p>Model-code review, supplier confirmation, parameter comparison, risk grading, pre-shipment verification and export support are connected in one RFQ workflow.</p></section>
-        <section><span>04</span><h2>What we do not claim</h2><p>We do not assume direct compatibility from a series name, invent technical data, imply authorization by original manufacturers or present unrelated factories and certificates as our own.</p></section>
+  <FunnelPageView stage="awareness" label="about" />
+  <BreadcrumbHero
+    title="About Hydraulic Match — Hydraulic Parts Sourcing"
+    trail={[{ label: "Home", href: "/" }, { label: "About Us" }]}
+    variant="1"
+    image="/images/hydraulic/hydraulic-match-hero.webp"
+  />
+
+  <section
+    class="about-seo-intro fade-in"
+    aria-labelledby="about-intro-heading"
+  >
+    <div class="container about-seo-intro-inner">
+      <p class="about-seo-kicker">
+        China hydraulic supply · Technical matching · Global delivery
+      </p>
+      <h2 id="about-intro-heading" class="about-seo-intro-title">
+        A practical sourcing desk for hydraulic component buyers
+      </h2>
+      <p class="about-seo-intro-text">
+        Hydraulic Match helps distributors, repair companies, MRO teams and
+        equipment manufacturers source <a href="/products/hydraulic-valves/"
+          >hydraulic valves</a
+        >,
+        <a href="/products/hydraulic-pumps/">hydraulic pumps</a>,
+        <a href="/products/hydraulic-pump-parts/">pump parts</a>,
+        <a href="/products/hydraulic-motors/">hydraulic motors</a>,
+        <a href="/products/hydraulic-repair-kits/">repair kits</a> and
+        <a href="/products/hydraulic-cylinders/">hydraulic cylinders</a> with model-code
+        verification, documented supply and export support from China.
+      </p>
+    </div>
+  </section>
+
+  <nav
+    class="about-resource-links fade-in"
+    aria-label="Related company resources"
+  >
+    <a href="/commercial-proof/">Commercial Evidence Status</a>
+    <a href="/series/">Supported Series</a>
+    <a href="/cross-reference/">Cross-Reference Review</a>
+    <a href="/quality/">Quality Control</a>
+    <a href="/warranty/">Warranty Terms</a>
+    <a href="/contact/?source=about">Contact Us</a>
+  </nav>
+
+  <section
+    id="about-mission"
+    class="mission-and-vision-section about-section"
+    aria-labelledby="about-mission-heading"
+  >
+    <div class="section-gap">
+      <div class="container">
+        <div class="mission-and-vision-wrapper">
+          <div id="about-mission-heading">
+            <SectionHeading
+              title="A Technical Supply Desk for Hydraulic Buyers"
+              subtitle="Who We Are"
+            />
+          </div>
+
+          <ul class="about-trust-meta" aria-label="Company capabilities">
+            <li>
+              <strong>Products</strong> Valves, pumps, pump parts, cylinders
+            </li>
+            <li>
+              <strong>Evidence</strong> Public model and series research records
+            </li>
+            <li>
+              <strong>Supply</strong> Supplier route documented per quotation
+            </li>
+            <li>
+              <strong>Protection</strong> Written order-specific warranty scope
+            </li>
+          </ul>
+
+          <div class="about-legal-block fade-in">
+            <p class="about-legal-kicker">
+              Brand identity &amp; public contact
+            </p>
+            <p class="about-legal-name">{site.company.legalNameEn}</p>
+            <p class="about-legal-aka">Pre-launch website brand</p>
+            <p class="about-legal-detail">
+              China-based hydraulic component sourcing, technical coordination,
+              inspection, export packing and after-sales support for business
+              buyers worldwide. The legal contracting entity, beneficiary,
+              Incoterm and order-specific conditions are stated on the formal
+              quotation and order documents.
+            </p>
+            <address class="about-nap">
+              <a href={`mailto:${site.email}`}>{site.email}</a>
+              <span aria-hidden="true">·</span>
+              <a href={phoneHref}>{site.phone}</a>
+              <span aria-hidden="true">·</span>
+              <a href={whatsappHref} rel="noopener noreferrer" target="_blank"
+                >WhatsApp</a
+              >
+              <span class="about-nap-address">
+                China-based sourcing contact · supplier, inspection and export
+                coordination
+              </span>
+            </address>
+          </div>
+
+          <div class="about-scope-grid fade-in">
+            <article class="about-scope-card">
+              <span class="about-scope-kicker">Main Focus</span>
+              <h3 class="about-scope-title">
+                <a href="/products/">Hydraulic component sourcing</a>
+              </h3>
+              <p>
+                Valves, pumps, pump parts and cylinders for industrial machinery
+                and mobile equipment.
+              </p>
+            </article>
+            <article class="about-scope-card">
+              <span class="about-scope-kicker">Core Method</span>
+              <h3 class="about-scope-title">
+                <a href="/matching-process/"
+                  >Model-code and interface verification</a
+                >
+              </h3>
+              <p>
+                Configuration, pressure, flow, displacement, mounting, ports,
+                shaft and electrical checks.
+              </p>
+            </article>
+            <article class="about-scope-card">
+              <span class="about-scope-kicker">Best Fit</span>
+              <h3 class="about-scope-title">
+                <a href="/contact/?source=about-scope">Reference-driven RFQs</a>
+              </h3>
+              <p>
+                Single urgent items, obsolete models, repeat stock orders and
+                multi-line Excel inquiries.
+              </p>
+            </article>
+          </div>
+
+          <nav class="about-jump-nav" aria-label="On this page">
+            <a href="#about-mission" class="about-jump-link">Company focus</a>
+            <a href="#about-different" class="about-jump-link">Why choose us</a>
+            <a href="#about-proof" class="about-jump-link">Commercial proof</a>
+            <a href="#about-standards" class="about-jump-link">Standards</a>
+            <a href="#about-process" class="about-jump-link">RFQ process</a>
+            <a href="#about-delivery" class="about-jump-link">Global delivery</a
+            >
+          </nav>
+
+          <div class="mission-and-vision-content">
+            <article class="mission-block fade-in">
+              <div class="mission-content-block">
+                <div class="mission-subtitle-block">
+                  <div class="mission-subtitle-text">Our Mission</div>
+                </div>
+                <div class="mission-text-block">
+                  <h3 class="mission-title">
+                    A reliable match starts with complete identification
+                  </h3>
+                  <p class="mission-summary">
+                    A hydraulic component is more than a series name. Spool
+                    function, displacement, control, rotation, shaft, flange,
+                    ports, voltage, connector and seal options can change
+                    compatibility. We organize these facts before availability
+                    and price are treated as final.
+                  </p>
+                  <a href="/matching-process/" class="mission-link-button">
+                    <span class="link-button-text"
+                      >See Our Matching Process</span
+                    >
+                    <span class="link-button-icon" aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
+              <div class="mission-image-block">
+                <img
+                  src="/images/hydraulic/hydraulic-valves.webp"
+                  alt="Hydraulic valves prepared for model-code and interface verification"
+                  class="mission-image"
+                  width="1200"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="image-overlay"></div>
+              </div>
+            </article>
+
+            <article class="vision-block fade-in">
+              <div class="vision-content-block">
+                <div class="vision-subtitle-block">
+                  <div class="vision-subtitle-text">Our Vision</div>
+                </div>
+                <div class="vision-text-block">
+                  <h3 class="vision-title">
+                    Clear technical and commercial answers for global buyers
+                  </h3>
+                  <p class="vision-summary">
+                    We connect identification, authorized or qualified supply,
+                    inventory, inspection, warranty and export delivery in one
+                    accountable inquiry workflow. Referenced original trademarks
+                    identify buyer requirements; they do not imply affiliation
+                    unless a quotation expressly supplies documented authorized
+                    goods.
+                  </p>
+                  <a
+                    href="/contact/?source=about-vision"
+                    class="vision-link-button"
+                  >
+                    <span class="link-button-text">Send Hydraulic Inquiry</span>
+                    <span class="link-button-icon" aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </div>
+              <div class="vision-image-block">
+                <img
+                  src="/images/hydraulic/hydraulic-inspection-packing.webp"
+                  alt="Hydraulic component inspection and export packing"
+                  class="vision-image"
+                  width="1200"
+                  height="900"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="image-overlay"></div>
+              </div>
+            </article>
+          </div>
+        </div>
       </div>
-      <div class="hm-about__principle"><p>CORE PRINCIPLE</p><h2>Compatibility is confirmed after reviewing the complete model code, technical parameters and application conditions.</h2><a href="/matching-process/">See our matching process →</a></div>
+    </div>
+  </section>
+
+  <section
+    id="about-different"
+    class="who-we-are-section about-section"
+    aria-labelledby="about-different-heading"
+  >
+    <div class="section-gap bottom">
+      <div class="container">
+        <div id="about-different-heading">
+          <SectionHeading
+            title="What Makes Hydraulic Match Useful"
+            subtitle="Why Choose Us"
+          />
+        </div>
+        <div class="funfact-wrapper about-differentiators-grid fade-in">
+          {
+            differentiators.map((item, index) => (
+              <article class="funfact-single-block">
+                <div class="funfact-number-block">
+                  <div class="chain-character" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </div>
+                </div>
+                <div class="funfact-text-block">
+                  <h3 class="funfact-title">{item.title}</h3>
+                  <p class="funfact-summary">{item.text}</p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="about-proof"
+    class="about-proof about-section"
+    aria-labelledby="about-proof-heading"
+  >
+    <div class="section-gap bottom">
+      <div class="container">
+        <div id="about-proof-heading">
+          <SectionHeading
+            title="Evidence Buyers Can Review"
+            subtitle="Commercial Proof"
+          />
+        </div>
+        <div class="about-proof-grid fade-in">
+          {
+            proofCards.map((item) => (
+              <article class="about-proof-card">
+                <p class="about-proof-kicker">{item.kicker}</p>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+                <a href={item.href}>{item.link} →</a>
+              </article>
+            ))
+          }
+        </div>
+        <aside class="about-testimonials fade-in">
+          <div class="about-testimonials-heading">
+            <p class="about-seo-kicker">EVIDENCE DISCLOSURE</p>
+            <h3>No attributed customer reviews are currently published</h3>
+          </div>
+          <p class="who-we-are-text">
+            The case-study pages are anonymized process records. They explain a
+            workflow but do not establish customer identity, satisfaction, sales
+            volume or an independent endorsement. Attributed feedback should be
+            added only with customer permission and a verifiable source.
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="about-standards"
+    class="who-we-are-section about-section"
+    aria-labelledby="about-standards-heading"
+  >
+    <div class="section-gap bottom">
+      <div class="container">
+        <div id="about-standards-heading">
+          <SectionHeading
+            title="Commercial Standards for Hydraulic Buyers"
+            subtitle="How We Work"
+          />
+        </div>
+        <div class="about-standards-layout fade-in">
+          <article class="about-standards-panel">
+            <h3>What a serious RFQ reply should make clear</h3>
+            <ul>
+              {companyStandards.map((item) => <li>{item}</li>)}
+            </ul>
+          </article>
+          <div class="about-buyer-scenarios">
+            {
+              buyerScenarios.map((item) => (
+                <article>
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="about-process"
+    class="who-we-are-section about-section"
+    aria-labelledby="about-process-heading"
+  >
+    <div class="section-gap bottom">
+      <div class="container">
+        <div id="about-process-heading">
+          <SectionHeading
+            title="How We Handle a Hydraulic Inquiry"
+            subtitle="RFQ Process"
+          />
+        </div>
+        <ol class="about-process-layout fade-in">
+          {
+            inquirySteps.map((step, index) => (
+              <li class="about-process-card">
+                <span class="about-process-step" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3>{step.name}</h3>
+                <p>{step.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+        <div class="about-rfq-note fade-in">
+          <div>
+            <h3>What helps us quote faster?</h3>
+            <p>
+              A complete model code, clear nameplate and product photos,
+              quantity, destination, operating parameters and required delivery
+              date reduce back-and-forth.
+            </p>
+          </div>
+          <a href="/contact/?source=about-process" class="about-inline-cta">
+            Send inquiry details →
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section
+    id="about-delivery"
+    class="who-we-are-section about-section"
+    aria-labelledby="about-delivery-heading"
+  >
+    <div class="section-gap bottom">
+      <div class="container">
+        <div id="about-delivery-heading">
+          <SectionHeading
+            title="Hydraulic Supply From China to Global Buyers"
+            subtitle="Delivery Support"
+          />
+        </div>
+        <div class="who-we-are-wrapper fade-in">
+          <div class="who-we-are-content-block">
+            <p class="who-we-are-text">
+              Hydraulic Match coordinates stock, supplier communication,
+              inspection, protective packing and export delivery from China.
+              Express, air and freight options are reviewed according to product
+              size, urgency and destination. For downtime requirements, include
+              the destination and deadline in your first
+              <a href="/contact/?source=about-delivery">hydraulic inquiry</a>.
+            </p>
+            <p class="who-we-are-text about-disclaimer">
+              Hydraulic Match is an independent sourcing service. Referenced
+              manufacturer names and model numbers are used to identify
+              compatibility requirements. Manufacturer authorization is claimed
+              only when a current document identifies the legal holder, issuer,
+              territory, product scope and validity for the quoted route.
+            </p>
+            <p class="about-factory-cta-row">
+              <a href="/contact/?source=about-delivery" class="about-inline-cta"
+                >Send an inquiry →</a
+              >
+              <a
+                href="/shipping/"
+                class="about-inline-cta about-inline-cta--secondary"
+              >
+                Shipping support
+              </a>
+              <a
+                href="/commercial-proof/"
+                class="about-inline-cta about-inline-cta--secondary"
+              >
+                Commercial proof
+              </a>
+            </p>
+          </div>
+          <div class="who-we-are-image-block about-factory-image">
+            <img
+              src="/images/hydraulic/hydraulic-inspection-packing.webp"
+              alt="Hydraulic components inspected and packed for international delivery"
+              class="who-we-are-image"
+              width="1200"
+              height="900"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>
+
 <style>
-  .hm-about{padding:90px 0 100px;background:#fff}.hm-about header{max-width:980px;margin-bottom:60px}.hm-about header>p,.hm-about__principle>p{color:var(--color-primary);font-size:12px;font-weight:600;letter-spacing:.13em}.hm-about header h2{font-size:48px;line-height:1.1;margin:14px 0 20px}.hm-about header>span{color:#596575}.hm-about__grid{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--color-stroke);border-left:1px solid var(--color-stroke)}.hm-about__grid section{min-height:300px;padding:32px;border-right:1px solid var(--color-stroke);border-bottom:1px solid var(--color-stroke)}.hm-about__grid section>span{color:var(--color-primary);font:600 12px var(--font-title)}.hm-about__grid h2{font-size:26px;margin:60px 0 14px}.hm-about__grid p{color:#536071;font-size:16px;line-height:1.7}.hm-about__principle{margin-top:36px;padding:44px;background:var(--color-title);color:#fff}.hm-about__principle h2{color:#fff;max-width:950px;font-size:34px}.hm-about__principle a{color:#75aaff;font-weight:600}@media(max-width:650px){.hm-about__grid{grid-template-columns:1fr}.hm-about header h2{font-size:34px}.hm-about{padding:65px 0}.hm-about__principle{padding:28px}.hm-about__principle h2{font-size:27px}}
+  .about-section {
+    scroll-margin-top: 100px;
+  }
+  .about-seo-intro {
+    margin-top: 4rem;
+  }
+  .about-seo-intro-inner {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 0 20px 1.15rem;
+    text-align: center;
+  }
+  .about-seo-kicker {
+    margin: 0 0 0.45rem;
+    color: var(--color-primary);
+    font-family: var(--font-title);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .about-seo-intro-title {
+    margin: 0 0 0.55rem;
+    font-size: clamp(1.4rem, 2.4vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.25;
+    text-transform: none;
+  }
+  .about-seo-intro-text {
+    max-width: 72ch;
+    margin: 0 auto;
+    color: #334155;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .about-seo-intro-text a,
+  .who-we-are-text a {
+    color: var(--color-title);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: rgba(20, 110, 245, 0.35);
+    text-underline-offset: 3px;
+  }
+  .about-seo-intro-text a:hover,
+  .who-we-are-text a:hover {
+    color: var(--color-primary);
+    text-decoration-color: var(--color-primary);
+  }
+  .about-resource-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    max-width: 980px;
+    margin: 0 auto 0.5rem;
+    padding: 0 20px;
+  }
+  .about-resource-links a,
+  .about-jump-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 8px 14px;
+    border: 1px solid rgba(20, 110, 245, 0.2);
+    border-radius: 999px;
+    background: #fff;
+    color: #1e293b;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .about-resource-links a:hover,
+  .about-jump-link:hover {
+    border-color: rgba(20, 110, 245, 0.45);
+    background: rgba(20, 110, 245, 0.07);
+    color: var(--color-primary);
+  }
+  .about-trust-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 18px;
+    padding: 0;
+    list-style: none;
+  }
+  .about-trust-meta li {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px;
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-stroke);
+    border-radius: 8px;
+    background: #fff;
+    color: #334155;
+    font-size: 13px;
+  }
+  .about-trust-meta strong {
+    color: var(--color-title);
+  }
+  .about-legal-block {
+    margin: 0 0 20px;
+    padding: 20px;
+    color: var(--color-body-text);
+    background: linear-gradient(180deg, rgba(20, 110, 245, 0.06), #fff);
+    border: 1px solid rgba(20, 110, 245, 0.16);
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+  }
+  .about-legal-kicker {
+    margin: 0 0 6px;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .about-legal-name {
+    margin: 0 0 4px;
+    color: var(--color-title);
+    font-family: var(--font-title);
+    font-size: 1.08rem;
+    font-weight: 700;
+  }
+  .about-legal-aka {
+    margin: 0 0 10px;
+    color: #64748b;
+    font-size: 13px;
+  }
+  .about-legal-detail {
+    margin: 0 0 12px;
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .about-nap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+    margin: 0;
+    padding-top: 12px;
+    border-top: 1px solid rgba(20, 110, 245, 0.12);
+    color: var(--color-title);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+  }
+  .about-nap a {
+    color: var(--color-title);
+  }
+  .about-nap a:hover {
+    color: var(--color-primary);
+  }
+  .about-nap-address {
+    flex: 1 1 100%;
+    margin-top: 4px;
+    color: #475569;
+    font-weight: 500;
+  }
+  .about-scope-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 0 0 22px;
+  }
+  .about-scope-card {
+    min-height: 165px;
+    padding: 20px;
+    background: #fff;
+    border: 1px solid var(--color-stroke);
+    border-radius: 10px;
+    transition: 0.2s;
+  }
+  .about-scope-card:hover {
+    border-color: rgba(20, 110, 245, 0.3);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+  }
+  .about-scope-kicker {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .about-scope-title {
+    margin: 0 0 8px;
+    color: var(--color-title);
+    font-size: 18px;
+    line-height: 1.25;
+    text-transform: none;
+  }
+  .about-scope-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .about-scope-title a:hover {
+    color: var(--color-primary);
+  }
+  .about-scope-card p {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .about-jump-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .mission-title,
+  .vision-title {
+    font-size: clamp(1.5rem, 2.4vw, 2.2rem);
+    text-transform: none;
+  }
+  .mission-summary,
+  .vision-summary {
+    line-height: 1.7;
+  }
+  .link-button-icon {
+    font-size: 22px;
+  }
+  .about-differentiators-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0;
+    background: #fff;
+    border: 1px solid var(--color-stroke);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  }
+  .about-differentiators-grid .funfact-single-block {
+    max-width: none;
+    padding: 36px 28px;
+    border-right: 1px solid var(--color-stroke);
+  }
+  .about-differentiators-grid .funfact-single-block:last-child {
+    border-right: 0;
+  }
+  .about-differentiators-grid .funfact-title {
+    text-transform: none;
+  }
+  .about-proof {
+    background: #f5f7fa;
+  }
+  .about-proof-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+  }
+  .about-proof-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 260px;
+    padding: 24px;
+    border: 1px solid var(--color-stroke);
+    border-radius: 10px;
+    background: #fff;
+    transition: 0.2s;
+  }
+  .about-proof-card:hover {
+    border-color: rgba(20, 110, 245, 0.32);
+    box-shadow: 0 9px 22px rgba(15, 23, 42, 0.06);
+  }
+  .about-proof-kicker {
+    margin: 0 0 38px;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .about-proof-card h3 {
+    margin: 0 0 12px;
+    font-size: 24px;
+    text-transform: none;
+  }
+  .about-proof-card > p:not(.about-proof-kicker) {
+    margin: 0 0 18px;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .about-proof-card a {
+    width: max-content;
+    max-width: 100%;
+    margin-top: auto;
+    color: var(--color-primary);
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .about-testimonials {
+    margin-top: 20px;
+    padding: 28px;
+    border: 1px solid rgba(20, 110, 245, 0.14);
+    border-radius: 10px;
+    background: #fff;
+  }
+  .about-testimonials-heading {
+    max-width: 600px;
+    margin-bottom: 22px;
+  }
+  .about-testimonials-heading h3 {
+    margin: 0;
+    font-size: 24px;
+    text-transform: none;
+  }
+  .about-testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .about-testimonials figure {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 20px;
+    border-left: 3px solid var(--color-primary);
+    background: #f7f9fc;
+  }
+  .about-testimonials blockquote {
+    margin: 0 0 20px;
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .about-testimonials figcaption {
+    display: grid;
+    gap: 3px;
+    margin-top: auto;
+  }
+  .about-testimonials figcaption strong {
+    color: var(--color-title);
+    font-size: 14px;
+  }
+  .about-testimonials figcaption span,
+  .about-testimonials figcaption small {
+    color: #64748b;
+    font-size: 12px;
+  }
+  .about-standards-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 18px;
+  }
+  .about-standards-panel,
+  .about-buyer-scenarios article {
+    border: 1px solid rgba(20, 110, 245, 0.14);
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.04);
+  }
+  .about-standards-panel {
+    padding: 26px;
+  }
+  .about-standards-panel h3,
+  .about-buyer-scenarios h3 {
+    margin: 0 0 12px;
+    font-size: 18px;
+    text-transform: none;
+  }
+  .about-standards-panel ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding-left: 20px;
+  }
+  .about-standards-panel li,
+  .about-buyer-scenarios p {
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .about-buyer-scenarios {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .about-buyer-scenarios article {
+    padding: 18px;
+  }
+  .about-buyer-scenarios p {
+    margin: 0;
+  }
+  .about-process-layout {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .about-process-card {
+    min-height: 240px;
+    padding: 26px;
+    background: #fff;
+    border: 1px solid var(--color-stroke);
+    border-radius: 10px;
+    transition: 0.2s;
+  }
+  .about-process-card:hover {
+    border-color: rgba(20, 110, 245, 0.28);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+  }
+  .about-process-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 22px;
+    border-radius: 50%;
+    background: var(--color-title);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+  }
+  .about-process-card h3 {
+    margin-bottom: 10px;
+    font-size: 19px;
+    text-transform: none;
+  }
+  .about-process-card p {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .about-rfq-note {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    margin-top: 18px;
+    padding: 22px 24px;
+    background: rgba(20, 110, 245, 0.07);
+    border: 1px solid rgba(20, 110, 245, 0.16);
+    border-radius: 10px;
+  }
+  .about-rfq-note h3 {
+    margin-bottom: 6px;
+    font-size: 20px;
+    text-transform: none;
+  }
+  .about-rfq-note p {
+    margin: 0;
+    color: #475569;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .about-factory-image {
+    position: relative;
+  }
+  .about-factory-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    margin-top: 16px;
+  }
+  .about-inline-cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--color-primary);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .about-inline-cta:hover {
+    text-decoration: underline;
+  }
+  .about-inline-cta--secondary {
+    color: var(--color-title);
+  }
+  .about-disclaimer {
+    margin-top: 14px;
+    padding: 12px 14px;
+    background: var(--color-background);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 6px;
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+  @media (max-width: 1100px) {
+    .about-proof-grid,
+    .about-process-layout {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 991px) {
+    .about-scope-grid,
+    .about-standards-layout {
+      grid-template-columns: 1fr;
+    }
+    .about-differentiators-grid {
+      grid-template-columns: 1fr;
+    }
+    .about-differentiators-grid .funfact-single-block {
+      border-right: 0;
+      border-bottom: 1px solid var(--color-stroke);
+    }
+    .about-testimonials-grid {
+      grid-template-columns: 1fr;
+    }
+    .about-rfq-note {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+  @media (max-width: 767px) {
+    .about-seo-intro-inner {
+      text-align: left;
+    }
+    .about-resource-links {
+      justify-content: flex-start;
+    }
+    .about-resource-links a,
+    .about-jump-link {
+      min-height: 44px;
+    }
+    .about-jump-nav {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+    }
+    .about-jump-link {
+      flex: none;
+    }
+    .about-proof-grid,
+    .about-process-layout,
+    .about-buyer-scenarios {
+      grid-template-columns: 1fr;
+    }
+    .about-testimonials {
+      padding: 20px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .about-resource-links a,
+    .about-jump-link,
+    .about-scope-card,
+    .about-proof-card,
+    .about-process-card {
+      transition: none;
+    }
+    .about-scope-card:hover,
+    .about-proof-card:hover,
+    .about-process-card:hover {
+      box-shadow: none;
+    }
+  }
 </style>

@@ -95,6 +95,22 @@
   color: var(--color-title);
 }
 
+.resource-meta a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.resource-meta a:hover {
+  text-decoration: underline;
+}
+
+.resource-meta a:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
 .resource-checklist-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

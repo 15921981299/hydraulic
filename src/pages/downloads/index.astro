@@ -1,0 +1,404 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../components/BreadcrumbHero.astro";
+import { breadcrumbSchema, site } from "../../data/site";
+---
+
+<BaseLayout
+  title="Hydraulic RFQ Templates & Checklists"
+  description="Download a structured hydraulic RFQ workbook and use printable model-code and pre-shipment checklists for component sourcing."
+  currentPath="/resources"
+  jsonLd={breadcrumbSchema([
+    { name: "Home", url: site.url },
+    { name: "Downloads", url: `${site.url}/downloads/` },
+  ])}
+>
+  <BreadcrumbHero
+    title="Hydraulic RFQ Templates & Checklists"
+    trail={[{ label: "Home", href: "/" }, { label: "Downloads" }]}
+    variant="5"
+  />
+  <section class="download-page">
+    <div class="container">
+      <header class="download-page__intro">
+        <p>PROCUREMENT RESOURCES</p>
+        <h2>
+          Collect the right technical and commercial information before
+          requesting a quote.
+        </h2>
+        <span>
+          The workbook and printable checklists follow the same fields used by
+          Hydraulic Match for model identification, compatibility review and
+          shipment release.
+        </span>
+      </header>
+
+      <div class="download-grid">
+        <article class="download-card download-card--primary">
+          <p>EDITABLE EXCEL WORKBOOK</p>
+          <h2>Hydraulic Match RFQ &amp; Review Template</h2>
+          <span>
+            Includes an RFQ item list, model-code review sheet, pre-shipment
+            checklist and instructions for distributors, repair companies and
+            MRO buyers.
+          </span>
+          <ul>
+            <li>Line-by-line brand, model, quantity and destination fields</li>
+            <li>Valve, pump, cylinder and pump-part technical fields</li>
+            <li>Compatibility status and open-confirmation columns</li>
+            <li>Inspection, packing and document release checklist</li>
+          </ul>
+          <a href="/downloads/Hydraulic-Match-RFQ-Template.xlsx" download>
+            Download Excel workbook
+          </a>
+        </article>
+
+        <article class="download-card">
+          <p>PRINTABLE WEB CHECKLIST</p>
+          <h2>Model Identification Checklist</h2>
+          <span>
+            A fast checklist for nameplate, model code, shaft, flange, ports,
+            connector and application evidence.
+          </span>
+          <a href="/downloads/model-identification-checklist/"
+            >Open printable checklist →</a
+          >
+        </article>
+
+        <article class="download-card">
+          <p>PRINTABLE WEB CHECKLIST</p>
+          <h2>Pre-Shipment Inspection Checklist</h2>
+          <span>
+            Record model, quantity, markings, visible condition, interfaces,
+            packing and agreed documents before shipment release.
+          </span>
+          <a href="/downloads/pre-shipment-checklist/"
+            >Open printable checklist →</a
+          >
+        </article>
+
+        <article class="download-card">
+          <p>INTERACTIVE TOOLS</p>
+          <h2>Hydraulic Engineering Calculators</h2>
+          <span>
+            Estimate pump flow, shaft power, cylinder force and common unit
+            conversions for RFQ preparation.
+          </span>
+          <a href="/tools/">Open hydraulic calculators →</a>
+        </article>
+      </div>
+
+      <aside class="download-note">
+        <strong>Use with order-specific evidence</strong>
+        <p>
+          Templates organize information; they do not confirm compatibility.
+          Final acceptance must use the actual nameplate, drawings, manufacturer
+          data, quotation and agreed inspection scope.
+        </p>
+      </aside>
+
+      <section class="download-guide">
+        <header>
+          <p>CHOOSE THE RIGHT RECORD</p>
+          <h2>Each file supports a different procurement decision.</h2>
+          <span>
+            Using one checklist for every stage can hide open technical points.
+            Keep identification, quotation review and shipment release as
+            separate records.
+          </span>
+        </header>
+        <div class="download-guide__table">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Resource</th>
+                <th scope="col">Use it when</th>
+                <th scope="col">What it records</th>
+                <th scope="col">What it cannot prove</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>RFQ workbook</strong></td>
+                <td>Preparing one item or a mixed purchasing list</td>
+                <td
+                  >Codes, quantities, technical fields and open confirmations</td
+                >
+                <td>Supplier availability or final compatibility</td>
+              </tr>
+              <tr>
+                <td><strong>Identification checklist</strong></td>
+                <td>The code is incomplete, damaged or ambiguous</td>
+                <td>Nameplate, interfaces, photos and application evidence</td>
+                <td>The identity of an unmarked internal part by itself</td>
+              </tr>
+              <tr>
+                <td><strong>Pre-shipment checklist</strong></td>
+                <td>An offered item is ready for inspection</td>
+                <td
+                  >Visible model, quantity, condition, interfaces and packing</td
+                >
+                <td>Unperformed functional or material tests</td>
+              </tr>
+              <tr>
+                <td><strong>Engineering calculators</strong></td>
+                <td>Checking units or estimating a requirement</td>
+                <td>Input assumptions and calculated estimates</td>
+                <td>Product selection, safety factor or system suitability</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="download-workflow">
+        <p>RECOMMENDED RECORD FLOW</p>
+        <h2>Preserve the evidence from inquiry to release.</h2>
+        <ol>
+          <li>
+            <strong>Capture</strong>
+            <span
+              >Record the original code exactly and attach uncropped photos.</span
+            >
+          </li>
+          <li>
+            <strong>Clarify</strong>
+            <span
+              >Mark unknown fields instead of filling them with assumptions.</span
+            >
+          </li>
+          <li>
+            <strong>Compare</strong>
+            <span
+              >Keep the offered code, known differences and supplier evidence
+              together.</span
+            >
+          </li>
+          <li>
+            <strong>Release</strong>
+            <span
+              >Inspect only against the written quotation and agreed checklist
+              revision.</span
+            >
+          </li>
+        </ol>
+        <p class="download-workflow__boundary">
+          These resources are maintained by Hydraulic Match as procurement aids.
+          They are not manufacturer documents, certificates, test reports or
+          engineering approval. Save the completed file with the relevant RFQ or
+          order number so later decisions can be traced to the evidence
+          reviewed.
+        </p>
+      </section>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .download-page {
+    padding: 80px 0 100px;
+    background: #f5f7fa;
+  }
+  .download-page__intro {
+    max-width: 930px;
+    margin-bottom: 32px;
+  }
+  .download-page__intro > p,
+  .download-card > p {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+  }
+  .download-page__intro h2 {
+    margin: 10px 0 14px;
+    font-size: clamp(30px, 4vw, 46px);
+    line-height: 1.12;
+    text-transform: none;
+  }
+  .download-page__intro span {
+    color: #536071;
+    line-height: 1.75;
+  }
+  .download-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  .download-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 310px;
+    padding: 28px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+  }
+  .download-card:hover {
+    border-color: rgba(20, 110, 245, 0.35);
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  }
+  .download-card--primary {
+    grid-row: span 2;
+    min-height: 638px;
+    background: var(--color-title);
+    color: #fff;
+  }
+  .download-card h2 {
+    margin: 32px 0 12px;
+    font-size: 26px;
+    text-transform: none;
+  }
+  .download-card--primary h2 {
+    margin-top: 70px;
+    color: #fff;
+    font-size: 36px;
+  }
+  .download-card > span {
+    color: #536071;
+    line-height: 1.7;
+  }
+  .download-card--primary > span {
+    color: #c4ccd7;
+  }
+  .download-card ul {
+    display: grid;
+    gap: 10px;
+    margin: 28px 0;
+    padding-left: 20px;
+    color: #d8dee7;
+    line-height: 1.6;
+  }
+  .download-card a {
+    width: max-content;
+    max-width: 100%;
+    margin-top: auto;
+    color: var(--color-primary);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .download-card--primary a {
+    padding: 13px 18px;
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .download-card a:hover {
+    text-decoration: underline;
+  }
+  .download-note {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    margin-top: 20px;
+    padding: 22px;
+    border-left: 3px solid var(--color-primary);
+    background: #fff;
+  }
+  .download-note p {
+    margin: 0;
+    color: #536071;
+    line-height: 1.65;
+  }
+  .download-page a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  .download-guide,
+  .download-workflow {
+    margin-top: 42px;
+  }
+  .download-guide header {
+    max-width: 850px;
+    margin-bottom: 20px;
+  }
+  .download-guide header > p,
+  .download-workflow > p:first-child {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+  }
+  .download-guide h2,
+  .download-workflow h2 {
+    margin: 8px 0 12px;
+    font-size: 30px;
+    text-transform: none;
+  }
+  .download-guide header span {
+    color: #536071;
+    line-height: 1.7;
+  }
+  .download-guide__table {
+    overflow-x: auto;
+  }
+  .download-guide table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    background: #fff;
+  }
+  .download-guide th,
+  .download-guide td {
+    padding: 15px;
+    border: 1px solid var(--color-stroke);
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  .download-guide th {
+    color: var(--color-title);
+    background: #eef2f7;
+  }
+  .download-guide td {
+    color: #536071;
+  }
+  .download-workflow ol {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    margin: 20px 0;
+    padding: 1px;
+    background: var(--color-stroke);
+    list-style: none;
+  }
+  .download-workflow li {
+    display: grid;
+    gap: 8px;
+    padding: 20px;
+    background: #fff;
+  }
+  .download-workflow li span,
+  .download-workflow__boundary {
+    color: #536071;
+    line-height: 1.65;
+  }
+  .download-workflow__boundary {
+    margin: 0;
+    padding: 20px;
+    border-left: 3px solid var(--color-primary);
+    background: #fff;
+  }
+  @media (max-width: 760px) {
+    .download-page {
+      padding: 60px 0 76px;
+    }
+    .download-grid {
+      grid-template-columns: 1fr;
+    }
+    .download-card--primary {
+      grid-row: auto;
+      min-height: 500px;
+    }
+    .download-note {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    .download-workflow ol {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

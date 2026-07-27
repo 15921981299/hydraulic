@@ -1,1 +1,2 @@
-/products/mtu-2000-series/ /products/mtu-2000-series-parts/ 301
+# Add only verified legacy redirects. Avoid redirecting obsolete diesel URLs to unrelated hydraulic pages.
+/privacy-policy/ /privacy/ 301

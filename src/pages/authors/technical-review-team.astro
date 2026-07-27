@@ -1,0 +1,303 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../components/BreadcrumbHero.astro";
+import DetailRfqStrip from "../../components/DetailRfqStrip.astro";
+import { breadcrumbSchema, site } from "../../data/site";
+
+const pageUrl = `${site.url}/authors/technical-review-team/`;
+const teamSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfilePage",
+  name: "Hydraulic Match Editorial Review Process",
+  description:
+    "Editorial and technical review scope for Hydraulic Match model-code, compatibility, application and sourcing content.",
+  url: pageUrl,
+  mainEntity: {
+    "@type": "Organization",
+    name: "Hydraulic Match Editorial Review",
+    parentOrganization: {
+      "@type": "Organization",
+      name: site.name,
+      url: site.url,
+    },
+    knowsAbout: [
+      "Hydraulic valve model codes",
+      "Hydraulic pump identification",
+      "Hydraulic component cross-reference",
+      "Application compatibility review",
+      "Pre-shipment verification",
+    ],
+  },
+};
+---
+
+<BaseLayout
+  title="Hydraulic Match Editorial Review Process"
+  description="Review the organizational publishing method behind Hydraulic Match guides and model records, including its scope, evidence boundaries and correction standards."
+  currentPath="/resources"
+  image="/images/hydraulic/hydraulic-inspection-packing.webp"
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Editorial Review Process", url: pageUrl },
+    ]),
+    teamSchema,
+  ]}
+>
+  <BreadcrumbHero
+    title="Hydraulic Match Editorial Review Process"
+    trail={[
+      { label: "Home", href: "/" },
+      { label: "Editorial Review Process" },
+    ]}
+    variant="5"
+  />
+  <section class="review-team">
+    <div class="container">
+      <header class="review-team__intro">
+        <p>HOW CONTENT IS REVIEWED</p>
+        <h2>
+          A defined review function for model, application and sourcing
+          information.
+        </h2>
+        <span>
+          Hydraulic Match uses an organizational review label rather than
+          inventing an individual author. This page describes a publishing
+          process; it does not claim named engineers, professional licenses,
+          academic qualifications or third-party accreditation that have not
+          been publicly documented.
+        </span>
+      </header>
+
+      <div class="review-team__scope">
+        <article>
+          <span>01</span>
+          <h2>Identification review</h2>
+          <p>
+            Complete codes, order numbers, nameplates, product families and
+            configuration suffixes.
+          </p>
+        </article>
+        <article>
+          <span>02</span>
+          <h2>Interface review</h2>
+          <p>
+            Hydraulic function, pressure, flow, displacement, mounting, shaft,
+            ports and electrical details.
+          </p>
+        </article>
+        <article>
+          <span>03</span>
+          <h2>Evidence review</h2>
+          <p>
+            Manufacturer documents, supplier drawings, inspection records and
+            customer files linked to the claim.
+          </p>
+        </article>
+        <article>
+          <span>04</span>
+          <h2>Commercial review</h2>
+          <p>
+            Supply route, stock confirmation, authorization scope, warranty,
+            packing and open order conditions.
+          </p>
+        </article>
+      </div>
+
+      <section class="review-team__method">
+        <div>
+          <p>REVIEW METHOD</p>
+          <h2>How a technical page reaches publication.</h2>
+        </div>
+        <ol>
+          <li>
+            <strong>Reference collection</strong><span
+              >Collect the exact model and relevant technical fields.</span
+            >
+          </li>
+          <li>
+            <strong>Claim separation</strong><span
+              >Separate manufacturer facts, supplier claims, Hydraulic Match
+              analysis and customer-provided facts.</span
+            >
+          </li>
+          <li>
+            <strong>Risk language</strong><span
+              >State what is confirmed, conditional, different or still unknown.</span
+            >
+          </li>
+          <li>
+            <strong>Page review</strong><span
+              >Check page relationships and the technical scope of meaningful
+              updates.</span
+            >
+          </li>
+        </ol>
+      </section>
+
+      <section class="review-team__limits">
+        <h2>Scope and accountability</h2>
+        <div>
+          <p>
+            No individual reviewer biography or credential is currently
+            published. Readers should evaluate each technical statement from its
+            cited source, stated assumptions and limitations—not from the
+            organizational byline alone.
+          </p>
+          <p>
+            A published article or model page supports research and RFQ
+            preparation. It does not approve a component for every machine.
+            Final compatibility belongs to the individual quotation and the
+            evidence attached to that order.
+          </p>
+          <p>
+            Corrections are documented through the <a href="/editorial-policy/"
+              >technical editorial policy</a
+            >. Product-specific questions can be sent through the <a
+              href="/contact/">contact page</a
+            >.
+          </p>
+        </div>
+      </section>
+
+      <DetailRfqStrip
+        quoteHref="/contact/?source=technical-review-team"
+        title="Ask for a documented model review."
+        text="Send the original code and evidence. The response should identify the source basis, open points and required approval."
+        modalContext="Technical review team inquiry"
+        modalSource="technical-review-team"
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .review-team {
+    padding: 84px 0 100px;
+    background: #fff;
+  }
+  .review-team__intro {
+    max-width: 930px;
+    margin-bottom: 38px;
+  }
+  .review-team__intro > p,
+  .review-team__method > div > p {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+  .review-team__intro h2 {
+    margin: 11px 0 15px;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.1;
+    text-transform: none;
+  }
+  .review-team__intro span {
+    color: #536071;
+    line-height: 1.75;
+  }
+  .review-team__scope {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid var(--color-stroke);
+    border-left: 1px solid var(--color-stroke);
+  }
+  .review-team__scope article {
+    min-height: 260px;
+    padding: 30px;
+    border-right: 1px solid var(--color-stroke);
+    border-bottom: 1px solid var(--color-stroke);
+  }
+  .review-team__scope article > span {
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .review-team__scope h2 {
+    margin: 52px 0 12px;
+    font-size: 24px;
+    text-transform: none;
+  }
+  .review-team__scope p {
+    margin: 0;
+    color: #536071;
+    line-height: 1.7;
+  }
+  .review-team__method {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 30px;
+    margin-top: 36px;
+    padding: 34px;
+    background: #f5f7fa;
+  }
+  .review-team__method h2 {
+    margin: 10px 0 0;
+    font-size: 30px;
+    text-transform: none;
+  }
+  .review-team__method ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .review-team__method li {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 18px;
+    padding: 15px 0;
+    border-bottom: 1px solid #dfe4eb;
+  }
+  .review-team__method li:last-child {
+    border: 0;
+  }
+  .review-team__method span {
+    color: #536071;
+    line-height: 1.6;
+  }
+  .review-team__limits {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 30px;
+    margin: 36px 0;
+    padding: 30px;
+    border: 1px solid var(--color-stroke);
+  }
+  .review-team__limits h2 {
+    margin: 0;
+    font-size: 26px;
+    text-transform: none;
+  }
+  .review-team__limits p {
+    margin: 0 0 12px;
+    color: #536071;
+    line-height: 1.7;
+  }
+  .review-team__limits a {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+  .review-team a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  @media (max-width: 760px) {
+    .review-team {
+      padding: 62px 0 76px;
+    }
+    .review-team__scope,
+    .review-team__method,
+    .review-team__limits {
+      grid-template-columns: 1fr;
+    }
+    .review-team__method li {
+      grid-template-columns: 1fr;
+      gap: 5px;
+    }
+    .review-team__scope article {
+      min-height: 220px;
+    }
+  }
+</style>

@@ -12,7 +12,7 @@ const { stage, label, event } = Astro.props;
 const eventName = event ?? funnelViewEventByStage[stage];
 ---
 
-<script define:vars={{ eventName, stage, label }}>
+<script is:inline define:vars={{ eventName, stage, label }}>
   if (typeof window.gtag === 'function') {
     window.gtag('event', eventName, {
       event_category: 'Funnel',

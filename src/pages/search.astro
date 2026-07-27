@@ -1,0 +1,391 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../components/BreadcrumbHero.astro";
+import { brandCoverage } from "../data/brand-coverage";
+import { hydraulicCaseStudies } from "../data/case-studies";
+import { hydraulicPages } from "../data/hydraulic-pages";
+import { modelRecords } from "../data/model-records";
+import { products } from "../data/products";
+import "../styles/resource-page.css";
+
+const searchItems = [
+  ...brandCoverage.map((brand) => ({
+    type: "Brand",
+    title: brand.name,
+    description: brand.summary,
+    href: `/brands/${brand.slug}/`,
+    terms: [
+      ...brand.aliases,
+      ...brand.productFamilies,
+      ...brand.seriesReferences.flatMap((item) => [
+        item.series,
+        item.productType,
+      ]),
+    ].join(" "),
+  })),
+  ...modelRecords.map((record) => ({
+    type: "Exact model",
+    title: `${record.brand} ${record.model}`,
+    description: record.description,
+    href: `/models/${record.slug}/`,
+    terms: [
+      record.materialNumber ?? "",
+      record.productType,
+      record.series,
+      ...record.applications,
+    ].join(" "),
+  })),
+  ...products.flatMap((product) => [
+    {
+      type: "Product",
+      title: product.title,
+      description: product.summary,
+      href: `/products/${product.slug}/`,
+      terms: [
+        ...product.brandReferences,
+        ...product.applications,
+        ...product.parameterGroups,
+      ].join(" "),
+    },
+    ...product.subcategories.map((subcategory) => ({
+      type: "Product",
+      title: subcategory.title,
+      description: subcategory.summary,
+      href: `/products/${product.slug}/${subcategory.slug}/`,
+      terms: [
+        product.title,
+        ...product.brandReferences,
+        ...product.applications,
+      ].join(" "),
+    })),
+  ]),
+  ...hydraulicPages
+    .filter(
+      (page) =>
+        page.slug.startsWith("resources/") ||
+        page.slug.startsWith("alternatives/"),
+    )
+    .map((page) => ({
+      type: page.slug.startsWith("resources/") ? "Guide" : "Series review",
+      title: page.title,
+      description: page.description,
+      href: `/${page.slug}/`,
+      terms: `${page.kicker} ${page.intro}`,
+    })),
+  ...hydraulicCaseStudies.map((study) => ({
+    type: "Case study",
+    title: study.title,
+    description: study.description,
+    href: `/case-studies/${study.slug}/`,
+    terms: `${study.industry} ${study.region} ${study.reference} ${study.result}`,
+  })),
+];
+---
+
+<BaseLayout
+  title="Search Hydraulic Brands, Series, Models and Guides"
+  description="Search Hydraulic Match by hydraulic brand, alias, series, exact model code, product type or procurement problem."
+  currentPath="/search"
+  noindex={true}
+>
+  <BreadcrumbHero
+    title="Search Hydraulic References"
+    trail={[{ label: "Home", href: "/" }, { label: "Search" }]}
+    variant="3"
+  />
+
+  <section class="site-search">
+    <div class="container">
+      <header class="site-search__intro">
+        <p>BRAND · SERIES · MODEL · PRODUCT · GUIDE</p>
+        <h2>Find the right review route before sending an RFQ.</h2>
+        <span>
+          Search published content by complete or partial model code,
+          manufacturer alias, product family or technical problem. If no record
+          appears, the reference can still be submitted for manual review.
+        </span>
+      </header>
+
+      <form class="site-search__form" role="search" data-site-search-form>
+        <label for="site-search-query">Search the Hydraulic Match library</label
+        >
+        <div>
+          <input
+            id="site-search-query"
+            name="q"
+            type="search"
+            placeholder="Example: A10VSO, Vickers, orbital motor, obsolete valve"
+            autocomplete="off"
+            data-site-search
+          />
+          <button type="submit">Search</button>
+        </div>
+        <p aria-live="polite" data-site-search-count>
+          Enter at least two characters to search {searchItems.length} published records.
+        </p>
+      </form>
+
+      <div class="site-search__filters" aria-label="Filter by content type">
+        <button type="button" class="active" data-type-filter="All">All</button>
+        {
+          [...new Set(searchItems.map((item) => item.type))].map((type) => (
+            <button type="button" data-type-filter={type}>
+              {type}
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="site-search__results" data-site-search-results>
+        {
+          searchItems.map((item) => (
+            <article
+              class="site-search__card"
+              hidden
+              data-search-card
+              data-type={item.type}
+              data-search={`${item.title} ${item.description} ${item.terms}`.toLowerCase()}
+            >
+              <p>{item.type}</p>
+              <h2>
+                <a href={item.href}>{item.title}</a>
+              </h2>
+              <span>{item.description}</span>
+              <a href={item.href}>Open record →</a>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="site-search__empty" data-site-search-empty>
+        <h2>Cannot find the reference?</h2>
+        <p>
+          Send the original brand, complete model code, nameplate, quantity and
+          application for manual identification.
+        </p>
+        <a href="/request-a-quote/?source=site-search"
+          >Request manual review →</a
+        >
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>(
+    "[data-site-search-form]",
+  );
+  const input = document.querySelector<HTMLInputElement>("[data-site-search]");
+  const cards = [
+    ...document.querySelectorAll<HTMLElement>("[data-search-card]"),
+  ];
+  const count = document.querySelector<HTMLElement>("[data-site-search-count]");
+  const empty = document.querySelector<HTMLElement>("[data-site-search-empty]");
+  const filterButtons = [
+    ...document.querySelectorAll<HTMLButtonElement>("[data-type-filter]"),
+  ];
+  let activeType = "All";
+
+  const update = () => {
+    const query = input?.value.trim().toLowerCase() ?? "";
+    const ready = query.length >= 2;
+    let visible = 0;
+    cards.forEach((card) => {
+      const queryMatch = ready && card.dataset.search?.includes(query);
+      const typeMatch =
+        activeType === "All" || card.dataset.type === activeType;
+      const show = Boolean(queryMatch && typeMatch);
+      card.hidden = !show;
+      if (show) visible += 1;
+    });
+    if (count) {
+      count.textContent = ready
+        ? `${visible} matching record${visible === 1 ? "" : "s"}.`
+        : `Enter at least two characters to search ${cards.length} published records.`;
+    }
+    if (empty) empty.hidden = !ready || visible !== 0;
+  };
+
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    update();
+  });
+  input?.addEventListener("input", update);
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      activeType = button.dataset.typeFilter ?? "All";
+      filterButtons.forEach((item) =>
+        item.classList.toggle("active", item === button),
+      );
+      update();
+    });
+  });
+
+  const initialQuery = new URLSearchParams(window.location.search).get("q");
+  if (input && initialQuery) {
+    input.value = initialQuery;
+    update();
+  }
+</script>
+
+<style>
+  .site-search {
+    padding: 80px 0 100px;
+    background: #f5f7fa;
+  }
+  .site-search__intro {
+    max-width: 900px;
+  }
+  .site-search__intro > p,
+  .site-search__card > p {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+  .site-search__intro h2 {
+    margin: 10px 0 14px;
+    font-size: clamp(34px, 4vw, 48px);
+    line-height: 1.12;
+  }
+  .site-search__intro > span {
+    color: #536071;
+    font-size: 17px;
+    line-height: 1.75;
+  }
+  .site-search__form {
+    margin: 30px 0 18px;
+    padding: 24px;
+    border-left: 3px solid var(--color-primary);
+    background: #fff;
+  }
+  .site-search__form label {
+    display: block;
+    margin-bottom: 9px;
+    color: var(--color-title);
+    font-weight: 700;
+  }
+  .site-search__form > div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+  .site-search__form input {
+    min-width: 0;
+    min-height: 50px;
+    padding: 0 14px;
+    border: 1px solid #cbd5e1;
+    color: var(--color-title);
+    font: inherit;
+  }
+  .site-search__form button {
+    min-height: 50px;
+    padding: 0 24px;
+    border: 1px solid var(--color-primary);
+    background: var(--color-primary);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .site-search__form input:focus,
+  .site-search__form button:focus-visible,
+  .site-search__filters button:focus-visible,
+  .site-search a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  .site-search__form p {
+    margin: 9px 0 0;
+    color: #64748b;
+    font-size: 13px;
+  }
+  .site-search__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 22px;
+  }
+  .site-search__filters button {
+    padding: 9px 13px;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    color: #334155;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+  }
+  .site-search__filters button.active {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .site-search__results {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .site-search__card {
+    padding: 24px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+  }
+  .site-search__card h2 {
+    margin: 9px 0;
+    font-size: 21px;
+    text-transform: none;
+  }
+  .site-search__card h2 a {
+    color: var(--color-title);
+    text-decoration: none;
+  }
+  .site-search__card > span {
+    display: block;
+    min-height: 82px;
+    color: #536071;
+    line-height: 1.6;
+  }
+  .site-search__card > a,
+  .site-search__empty a {
+    display: inline-block;
+    margin-top: 15px;
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+  .site-search__empty {
+    margin-top: 22px;
+    padding: 26px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+  }
+  .site-search__empty[hidden] {
+    display: none;
+  }
+  .site-search__empty h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+    text-transform: none;
+  }
+  .site-search__empty p {
+    margin: 0;
+    color: #536071;
+  }
+  @media (max-width: 960px) {
+    .site-search__results {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 620px) {
+    .site-search {
+      padding: 56px 0 72px;
+    }
+    .site-search__form > div,
+    .site-search__results {
+      grid-template-columns: 1fr;
+    }
+    .site-search__card > span {
+      min-height: 0;
+    }
+  }
+</style>

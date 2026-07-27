@@ -1,43 +1,242 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import BreadcrumbHero from '../../components/BreadcrumbHero.astro';
-import { hydraulicPages } from '../../data/hydraulic-pages';
-import { breadcrumbSchema, itemListSchema, site } from '../../data/site';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../components/BreadcrumbHero.astro";
+import { hydraulicPages } from "../../data/hydraulic-pages";
+import { breadcrumbSchema, itemListSchema, site } from "../../data/site";
+import "../../styles/resource-page.css";
 
-const guides = hydraulicPages.filter((page) => page.slug.startsWith('resources/'));
+const guides = hydraulicPages.filter((page) =>
+  page.slug.startsWith("resources/"),
+);
+const evidenceResources = [
+  {
+    href: "/brands/",
+    title: "Brand Review Center",
+    description:
+      "Browse manufacturer reference groups, aliases, product families and series-level RFQ routes.",
+    label: "BRAND COVERAGE",
+  },
+  {
+    href: "/models/",
+    title: "Exact Model Records",
+    description:
+      "Review complete model-code groups, original-manufacturer references and required compatibility checks.",
+    label: "MODEL-LEVEL SEARCH",
+  },
+  {
+    href: "/case-studies/",
+    title: "Documented Case Studies",
+    description:
+      "See anonymized RFQ evidence, review actions, outcomes and the limitations of each case.",
+    label: "FIRST-HAND EVIDENCE",
+  },
+  {
+    href: "/tools/",
+    title: "Hydraulic Calculators",
+    description:
+      "Estimate pump flow, power, cylinder force and common pressure or flow conversions.",
+    label: "ENGINEERING TOOLS",
+  },
+  {
+    href: "/downloads/",
+    title: "RFQ Templates & Checklists",
+    description:
+      "Download the structured Excel RFQ workbook and printable identification or inspection checklists.",
+    label: "BUYER DOWNLOADS",
+  },
+  {
+    href: "/authors/technical-review-team/",
+    title: "Editorial Review Process",
+    description:
+      "Understand the review scope, correction process and organizational accountability.",
+    label: "AUTHORSHIP",
+  },
+];
+const guideGroups = [
+  {
+    id: "engineering",
+    title: "Engineering and Troubleshooting",
+    description:
+      "Formulas, operating conditions, failure symptoms and system checks.",
+    guides: guides.filter((guide) =>
+      /sizing|cavitation|pressure-drop|pressure-reducing|pressure-relief|schematic|freezing-point|cold-start|hydrostatic/.test(
+        guide.slug,
+      ),
+    ),
+  },
+  {
+    id: "identification",
+    title: "Identification and Cross-Reference",
+    description:
+      "Model codes, nameplates, interfaces and compatibility review.",
+    guides: guides.filter((guide) =>
+      /model-code|identify|what-must-match|interchangeable|cross-reference|rotation-flange|obsolete-hard-to-find|piston-motor/.test(
+        guide.slug,
+      ),
+    ),
+  },
+  {
+    id: "procurement",
+    title: "Procurement and Quality",
+    description:
+      "RFQ preparation, route selection and order-specific inspection evidence.",
+    guides: guides.filter((guide) =>
+      /oem-vs|original-vs|custom-hydraulic-cylinder|pre-shipment/.test(
+        guide.slug,
+      ),
+    ),
+  },
+];
 ---
+
 <BaseLayout
   title="Hydraulic Model Code and Replacement Guides"
   description="Practical hydraulic valve, pump and cylinder identification, selection and replacement guides for distributors, repair shops and MRO buyers."
   currentPath="/resources"
   jsonLd={[
-    breadcrumbSchema([{ name: 'Home', url: site.url }, { name: 'Resources', url: `${site.url}/resources/` }]),
-    itemListSchema(guides.map((guide) => ({ name: guide.title, url: `${site.url}/${guide.slug}/` }))),
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Resources", url: `${site.url}/resources/` },
+    ]),
+    itemListSchema([
+      ...evidenceResources.map((resource) => ({
+        name: resource.title,
+        url: `${site.url}${resource.href}`,
+      })),
+      ...guides.map((guide) => ({
+        name: guide.title,
+        url: `${site.url}/${guide.slug}/`,
+      })),
+    ]),
   ]}
 >
-  <BreadcrumbHero title="Hydraulic Technical Guides" trail={[{ label: 'Home', href: '/' }, { label: 'Resources' }]} variant="3" />
-  <section class="hm-guides">
-    <div class="container">
-      <header>
-        <p>MODEL CODES · IDENTIFICATION · REPLACEMENT</p>
-        <h2>Guides for preparing a safer hydraulic component RFQ</h2>
-        <span>Each guide addresses a real purchasing question and links back to the relevant product and quotation workflow.</span>
-      </header>
-      <div class="hm-guides__grid">
-        {guides.map((guide, index) => (
-          <a href={`/${guide.slug}/`}>
-            <span class="hm-guides__num">{String(index + 1).padStart(2, '0')}</span>
-            <p>{guide.kicker}</p>
-            <h2>{guide.title}</h2>
-            <span class="hm-guides__desc">{guide.description}</span>
-            <strong>Read guide →</strong>
-          </a>
-        ))}
+  <BreadcrumbHero
+    title="Hydraulic Technical Guides"
+    trail={[{ label: "Home", href: "/" }, { label: "Resources" }]}
+    variant="3"
+  />
+
+  <section class="blog-details-section resource-page-section">
+    <div class="section-gap bottom">
+      <div class="container">
+        <article class="blog-details-content-block resource-page fade-in">
+          <nav class="resource-nav" aria-label="Resources navigation">
+            <a
+              href="/resources/"
+              class="resource-nav-link active"
+              aria-current="page">All guides</a
+            >
+            <a href="#engineering" class="resource-nav-link">Engineering</a>
+            <a href="#identification" class="resource-nav-link"
+              >Identification</a
+            >
+            <a href="#procurement" class="resource-nav-link">Procurement</a>
+            <a href="#evidence" class="resource-nav-link"
+              >Tools &amp; evidence</a
+            >
+            <a
+              href="/matching-process/"
+              class="resource-nav-link resource-nav-all">Matching process</a
+            >
+          </nav>
+
+          <p class="resource-intro">
+            These guides explain the model-code, identification, and replacement
+            details that help buyers prepare a safer hydraulic component RFQ.
+          </p>
+
+          <div class="resource-meta">
+            <span
+              ><strong>{guides.length + evidenceResources.length}</strong> guides
+              and working resources</span
+            >
+            <span>Model-code decoding</span>
+            <span>Replacement checks</span>
+            <span>RFQ preparation</span>
+          </div>
+
+          <section class="hub-section" id="evidence">
+            <div class="hub-section-header">
+              <h2>Technical tools and documented evidence</h2>
+              <p>
+                Move from general guidance to model-level review, working files
+                and accountable technical evidence.
+              </p>
+            </div>
+            <div class="hub-grid guides-hub-grid">
+              {
+                evidenceResources.map((resource) => (
+                  <article class="hub-card">
+                    <div class="hub-card-body">
+                      <p class="hub-card-meta">{resource.label}</p>
+                      <h3 class="hub-card-title">
+                        <a href={resource.href}>{resource.title}</a>
+                      </h3>
+                      <p class="hub-card-summary">{resource.description}</p>
+                      <a href={resource.href} class="hub-card-link">
+                        Open resource →
+                      </a>
+                    </div>
+                  </article>
+                ))
+              }
+            </div>
+          </section>
+
+          {
+            guideGroups.map((group) => (
+              <section class="hub-section" id={group.id}>
+                <div class="hub-section-header">
+                  <h2>{group.title}</h2>
+                  <p>{group.description}</p>
+                </div>
+                <div class="hub-grid guides-hub-grid">
+                  {group.guides.map((guide) => (
+                    <article class="hub-card">
+                      <div class="hub-card-body">
+                        <p class="hub-card-meta">{guide.kicker}</p>
+                        <h3 class="hub-card-title">
+                          <a href={`/${guide.slug}/`}>{guide.title}</a>
+                        </h3>
+                        <p class="hub-card-summary">{guide.description}</p>
+                        <a href={`/${guide.slug}/`} class="hub-card-link">
+                          Read guide →
+                        </a>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ))
+          }
+
+          <div class="detail-rfq-strip">
+            <p>
+              Need help identifying a part? Upload the nameplate or product
+              photo with the application and quantity.
+            </p>
+            <a href="/request-a-quote/?source=resources" class="detail-rfq-link"
+              >Request Identification Help</a
+            >
+          </div>
+        </article>
       </div>
-      <div class="hm-guides__cta"><div><h2>Need help identifying a part?</h2><p>Upload the nameplate or product photo. We will identify the missing information.</p></div><a href="/request-a-quote/" class="primary-button"><span class="button-text">Request Identification Help</span></a></div>
     </div>
   </section>
 </BaseLayout>
+
 <style>
-  .hm-guides{padding:85px 0 100px;background:#f7f8fa}.hm-guides header{max-width:840px;margin-bottom:45px}.hm-guides header>p{color:var(--color-primary);font-size:12px;font-weight:600;letter-spacing:.13em}.hm-guides header h2{margin:12px 0}.hm-guides header>span{color:#596575}.hm-guides__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.hm-guides__grid>a{display:flex;flex-direction:column;min-height:360px;padding:28px;background:#fff;border:1px solid var(--color-stroke);color:inherit;text-decoration:none;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .2s}.hm-guides__grid>a:hover{border-color:var(--color-primary);box-shadow:0 12px 32px rgba(15,23,42,.08);transform:translateY(-2px)}.hm-guides__num{color:var(--color-primary);font:600 12px var(--font-title)}.hm-guides__grid p{font-size:11px;letter-spacing:.1em;color:#667181;margin:44px 0 12px}.hm-guides__grid h2{font-size:24px;margin:0 0 14px}.hm-guides__desc{font-size:14px;line-height:1.6;color:#596575}.hm-guides__grid strong{margin-top:auto;color:var(--color-primary);font-size:14px}.hm-guides__cta{display:flex;align-items:center;justify-content:space-between;gap:30px;margin-top:28px;padding:32px;background:#dce9fa}.hm-guides__cta h2{margin:0 0 7px;font-size:25px}.hm-guides__cta p{margin:0;font-size:15px;color:#536071}@media(max-width:991px){.hm-guides__grid{grid-template-columns:1fr 1fr}}@media(max-width:600px){.hm-guides__grid{grid-template-columns:1fr}.hm-guides__cta{align-items:flex-start;flex-direction:column}.hm-guides{padding:65px 0}}@media(prefers-reduced-motion:reduce){.hm-guides__grid>a{transition:none}.hm-guides__grid>a:hover{transform:none}}
+  .guides-hub-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 991px) {
+    .guides-hub-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 768px) {
+    .guides-hub-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

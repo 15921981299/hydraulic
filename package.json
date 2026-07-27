@@ -8,6 +8,7 @@
     "preview": "astro preview",
     "check": "astro check",
     "check:links": "node scripts/check-internal-links.mjs",
+    "audit:seo": "node scripts/audit-seo.mjs",
     "audit:encoding": "node scripts/audit-encoding.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "format": "prettier --write .",

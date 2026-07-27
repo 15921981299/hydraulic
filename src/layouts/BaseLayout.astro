@@ -48,8 +48,12 @@ const {
 } = Astro.props;
 
 const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
+const metaDescription =
+  description.length > 165
+    ? `${description.slice(0, 162).replace(/\s+\S*$/, "")}…`
+    : description;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL(image ?? '/og.png', Astro.url.origin);
+const ogImage = new URL(image ?? '/images/hydraulic/hydraulic-match-hero.webp', Astro.url.origin);
 const schemas = [
   organizationSchema,
   {
@@ -68,7 +72,7 @@ const schemas = [
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={metaDescription} />
     {site.googleSiteVerification && (
       <meta name="google-site-verification" content={site.googleSiteVerification} />
     )}
@@ -76,13 +80,15 @@ const schemas = [
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={canonical} />
     <link rel="alternate" hreflang="x-default" href={canonical} />
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    {(site.gaMeasurementId || site.gtmContainerId) && (
+      <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    )}
     {site.gaMeasurementId && <link rel="preconnect" href="https://www.google-analytics.com" crossorigin />}
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={metaDescription} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:url" content={canonical} />
     {articlePublishedTime && (
@@ -93,7 +99,7 @@ const schemas = [
     )}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={metaDescription} />
     <meta name="twitter:image" content={ogImage} />
     <JsonLd schema={schemas} />
     <Gtm placement="head" />

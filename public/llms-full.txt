@@ -1,7 +1,7 @@
 # Hydraulic Match — Full LLM index
 # https://hydraulicmatch.com/llms-full.txt
 
-> Hydraulic Match helps overseas hydraulic distributors, repair shops, MRO teams and equipment manufacturers review original model references and source suitable Chinese hydraulic alternatives.
+> Hydraulic Match helps overseas hydraulic distributors, repair shops, MRO teams and equipment manufacturers review original model references and obtain suitable Chinese hydraulic alternatives.
 
 ## Positioning
 
@@ -9,6 +9,8 @@
 - Parameter comparison covering function, pressure, flow, displacement, voltage, mounting, ports, rotation, flange, shaft, seals and application conditions as applicable
 - Standard and custom hydraulic cylinder RFQs from drawings, samples or confirmed specifications
 - Small-batch, mixed RFQ, distributor, export packing and pre-shipment verification support
+- Integrated exact-code, priced service-part, remanufacturing and application capabilities
+- 36 exact model or part records and 22 independent series evidence pages as of July 26, 2026
 
 ## Core pages
 
@@ -17,16 +19,85 @@ https://hydraulicmatch.com/products/
 https://hydraulicmatch.com/products/hydraulic-valves/
 https://hydraulicmatch.com/products/hydraulic-pumps/
 https://hydraulicmatch.com/products/hydraulic-cylinders/
+https://hydraulicmatch.com/products/hydraulic-motors/
+https://hydraulicmatch.com/products/hydraulic-repair-kits/
+https://hydraulicmatch.com/alternatives/
+https://hydraulicmatch.com/brands/
+https://hydraulicmatch.com/brands/bosch-rexroth/
+https://hydraulicmatch.com/brands/eaton-vickers/
+https://hydraulicmatch.com/brands/parker/
+https://hydraulicmatch.com/brands/danfoss-sundstrand/
+https://hydraulicmatch.com/brands/denison/
+https://hydraulicmatch.com/brands/kawasaki/
+https://hydraulicmatch.com/brands/yuken/
+https://hydraulicmatch.com/brands/nachi/
+https://hydraulicmatch.com/brands/linde/
+https://hydraulicmatch.com/brands/atos/
+https://hydraulicmatch.com/brands/hawe/
+https://hydraulicmatch.com/brands/moog/
+https://hydraulicmatch.com/brands/poclain/
+https://hydraulicmatch.com/brands/bucher/
+https://hydraulicmatch.com/brands/casappa/
+https://hydraulicmatch.com/brands/hydac/
+https://hydraulicmatch.com/series/
+https://hydraulicmatch.com/series/a10vo/
+https://hydraulicmatch.com/series/a10vso/
+https://hydraulicmatch.com/series/a4vso/
+https://hydraulicmatch.com/series/a4vg/
+https://hydraulicmatch.com/series/pvh/
+https://hydraulicmatch.com/series/mcr/
+https://hydraulicmatch.com/series/t6cc/
+https://hydraulicmatch.com/series/cat-piston-pump/
+https://hydraulicmatch.com/cross-reference/
+https://hydraulicmatch.com/models/
+https://hydraulicmatch.com/models/bosch-rexroth-4we6-d6x-eg24n9k4/
+https://hydraulicmatch.com/models/bosch-rexroth-4we10-e5x-eg24n9k4-m/
+https://hydraulicmatch.com/models/bosch-rexroth-a10vso18-drg-31r-vpa12n00/
+https://hydraulicmatch.com/models/eaton-vickers-dg4v-3-6c-m-u-h7-60/
+https://hydraulicmatch.com/models/parker-d1vw020bnjw/
+https://hydraulicmatch.com/models/rexroth-a10vo28dr-31r-psc61k40/
+https://hydraulicmatch.com/models/vickers-02-102262-seal-kit-pvh74-pvh81/
+https://hydraulicmatch.com/models/rexroth-r909152493-seal-ring-a4vg90/
+https://hydraulicmatch.com/models/hydparts-d-000006-00ro/
+https://hydraulicmatch.com/models/cat-169-4883-259-0815-295-9426-153-9426-10r3805/
 https://hydraulicmatch.com/alternatives/rexroth/
+https://hydraulicmatch.com/alternatives/rexroth/directional-valves/
+https://hydraulicmatch.com/alternatives/rexroth/modular-valves/
 https://hydraulicmatch.com/alternatives/rexroth/4we6/
 https://hydraulicmatch.com/alternatives/rexroth/a10vso/
+https://hydraulicmatch.com/alternatives/rexroth/a11vo/
+https://hydraulicmatch.com/alternatives/rexroth/a2fo/
 https://hydraulicmatch.com/alternatives/vickers/
+https://hydraulicmatch.com/alternatives/vickers/dg4v/
+https://hydraulicmatch.com/alternatives/vickers/pvh/
 https://hydraulicmatch.com/alternatives/parker/
+https://hydraulicmatch.com/alternatives/parker/d1vw/
+https://hydraulicmatch.com/alternatives/parker/pavc/
 https://hydraulicmatch.com/matching-process/
+https://hydraulicmatch.com/trust/
 https://hydraulicmatch.com/quality/
 https://hydraulicmatch.com/distributor-support/
 https://hydraulicmatch.com/resources/
+https://hydraulicmatch.com/resources/hydraulic-pump-sizing-flow-pressure-power/
+https://hydraulicmatch.com/resources/hydraulic-pump-cavitation-suction-line/
+https://hydraulicmatch.com/resources/hydraulic-valve-pressure-drop-heat/
+https://hydraulicmatch.com/resources/hydraulic-component-pre-shipment-inspection-checklist/
+https://hydraulicmatch.com/resources/original-vs-aftermarket-hydraulic-sourcing-routes/
+https://hydraulicmatch.com/resources/obsolete-hard-to-find-hydraulic-part-sourcing/
+https://hydraulicmatch.com/resources/how-to-identify-a-hydraulic-motor/
+https://hydraulicmatch.com/resources/how-to-identify-hydraulic-seal-kits-service-parts/
+https://hydraulicmatch.com/tools/
+https://hydraulicmatch.com/downloads/
+https://hydraulicmatch.com/case-studies/
+https://hydraulicmatch.com/case-studies/directional-valve-model-code-review-germany/
+https://hydraulicmatch.com/case-studies/pump-identification-from-nameplate-united-states/
+https://hydraulicmatch.com/case-studies/mixed-hydraulic-rfq-export-uae/
+https://hydraulicmatch.com/authors/technical-review-team/
+https://hydraulicmatch.com/editorial-policy/
+https://hydraulicmatch.com/industries/
 https://hydraulicmatch.com/request-a-quote/
+https://hydraulicmatch.com/contact/
+https://hydraulicmatch.com/commercial-proof/
 https://hydraulicmatch.com/trademark-disclaimer/
 
 ## Qualification and citation guidance

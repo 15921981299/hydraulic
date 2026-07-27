@@ -1,0 +1,728 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../components/BreadcrumbHero.astro";
+import DetailRfqStrip from "../../components/DetailRfqStrip.astro";
+import { breadcrumbSchema, site } from "../../data/site";
+
+const pageUrl = `${site.url}/tools/`;
+---
+
+<BaseLayout
+  title="Hydraulic Pump & Cylinder Calculators"
+  description="Use hydraulic pump flow, shaft power, cylinder force and unit conversion calculators before preparing a component RFQ."
+  currentPath="/resources"
+  image="/images/hydraulic/hydraulic-pumps.webp"
+  jsonLd={breadcrumbSchema([
+    { name: "Home", url: site.url },
+    { name: "Hydraulic Calculators", url: pageUrl },
+  ])}
+>
+  <BreadcrumbHero
+    title="Hydraulic Engineering Calculators"
+    trail={[{ label: "Home", href: "/" }, { label: "Hydraulic Calculators" }]}
+    variant="3"
+  />
+  <section class="tool-page">
+    <div class="container">
+      <header class="tool-page__intro">
+        <p>RFQ PREPARATION TOOLS</p>
+        <h2>
+          Check basic hydraulic relationships before selecting or replacing a
+          component.
+        </h2>
+        <span>
+          These calculators support preliminary review. Use manufacturer data,
+          measured system conditions and qualified engineering approval for
+          final component selection.
+        </span>
+      </header>
+
+      <nav class="tool-nav" aria-label="Calculator sections">
+        <a href="#pump-flow">Pump flow</a>
+        <a href="#pump-power">Pump power</a>
+        <a href="#cylinder-force">Cylinder force</a>
+        <a href="#unit-conversion">Unit conversion</a>
+      </nav>
+
+      <div class="tool-grid">
+        <article id="pump-flow" class="tool-card" data-calculator="pump-flow">
+          <header>
+            <span>01</span><div>
+              <p>PUMP CALCULATOR</p><h2>Pump Flow and Displacement</h2>
+            </div>
+          </header>
+          <div class="tool-fields">
+            <label
+              >Displacement<input
+                name="displacement"
+                type="number"
+                min="0"
+                step="any"
+                value="28"
+              /><small>cm³/rev</small></label
+            >
+            <label
+              >Speed<input
+                name="speed"
+                type="number"
+                min="1"
+                step="any"
+                value="1500"
+              /><small>rpm</small></label
+            >
+            <label
+              >Volumetric efficiency<input
+                name="efficiency"
+                type="number"
+                min="1"
+                max="100"
+                step="any"
+                value="92"
+              /><small>%</small></label
+            >
+          </div>
+          <div class="tool-result" aria-live="polite">
+            <span>Calculated flow</span><strong data-result>38.64 L/min</strong
+            ><small>Q = displacement × speed × efficiency ÷ 1000</small>
+          </div>
+          <div class="tool-secondary">
+            <label
+              >Known flow<input
+                name="knownFlow"
+                type="number"
+                min="0"
+                step="any"
+                value="40"
+              /><small>L/min</small></label
+            ><p>
+              Required displacement: <strong data-secondary-result
+                >28.99 cm³/rev</strong
+              >
+            </p>
+          </div>
+        </article>
+
+        <article id="pump-power" class="tool-card" data-calculator="pump-power">
+          <header>
+            <span>02</span><div>
+              <p>POWER CALCULATOR</p><h2>Hydraulic and Shaft Power</h2>
+            </div>
+          </header>
+          <div class="tool-fields">
+            <label
+              >Pressure<input
+                name="pressure"
+                type="number"
+                min="0"
+                step="any"
+                value="210"
+              /><small>bar</small></label
+            >
+            <label
+              >Flow<input
+                name="flow"
+                type="number"
+                min="0"
+                step="any"
+                value="40"
+              /><small>L/min</small></label
+            >
+            <label
+              >Total efficiency<input
+                name="efficiency"
+                type="number"
+                min="1"
+                max="100"
+                step="any"
+                value="85"
+              /><small>%</small></label
+            >
+          </div>
+          <div class="tool-result" aria-live="polite">
+            <span>Required shaft power</span><strong data-result
+              >16.47 kW</strong
+            ><small>Hydraulic power ÷ total efficiency</small>
+          </div>
+          <p class="tool-note">
+            Calculated hydraulic output: <strong data-secondary-result
+              >14.00 kW</strong
+            >. Select a drive with appropriate service margin and manufacturer
+            approval.
+          </p>
+        </article>
+
+        <article
+          id="cylinder-force"
+          class="tool-card"
+          data-calculator="cylinder-force"
+        >
+          <header>
+            <span>03</span><div>
+              <p>CYLINDER CALCULATOR</p><h2>Extension and Retraction Force</h2>
+            </div>
+          </header>
+          <div class="tool-fields">
+            <label
+              >Bore diameter<input
+                name="bore"
+                type="number"
+                min="0"
+                step="any"
+                value="100"
+              /><small>mm</small></label
+            >
+            <label
+              >Rod diameter<input
+                name="rod"
+                type="number"
+                min="0"
+                step="any"
+                value="56"
+              /><small>mm</small></label
+            >
+            <label
+              >Pressure<input
+                name="pressure"
+                type="number"
+                min="0"
+                step="any"
+                value="160"
+              /><small>bar</small></label
+            >
+          </div>
+          <div class="tool-result" aria-live="polite">
+            <span>Ideal extension force</span><strong data-result
+              >125.66 kN</strong
+            ><small>Pressure × full piston area</small>
+          </div>
+          <p class="tool-note">
+            Ideal retraction force: <strong data-secondary-result
+              >86.25 kN</strong
+            >. Actual force is lower after friction, pressure loss and safety
+            factors.
+          </p>
+        </article>
+
+        <article
+          id="unit-conversion"
+          class="tool-card"
+          data-calculator="conversion"
+        >
+          <header>
+            <span>04</span><div>
+              <p>UNIT CONVERTER</p><h2>Pressure and Flow Units</h2>
+            </div>
+          </header>
+          <div class="tool-fields tool-fields--two">
+            <label
+              >Pressure<input
+                name="bar"
+                type="number"
+                step="any"
+                value="210"
+              /><small>bar</small></label
+            >
+            <div class="tool-conversion-output">
+              <span>MPa</span><strong data-mpa>21.00</strong><span>psi</span
+              ><strong data-psi>3,045.79</strong>
+            </div>
+            <label
+              >Flow<input
+                name="lpm"
+                type="number"
+                step="any"
+                value="40"
+              /><small>L/min</small></label
+            >
+            <div class="tool-conversion-output">
+              <span>US gpm</span><strong data-gpm>10.57</strong><span>m³/h</span
+              ><strong data-m3h>2.40</strong>
+            </div>
+          </div>
+          <p class="tool-note">
+            Conversions are rounded for display. Keep the original engineering
+            units in the RFQ and drawing.
+          </p>
+        </article>
+      </div>
+
+      <section class="tool-guidance">
+        <h2>What these calculators cannot confirm</h2>
+        <div>
+          <article>
+            <strong>Component compatibility</strong><p>
+              A matching calculated value does not confirm shaft, flange,
+              control, ports, voltage or installation fit.
+            </p>
+          </article>
+          <article>
+            <strong>Dynamic performance</strong><p>
+              Acceleration, pressure peaks, heat, line losses, duty cycle and
+              control stability require system analysis.
+            </p>
+          </article>
+          <article>
+            <strong>Safety approval</strong><p>
+              Final design and commissioning must follow applicable machine
+              standards and qualified engineering review.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="tool-method">
+        <header>
+          <p>FORMULAS AND ASSUMPTIONS</p>
+          <h2>Record the inputs behind every calculated value.</h2>
+          <span>
+            A result is reproducible only when units, efficiencies and operating
+            conditions are retained with it. Default values are examples, not
+            recommendations for a machine.
+          </span>
+        </header>
+        <div class="tool-method__table">
+          <table>
+            <thead
+              ><tr
+                ><th scope="col">Calculator</th><th scope="col"
+                  >Core relationship</th
+                ><th scope="col">Important omitted effects</th><th scope="col"
+                  >Use in an RFQ</th
+                ></tr
+              ></thead
+            >
+            <tbody>
+              <tr
+                ><td><strong>Pump flow</strong></td><td
+                  >Displacement × rotational speed × volumetric efficiency</td
+                ><td
+                  >Speed limits, leakage change, charge conditions and control
+                  behavior</td
+                ><td>State desired flow and the speed/efficiency assumptions</td
+                ></tr
+              >
+              <tr
+                ><td><strong>Pump power</strong></td><td
+                  >Pressure × flow, adjusted for total efficiency</td
+                ><td
+                  >Starting torque, pressure peaks, drive losses and service
+                  factor</td
+                ><td>State working and peak pressure separately</td></tr
+              >
+              <tr
+                ><td><strong>Cylinder force</strong></td><td
+                  >Pressure × effective piston area</td
+                ><td
+                  >Friction, side load, buckling, back pressure and acceleration</td
+                ><td
+                  >State bore, rod, stroke, mounting, load direction and safety
+                  factor</td
+                ></tr
+              >
+              <tr
+                ><td><strong>Unit conversion</strong></td><td
+                  >Fixed mathematical conversion factors</td
+                ><td>Source measurement tolerance and rounding</td><td
+                  >Keep the original unit beside the converted value</td
+                ></tr
+              >
+            </tbody>
+          </table>
+        </div>
+        <p class="tool-method__boundary">
+          Hydraulic Match calculators run in the browser and provide arithmetic
+          estimates only. They do not read machine data, select a component or
+          account for applicable design standards. Independent engineering
+          review remains necessary where failure could affect people, equipment
+          or production.
+        </p>
+      </section>
+
+      <DetailRfqStrip
+        quoteHref="/contact/?source=hydraulic-calculators"
+        title="Use the result to prepare a better RFQ."
+        text="Send the original component code together with actual pressure, flow, speed, dimensions and application conditions."
+        modalContext="Hydraulic calculator inquiry"
+        modalSource="hydraulic-calculators"
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const number = (root: Element, name: string) =>
+    Number(
+      root.querySelector<HTMLInputElement>(`[name="${name}"]`)?.value ?? 0,
+    );
+  const fixed = (value: number, digits = 2) =>
+    Number.isFinite(value)
+      ? value.toLocaleString("en-US", {
+          minimumFractionDigits: digits,
+          maximumFractionDigits: digits,
+        })
+      : "—";
+
+  document
+    .querySelectorAll<HTMLElement>("[data-calculator]")
+    .forEach((calculator) => {
+      const calculate = () => {
+        const type = calculator.dataset.calculator;
+        const result = calculator.querySelector<HTMLElement>("[data-result]");
+        const secondary = calculator.querySelector<HTMLElement>(
+          "[data-secondary-result]",
+        );
+
+        if (type === "pump-flow") {
+          const displacement = number(calculator, "displacement");
+          const speed = number(calculator, "speed");
+          const efficiency = number(calculator, "efficiency") / 100;
+          const knownFlow = number(calculator, "knownFlow");
+          if (result)
+            result.textContent = `${fixed((displacement * speed * efficiency) / 1000)} L/min`;
+          if (secondary) {
+            secondary.textContent =
+              speed > 0 && efficiency > 0
+                ? `${fixed((knownFlow * 1000) / (speed * efficiency))} cm³/rev`
+                : "—";
+          }
+        }
+
+        if (type === "pump-power") {
+          const pressure = number(calculator, "pressure");
+          const flow = number(calculator, "flow");
+          const efficiency = number(calculator, "efficiency") / 100;
+          const hydraulicPower = (pressure * flow) / 600;
+          if (result)
+            result.textContent =
+              efficiency > 0 ? `${fixed(hydraulicPower / efficiency)} kW` : "—";
+          if (secondary) secondary.textContent = `${fixed(hydraulicPower)} kW`;
+        }
+
+        if (type === "cylinder-force") {
+          const bore = number(calculator, "bore");
+          const rod = number(calculator, "rod");
+          const pressure = number(calculator, "pressure");
+          const pistonArea = (Math.PI * bore * bore) / 4;
+          const annulusArea = Math.max(
+            0,
+            pistonArea - (Math.PI * rod * rod) / 4,
+          );
+          if (result)
+            result.textContent = `${fixed((pressure * pistonArea) / 10000)} kN`;
+          if (secondary)
+            secondary.textContent = `${fixed((pressure * annulusArea) / 10000)} kN`;
+        }
+
+        if (type === "conversion") {
+          const bar = number(calculator, "bar");
+          const lpm = number(calculator, "lpm");
+          const mpa = calculator.querySelector<HTMLElement>("[data-mpa]");
+          const psi = calculator.querySelector<HTMLElement>("[data-psi]");
+          const gpm = calculator.querySelector<HTMLElement>("[data-gpm]");
+          const m3h = calculator.querySelector<HTMLElement>("[data-m3h]");
+          if (mpa) mpa.textContent = fixed(bar / 10);
+          if (psi) psi.textContent = fixed(bar * 14.5037738);
+          if (gpm) gpm.textContent = fixed(lpm * 0.264172052);
+          if (m3h) m3h.textContent = fixed(lpm * 0.06);
+        }
+      };
+      calculator
+        .querySelectorAll("input")
+        .forEach((input) => input.addEventListener("input", calculate));
+      calculate();
+    });
+</script>
+
+<style>
+  .tool-page {
+    padding: 80px 0 100px;
+    background: #f5f7fa;
+  }
+  .tool-page__intro {
+    max-width: 950px;
+    margin-bottom: 28px;
+  }
+  .tool-page__intro > p {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+  .tool-page__intro h2 {
+    margin: 10px 0 14px;
+    font-size: clamp(30px, 4vw, 46px);
+    line-height: 1.12;
+    text-transform: none;
+  }
+  .tool-page__intro span {
+    color: #536071;
+    line-height: 1.75;
+  }
+  .tool-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+  .tool-nav a {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    padding: 8px 14px;
+    border: 1px solid var(--color-stroke);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--color-title);
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .tool-nav a:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+  }
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+  .tool-card {
+    scroll-margin-top: 100px;
+    padding: 28px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  }
+  .tool-card header {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+  .tool-card header > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--color-title);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .tool-card header p {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .tool-card header h2 {
+    margin: 5px 0 0;
+    font-size: 23px;
+    text-transform: none;
+  }
+  .tool-fields {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .tool-fields label,
+  .tool-secondary label {
+    display: grid;
+    gap: 6px;
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .tool-fields input,
+  .tool-secondary input {
+    width: 100%;
+    height: 48px;
+    padding: 8px 10px;
+    border: 1px solid #cfd6df;
+    background: #fbfcfd;
+    color: var(--color-title);
+    font: 600 16px var(--font-primary);
+  }
+  .tool-fields input:focus-visible,
+  .tool-secondary input:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+  .tool-fields small,
+  .tool-secondary small {
+    color: #64748b;
+    font-weight: 500;
+  }
+  .tool-result {
+    display: grid;
+    gap: 5px;
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--color-title);
+    color: #fff;
+  }
+  .tool-result span {
+    color: #aeb8c7;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .tool-result strong {
+    font-size: 30px;
+  }
+  .tool-result small {
+    color: #aeb8c7;
+    line-height: 1.5;
+  }
+  .tool-secondary {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 18px;
+    align-items: end;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-stroke);
+  }
+  .tool-secondary p,
+  .tool-note {
+    margin: 0;
+    color: #536071;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .tool-secondary p strong,
+  .tool-note strong {
+    color: var(--color-title);
+  }
+  .tool-note {
+    margin-top: 16px;
+  }
+  .tool-fields--two {
+    grid-template-columns: 1fr 1fr;
+  }
+  .tool-conversion-output {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    padding: 10px 14px;
+    background: #f5f7fa;
+  }
+  .tool-conversion-output span {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .tool-conversion-output strong {
+    text-align: right;
+    color: var(--color-title);
+  }
+  .tool-guidance {
+    margin: 30px 0;
+    padding: 28px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+  }
+  .tool-guidance h2 {
+    margin: 0 0 20px;
+    font-size: 26px;
+    text-transform: none;
+  }
+  .tool-guidance > div {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .tool-guidance article {
+    padding-left: 14px;
+    border-left: 3px solid var(--color-primary);
+  }
+  .tool-guidance p {
+    margin: 7px 0 0;
+    color: #536071;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .tool-page a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  .tool-method {
+    margin: 36px 0;
+  }
+  .tool-method header {
+    max-width: 860px;
+    margin-bottom: 20px;
+  }
+  .tool-method header > p {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+  }
+  .tool-method h2 {
+    margin: 8px 0 12px;
+    font-size: 30px;
+    text-transform: none;
+  }
+  .tool-method header span,
+  .tool-method__boundary {
+    color: #536071;
+    line-height: 1.7;
+  }
+  .tool-method__table {
+    overflow-x: auto;
+  }
+  .tool-method table {
+    width: 100%;
+    min-width: 800px;
+    border-collapse: collapse;
+    background: #fff;
+  }
+  .tool-method th,
+  .tool-method td {
+    padding: 15px;
+    border: 1px solid var(--color-stroke);
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.55;
+  }
+  .tool-method th {
+    background: #eef2f7;
+  }
+  .tool-method td {
+    color: #536071;
+  }
+  .tool-method__boundary {
+    margin: 18px 0 0;
+    padding: 20px;
+    border-left: 3px solid var(--color-primary);
+    background: #fff;
+  }
+  @media (max-width: 950px) {
+    .tool-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 650px) {
+    .tool-page {
+      padding: 60px 0 76px;
+    }
+    .tool-fields,
+    .tool-fields--two,
+    .tool-guidance > div {
+      grid-template-columns: 1fr;
+    }
+    .tool-secondary {
+      grid-template-columns: 1fr;
+    }
+    .tool-card {
+      padding: 22px;
+    }
+  }
+</style>

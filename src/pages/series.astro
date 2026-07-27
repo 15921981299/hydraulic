@@ -1,0 +1,348 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../components/BreadcrumbHero.astro";
+import DetailRfqStrip from "../components/DetailRfqStrip.astro";
+import { modelRecords } from "../data/model-records";
+import { hydraulicSeriesDirectory } from "../data/series-directory";
+import { seriesHref, seriesRecords } from "../data/series-records";
+import { breadcrumbSchema, itemListSchema, site } from "../data/site";
+import "../styles/resource-page.css";
+
+const linkedSeries = hydraulicSeriesDirectory.flatMap((group) =>
+  group.references
+    .filter((reference) => seriesHref(reference.series) || reference.reviewHref)
+    .map((reference) => ({
+      name: `${group.brand} ${reference.series} ${reference.productType}`,
+      url: `${site.url}${seriesHref(reference.series) || reference.reviewHref}`,
+    })),
+);
+const referenceCount = hydraulicSeriesDirectory.reduce(
+  (total, group) => total + group.references.length,
+  0,
+);
+---
+
+<BaseLayout
+  title="Hydraulic Brand and Series Reference Directory"
+  description="Browse hydraulic brands, component types and frequently submitted series references before sending a complete model code for technical review."
+  currentPath="/series"
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Series Directory", url: `${site.url}/series/` },
+    ]),
+    itemListSchema(linkedSeries),
+  ]}
+>
+  <BreadcrumbHero
+    title="Hydraulic Brand & Series Directory"
+    trail={[{ label: "Home", href: "/" }, { label: "Series Directory" }]}
+    variant="2"
+  />
+
+  <section class="series-directory">
+    <div class="container">
+      <header class="series-directory__intro">
+        <p class="series-directory__kicker">BRAND → PRODUCT TYPE → SERIES</p>
+        <h2>
+          Start with the series. Release a quotation only from the complete
+          model code.
+        </h2>
+        <p>
+          This directory organizes identification references frequently
+          submitted in hydraulic RFQs. Inclusion does not mean an item is in
+          stock, authorized by the original manufacturer or directly
+          interchangeable.
+        </p>
+        <div class="series-directory__metrics" aria-label="Directory summary">
+          <span
+            ><strong>{hydraulicSeriesDirectory.length}</strong> brand groups</span
+          >
+          <span><strong>{referenceCount}</strong> series references</span>
+          <span><strong>{seriesRecords.length}</strong> independent series pages</span>
+          <span><strong>{modelRecords.length}</strong> exact model records</span
+          >
+        </div>
+      </header>
+
+      <section
+        class="series-directory__models"
+        aria-labelledby="exact-model-records"
+      >
+        <div class="series-brand__header">
+          <div>
+            <p>COMPLETE-CODE EXAMPLES</p>
+            <h2 id="exact-model-records">
+              <a href="/models/">Exact model records</a>
+            </h2>
+            <span
+              >Search-oriented records tied to a complete model reference and
+              an explicit verification scope.</span
+            >
+          </div>
+          <a class="series-brand__hub" href="/models/">View all model records</a
+          >
+        </div>
+        <div class="hub-grid series-directory__model-grid">
+          {
+            modelRecords.slice(0, 12).map((record) => (
+              <article class="hub-card">
+                <div class="hub-card-body">
+                  <p class="hub-card-meta">
+                    {record.brand} · {record.productType}
+                  </p>
+                  <h3 class="hub-card-title">
+                    <a href={`/models/${record.slug}/`}>{record.model}</a>
+                  </h3>
+                  <p class="hub-card-summary">{record.compatibilityStatus}.</p>
+                  <a class="hub-card-link" href={`/models/${record.slug}/`}>
+                    Review complete code →
+                  </a>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <nav
+        class="resource-nav series-directory__jump"
+        aria-label="Jump to brand"
+      >
+        {
+          hydraulicSeriesDirectory.map((group) => (
+            <a
+              class="resource-nav-link"
+              href={`#${group.brand.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+            >
+              {group.brand}
+            </a>
+          ))
+        }
+      </nav>
+
+      <div class="series-directory__groups">
+        {
+          hydraulicSeriesDirectory.map((group) => {
+            const id = group.brand.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+            return (
+              <section class="series-brand" id={id}>
+                <div class="series-brand__header">
+                  <div>
+                    <p>REFERENCE GROUP</p>
+                    <h2>
+                      <a href={group.brandHref}>{group.brand}</a>
+                    </h2>
+                    <span>{group.description}</span>
+                  </div>
+                  <a class="series-brand__hub" href={group.brandHref}>
+                    Open brand review
+                  </a>
+                </div>
+
+                <div class="resource-table-wrap">
+                  <table class="resource-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Series</th>
+                        <th scope="col">Product type</th>
+                        <th scope="col">Review focus</th>
+                        <th scope="col">Next step</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {group.references.map((reference) => {
+                        const independentHref = seriesHref(reference.series);
+                        const reviewHref =
+                          independentHref || reference.reviewHref;
+                        return (
+                        <tr>
+                          <td>
+                            <strong>{reference.series}</strong>
+                          </td>
+                          <td>{reference.productType}</td>
+                          <td>{reference.note}</td>
+                          <td>
+                            {reviewHref ? (
+                              <a href={reviewHref}>
+                                {independentHref
+                                  ? "Independent series page"
+                                  : "Detailed review"}
+                              </a>
+                            ) : (
+                              <a
+                                href={`/request-a-quote/?brand=${encodeURIComponent(group.brand)}&model=${encodeURIComponent(reference.series)}&source=series-directory`}
+                              >
+                                Send full code
+                              </a>
+                            )}
+                          </td>
+                        </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            );
+          })
+        }
+      </div>
+
+      <p class="resource-note">
+        A series reference is useful for navigation, but compatibility depends
+        on the complete code, application, operating conditions and documented
+        differences.
+      </p>
+
+      <DetailRfqStrip
+        quoteHref="/request-a-quote/?source=series-directory"
+        title="Cannot find the exact series?"
+        text="Upload a nameplate or send the full model code, machine, quantity and destination for identification."
+        modalContext="Hydraulic series identification"
+        modalSource="series-directory"
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .series-directory {
+    padding: 80px 0 96px;
+    background: #fff;
+  }
+  .series-directory__intro {
+    max-width: 980px;
+    margin-bottom: 32px;
+  }
+  .series-directory__kicker,
+  .series-brand__header p {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+  .series-directory__intro h2 {
+    margin: 12px 0 18px;
+    max-width: 920px;
+    font-size: 42px;
+    line-height: 1.12;
+    text-transform: none;
+  }
+  .series-directory__intro > p:not(.series-directory__kicker) {
+    max-width: 850px;
+    color: #536071;
+    font-size: 17px;
+    line-height: 1.7;
+  }
+  .series-directory__metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    margin-top: 24px;
+    padding: 16px 18px;
+    border: 1px solid var(--color-stroke);
+    background: #f7f9fc;
+    color: #536071;
+  }
+  .series-directory__metrics strong {
+    color: var(--color-title);
+  }
+  .series-directory__models {
+    margin: 34px 0 18px;
+    padding: 28px;
+    border: 1px solid var(--color-stroke);
+    background: #f7f9fc;
+  }
+  .series-directory__model-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .series-directory__jump {
+    position: sticky;
+    top: 72px;
+    z-index: 15;
+    padding: 12px 0;
+    background: rgba(255, 255, 255, 0.96);
+  }
+  .series-brand {
+    scroll-margin-top: 150px;
+    margin-top: 44px;
+  }
+  .series-brand__header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 16px;
+  }
+  .series-brand__header h2 {
+    margin: 7px 0 5px;
+    font-size: 28px;
+    text-transform: none;
+  }
+  .series-brand__header h2 a {
+    color: var(--color-title);
+    text-decoration: none;
+  }
+  .series-brand__header h2 a:hover {
+    color: var(--color-primary);
+  }
+  .series-brand__header span {
+    color: #536071;
+    line-height: 1.6;
+  }
+  .series-brand__hub {
+    flex-shrink: 0;
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .series-brand__hub:hover,
+  .resource-table a:hover {
+    text-decoration: underline;
+  }
+  .resource-table a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .series-brand__hub:focus-visible,
+  .resource-table a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+  @media (max-width: 991px) {
+    .series-directory__model-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 768px) {
+    .series-directory {
+      padding: 56px 0 72px;
+    }
+    .series-directory__intro h2 {
+      font-size: 32px;
+    }
+    .series-directory__models {
+      padding: 20px;
+    }
+    .series-directory__model-grid {
+      grid-template-columns: 1fr;
+    }
+    .series-directory__jump {
+      top: 60px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+    }
+    .series-brand__header {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .resource-table {
+      min-width: 720px;
+    }
+  }
+</style>

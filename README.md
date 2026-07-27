@@ -1,6 +1,6 @@
-# Diesel Part Source
+# Hydraulic Match
 
-Diesel engine parts supplier website built with [Astro](https://astro.build). Live site: [dieselpartsource.com](https://dieselpartsource.com).
+Hydraulic component sourcing and model-code review website built with [Astro](https://astro.build). Primary domain: [hydraulicmatch.com](https://hydraulicmatch.com).
 
 ## Setup
 
@@ -24,21 +24,22 @@ npm run preview
 | Path | Description |
 |------|-------------|
 | `/` | Homepage |
-| `/capabilities/` | Engine parts support capabilities |
-| `/materials/` | Engine parts reference materials |
-| `/industries/` | Industry applications |
-| `/case-studies/` | Project case studies |
-| `/blog/` | Technical articles |
+| `/products/` | Hydraulic valves, pumps, cylinders and pump parts |
+| `/alternatives/` | Brand and series reference reviews |
+| `/cross-reference/` | Model-code review intake |
+| `/industries/` | Hydraulic application pages |
+| `/resources/` | Technical identification and replacement guides |
 | `/about/` | About us |
-| `/contact/` | Parts inquiry form (Cloudflare Worker `/api/rfq`) |
+| `/request-a-quote/` | Hydraulic RFQ form (Cloudflare Worker `/api/rfq`) |
 | `/thank-you/` | Post-submission confirmation |
 
 ## Configuration
 
 Edit `src/data/site.ts`:
 
-- `gaMeasurementId` — Google Analytics 4 (leave empty to disable)
-- `googleSiteVerification` — GSC HTML verification content value (leave empty to skip)
+- `PUBLIC_GA_MEASUREMENT_ID` — Google Analytics 4 (leave empty to disable)
+- `PUBLIC_GOOGLE_SITE_VERIFICATION` — GSC HTML verification content value (leave empty to skip)
+- `PUBLIC_GTM_CONTAINER_ID` — Google Tag Manager (leave empty to disable)
 - `social.linkedin` / `social.youtube` — footer social links (leave empty to hide)
 
 ## Stack
@@ -50,9 +51,11 @@ Edit `src/data/site.ts`:
 
 ### Worker secrets
 
-RFQ API is implemented in `functions/api/rfq/index.js` (Cloudflare Pages Function). `cloudflare-worker.js` is a standalone equivalent for separate Worker deploys.
+The production RFQ entry is generated from `cloudflare-worker.js` during `npm run build`.
 
 Set these secrets/bindings on Cloudflare Pages:
 
 - `RESEND_API_KEY` — Resend API bearer token
-- `R2_BUCKET` — R2 bucket binding for drawing uploads
+- `R2_BUCKET` — optional private R2 archive binding for uploaded files
+- `SALES_EMAIL` — optional receiving address override
+- `RFQ_FROM_EMAIL` — optional verified sender override

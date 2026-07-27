@@ -1,66 +1,276 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import BreadcrumbHero from '../../components/BreadcrumbHero.astro';
-import { products } from '../../data/products';
-import { breadcrumbSchema, itemListSchema, site } from '../../data/site';
-import '../../styles/resource-page.css';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../components/BreadcrumbHero.astro";
+import FunnelPageView from "../../components/FunnelPageView.astro";
+import { products } from "../../data/products";
+import { breadcrumbSchema, itemListSchema, site } from "../../data/site";
+import "../../styles/resource-page.css";
+
+const categoryDecision: Record<
+  string,
+  { identify: string; risk: string; evidence: string }
+> = {
+  "hydraulic-valves": {
+    identify: "Function, size, actuation and electrical configuration",
+    risk: "Wrong spool, pressure behavior, voltage or mounting interface",
+    evidence: "Complete code, schematic/symbol, coil and connector photos",
+  },
+  "hydraulic-pumps": {
+    identify: "Pump type, displacement, control and drive interface",
+    risk: "Wrong rotation, control response, shaft, flange or port layout",
+    evidence: "Nameplate, control code, shaft/flange and port-side photos",
+  },
+  "hydraulic-cylinders": {
+    identify: "Bore, rod, stroke, mounts, ports and duty",
+    risk: "Mechanical interference, buckling, speed or pressure mismatch",
+    evidence: "Drawing or measured dimensions, load, pressure and cycle data",
+  },
+  "hydraulic-motors": {
+    identify: "Motor principle, displacement, mounting and options",
+    risk: "Wrong speed/torque, shaft load, brake, drain or flushing requirement",
+    evidence: "Code, duty, shaft/mounting, ports and brake information",
+  },
+  "hydraulic-pump-parts": {
+    identify: "Parent pump, part position, material number and revision",
+    risk: "A visually similar internal part may not fit the rotating assembly",
+    evidence: "Parent-unit code, part number and dimension/photo comparison",
+  },
+  "hydraulic-repair-kits": {
+    identify: "Parent assembly, service scope, seal material and revision",
+    risk: "Missing pieces or incompatible elastomer and groove dimensions",
+    evidence:
+      "Parent code, kit number, removed-part layout and fluid/temperature",
+  },
+};
 ---
 
 <BaseLayout
-  title="Hydraulic Valves, Pumps and Cylinders from China"
+  title="Hydraulic Valves, Pumps, Motors & Cylinders"
   description="Browse hydraulic valves, pumps, cylinders and selected pump parts. Every inquiry is reviewed by model code, technical parameters and application."
   currentPath="/products"
   jsonLd={[
-    breadcrumbSchema([{ name: 'Home', url: site.url }, { name: 'Products', url: `${site.url}/products/` }]),
-    itemListSchema(products.map((product) => ({ name: product.title, url: `${site.url}/products/${product.slug}/` }))),
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Products", url: `${site.url}/products/` },
+    ]),
+    itemListSchema(
+      products.map((product) => ({
+        name: product.title,
+        url: `${site.url}/products/${product.slug}/`,
+      })),
+    ),
   ]}
 >
-  <BreadcrumbHero title="Hydraulic Product Categories" trail={[{ label: 'Home', href: '/' }, { label: 'Products' }]} variant="1" />
-  <section class="hm-hub">
-    <div class="container">
-      <header class="hm-hub__intro">
-        <p class="hm-kicker">FOCUSED PRODUCT SCOPE</p>
-        <h2>Choose a category, then send the complete reference.</h2>
-        <p>These pages help you understand the relevant parameters and prepare a qualified RFQ. They do not replace model-specific technical confirmation.</p>
-      </header>
-      <div class="hm-hub__grid">
-        {products.map((product, index) => (
-          <a href={`/products/${product.slug}/`} class="hm-hub__card">
-            <span>{String(index + 1).padStart(2, '0')}</span>
-            <h2>{product.title}</h2>
-            <p>{product.summary}</p>
-            <ul>
-              {product.subcategories.slice(0, 4).map((subcategory) => <li>{subcategory.title}</li>)}
-            </ul>
-            <strong>View category →</strong>
-          </a>
-        ))}
-      </div>
-      <div class="hm-hub__cta">
-        <div><strong>Not sure which category fits?</strong><p>Upload a nameplate or product photo and tell us the application.</p></div>
-        <a href="/request-a-quote/" class="primary-button"><span class="button-text">Request Identification Help</span></a>
+  <FunnelPageView stage="service" label="products-index" />
+  <BreadcrumbHero
+    title="Hydraulic Product Categories"
+    trail={[{ label: "Home", href: "/" }, { label: "Products" }]}
+    variant="1"
+  />
+
+  <section class="blog-details-section resource-page-section">
+    <div class="section-gap bottom">
+      <div class="container">
+        <article class="blog-details-content-block resource-page fade-in">
+          <nav class="resource-nav" aria-label="Products navigation">
+            <a
+              href="/products/"
+              class="resource-nav-link active"
+              aria-current="page">All products</a
+            >
+            {
+              products.map((product) => (
+                <a
+                  href={`/products/${product.slug}/`}
+                  class="resource-nav-link"
+                >
+                  {product.title}
+                </a>
+              ))
+            }
+            <a href="/resources/" class="resource-nav-link resource-nav-all"
+              >Technical guides</a
+            >
+          </nav>
+
+          <p class="resource-intro">
+            Choose the closest product category, then send the complete original
+            reference. We review model codes, technical parameters, application
+            details, quantity, and destination before proposing a sourcing
+            route.
+          </p>
+
+          <div class="resource-meta">
+            <span><strong>{products.length}</strong> core product groups</span>
+            <span>Model-code review</span>
+            <span>Application-based matching</span>
+            <span>Global export support</span>
+          </div>
+
+          <div class="detail-rfq-strip">
+            <p>
+              Have only a nameplate or product photo? Send it with the
+              application, quantity, and delivery country.
+            </p>
+            <a href="/request-a-quote/?source=products" class="detail-rfq-link"
+              >Request Identification Help</a
+            >
+          </div>
+
+          <div class="hub-grid products-hub-grid">
+            {
+              products.map((product) => (
+                <article class="hub-card">
+                  <a href={`/products/${product.slug}/`} class="hub-card-image">
+                    <img
+                      src={product.image}
+                      alt={`${product.title} reference products for technical matching`}
+                      width="1536"
+                      height="1024"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </a>
+                  <div class="hub-card-body">
+                    <h2 class="hub-card-title">
+                      <a href={`/products/${product.slug}/`}>{product.title}</a>
+                    </h2>
+                    <p class="hub-card-summary">{product.summary}</p>
+                    <a
+                      href={`/products/${product.slug}/`}
+                      class="hub-card-link"
+                    >
+                      View selection points →
+                    </a>
+                  </div>
+                </article>
+              ))
+            }
+          </div>
+
+          <div class="resource-note">
+            <strong>Compatibility note:</strong> A series name or similar appearance
+            is not enough to confirm interchangeability. Complete model codes and
+            application conditions must be reviewed.
+          </div>
+
+          <section>
+            <h2>Choose a category by the decision you need to make</h2>
+            <p>
+              Product categories organize the first review; they do not replace
+              model-level identification. Start with the installed component and
+              the failure consequence, then collect the evidence needed for that
+              category.
+            </p>
+            <div class="resource-table-wrap">
+              <table class="resource-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Product group</th>
+                    <th scope="col">Identification question</th>
+                    <th scope="col">Main mismatch risk</th>
+                    <th scope="col">Best first evidence</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    products.map((product) => {
+                      const decision = categoryDecision[product.slug];
+                      return (
+                        <tr>
+                          <td>
+                            <a href={`/products/${product.slug}/`}>
+                              <strong>{product.title}</strong>
+                            </a>
+                          </td>
+                          <td>{decision.identify}</td>
+                          <td>{decision.risk}</td>
+                          <td>{decision.evidence}</td>
+                        </tr>
+                      );
+                    })
+                  }
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section>
+            <h2>Product page, series page or exact model record?</h2>
+            <div class="product-intent-grid">
+              <article>
+                <strong>Use a product page</strong>
+                <p>
+                  When the component type is known but the relevant selection
+                  parameters or supply route are not.
+                </p>
+              </article>
+              <article>
+                <strong>Use a series page</strong>
+                <p>
+                  When a family name is visible and you need its common code
+                  groups, review focus and minimum evidence.
+                </p>
+                <a href="/series/">Open series directory →</a>
+              </article>
+              <article>
+                <strong>Use a model record</strong>
+                <p>
+                  When the complete identifier is available and you need the
+                  documented code breakdown and open checks.
+                </p>
+                <a href="/models/">Open model records →</a>
+              </article>
+            </div>
+            <div class="resource-note">
+              Published coverage means an inquiry can be structured. It does not
+              mean every configuration is stocked, manufactured by the original
+              brand or already approved as a replacement. Those facts belong to
+              the order-specific quotation and evidence package.
+            </div>
+          </section>
+        </article>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .hm-hub { padding:90px 0; background:#f7f8fa; }
-  .hm-hub__intro { max-width:820px; margin-bottom:44px; }
-  .hm-kicker { color:var(--color-primary); font-size:13px; font-weight:600; letter-spacing:.13em; margin:0 0 15px; }
-  .hm-hub__intro h2 { margin:0 0 16px; }
-  .hm-hub__intro p:last-child { color:#536071; line-height:1.65; }
-  .hm-hub__grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
-  .hm-hub__card { min-height:390px; padding:34px; background:#fff; border:1px solid var(--color-stroke); color:inherit; text-decoration:none; cursor:pointer; transition:border-color .2s,box-shadow .2s,transform .2s; }
-  .hm-hub__card:hover { border-color:var(--color-primary); box-shadow:0 16px 38px rgba(15,23,42,.08); transform:translateY(-2px); }
-  .hm-hub__card > span { color:var(--color-primary); font:600 12px var(--font-title); }
-  .hm-hub__card h2 { font-size:32px; margin:52px 0 14px; }
-  .hm-hub__card p { color:#536071; font-size:16px; line-height:1.6; }
-  .hm-hub__card ul { display:flex; flex-wrap:wrap; gap:8px; list-style:none; padding:0; margin:24px 0; }
-  .hm-hub__card li { padding:7px 10px; background:#eef3fa; color:#445164; font-size:12px; }
-  .hm-hub__card strong { color:var(--color-primary); font-size:15px; }
-  .hm-hub__cta { display:flex; justify-content:space-between; align-items:center; gap:30px; margin-top:30px; padding:30px 34px; background:#dce9fa; }
-  .hm-hub__cta p { margin:5px 0 0; font-size:15px; color:#536071; }
-  @media(max-width:767px){.hm-hub__grid{grid-template-columns:1fr}.hm-hub__cta{align-items:flex-start;flex-direction:column}.hm-hub{padding:70px 0}}
-  @media(prefers-reduced-motion:reduce){.hm-hub__card{transition:none}.hm-hub__card:hover{transform:none}}
+  .products-hub-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .resource-table a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+  .product-intent-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 18px 0;
+  }
+  .product-intent-grid article {
+    padding: 20px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+  }
+  .product-intent-grid p {
+    color: #536071;
+    line-height: 1.65;
+  }
+  .product-intent-grid a {
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+  @media (max-width: 991px) {
+    .products-hub-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 768px) {
+    .products-hub-grid,
+    .product-intent-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

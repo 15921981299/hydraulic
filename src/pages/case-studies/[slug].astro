@@ -1,0 +1,291 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../components/BreadcrumbHero.astro";
+import DetailPageShell from "../../components/DetailPageShell.astro";
+import DetailRfqStrip from "../../components/DetailRfqStrip.astro";
+import HydraulicProductSidebar from "../../components/HydraulicProductSidebar.astro";
+import { hydraulicCaseStudies } from "../../data/case-studies";
+import { articleSchema, breadcrumbSchema, site } from "../../data/site";
+import "../../styles/resource-page.css";
+
+export function getStaticPaths() {
+  return hydraulicCaseStudies.map((study) => ({
+    params: { slug: study.slug },
+    props: { study },
+  }));
+}
+
+const { study } = Astro.props;
+const pageUrl = `${site.url}/case-studies/${study.slug}/`;
+const seoTitle =
+  study.slug === "directional-valve-model-code-review-germany"
+    ? "Directional Valve Model-Code Review Case Study"
+    : study.slug === "pump-identification-from-nameplate-united-states"
+      ? "Hydraulic Pump Identification Case Study"
+      : "Mixed Hydraulic RFQ Export Case Study";
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={study.description}
+  currentPath="/resources"
+  image={study.image}
+  ogType="article"
+  articlePublishedTime={study.published}
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Case Studies", url: `${site.url}/case-studies/` },
+      { name: study.title, url: pageUrl },
+    ]),
+    articleSchema({
+      title: study.title,
+      description: study.description,
+      url: pageUrl,
+      image: `${site.url}${study.image}`,
+      datePublished: study.published,
+      dateModified: study.modified,
+      authorName: "Hydraulic Match Editorial Review",
+      authorUrl: `${site.url}/authors/technical-review-team/`,
+      authorType: "Organization",
+    }),
+  ]}
+>
+  <BreadcrumbHero
+    title={study.title}
+    trail={[
+      { label: "Home", href: "/" },
+      { label: "Case Studies", href: "/case-studies/" },
+      { label: study.region },
+    ]}
+    variant="4"
+  />
+  <DetailPageShell intro={study.description}>
+    <img
+      slot="hero"
+      src={study.image}
+      alt={`${study.industry} hydraulic case evidence illustration`}
+      width="1200"
+      height="900"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+    <div class="resource-meta">
+      <span><strong>Industry</strong> {study.industry}</span>
+      <span><strong>Region</strong> {study.region}</span>
+      <span><strong>Record type</strong> Anonymized process example</span>
+      {
+        study.published && (
+          <span>
+            <strong>Published</strong> {study.published}
+          </span>
+        )
+      }
+      <span>
+        <strong>Reviewed by</strong>
+        <a href="/authors/technical-review-team/">Editorial Review Process</a>
+      </span>
+    </div>
+
+    <section class="case-overview">
+      <p>ANONYMIZED PROCESS RECORD</p>
+      <h2>{study.reference}</h2>
+      <dl>
+        <div><dt>Challenge</dt><dd>{study.challenge}</dd></div>
+        <div><dt>Documented outcome</dt><dd>{study.result}</dd></div>
+      </dl>
+    </section>
+
+    <section class="case-boundary">
+      <p>EVIDENCE STATUS</p>
+      <h2>What readers can and cannot verify from this page</h2>
+      <p>{study.evidenceBoundary}</p>
+      <ul class="resource-list">
+        <li>
+          The review fields and actions show the workflow used to structure the
+          decision.
+        </li>
+        <li>
+          Private customer files are not reproduced or implied to be public
+          third-party endorsements.
+        </li>
+        <li>
+          Product compatibility, supply status and commercial terms must be
+          reconfirmed for every new inquiry.
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Evidence Received</h2>
+      <div class="resource-checklist-grid">
+        {
+          study.evidence.map((item) => (
+            <div class="resource-checklist-card">
+              <strong>{item}</strong>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section>
+      <h2>Review Record</h2>
+      <div class="resource-table-wrap">
+        <table class="resource-table">
+          <thead
+            ><tr
+              ><th scope="col">Review field</th><th scope="col">Finding</th><th
+                scope="col">Action</th
+              ></tr
+            ></thead
+          >
+          <tbody
+            >{
+              study.review.map((item) => (
+                <tr>
+                  <>
+                    <td>
+                      <strong>{item.field}</strong>
+                    </td>
+                    <td>{item.finding}</td>
+                    <td>{item.action}</td>
+                  </>
+                </tr>
+              ))
+            }</tbody
+          >
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>Outcome and Limits</h2>
+      <ul class="resource-list">
+        {study.outcome.map((item) => <li>{item}</li>)}
+      </ul>
+      <p class="resource-note">
+        The result describes this anonymized inquiry only. It does not guarantee
+        the same outcome for a different code, supplier, machine or application.
+      </p>
+    </section>
+
+    <section class="case-takeaway">
+      <p>PROCESS TAKEAWAY</p>
+      <h2>{study.takeaway}</h2>
+    </section>
+
+    <DetailRfqStrip
+      quoteHref={`/contact/?source=case-${study.slug}`}
+      title="Request the same evidence-led review format."
+      text="Send the complete model code, files, quantity, destination and application. Your reply will separate confirmed facts from open points."
+      modalContext={`${study.title} related inquiry`}
+      modalSource={`case-${study.slug}`}
+    />
+
+    <p class="resource-related">
+      <a href="/case-studies/">All case studies</a><span aria-hidden="true"
+        >·</span
+      >
+      <a href="/matching-process/">Matching process</a><span aria-hidden="true"
+        >·</span
+      >
+      <a href="/quality/">Quality verification</a><span aria-hidden="true"
+        >·</span
+      >
+      <a href="/commercial-proof/">Commercial proof</a>
+    </p>
+    <HydraulicProductSidebar
+      slot="sidebar"
+      activeSlug=""
+      quoteHref={`/contact/?source=case-${study.slug}`}
+    />
+  </DetailPageShell>
+</BaseLayout>
+
+<style>
+  .case-overview {
+    padding: 26px;
+    border: 1px solid rgba(20, 110, 245, 0.18);
+    background: linear-gradient(180deg, rgba(20, 110, 245, 0.06), #fff);
+  }
+  .case-boundary,
+  .case-takeaway {
+    margin: 28px 0;
+    padding: 30px;
+    border: 1px solid var(--color-stroke);
+    background: #f8fafc;
+  }
+  .case-boundary > p:first-child,
+  .case-takeaway > p {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .case-boundary h2,
+  .case-takeaway h2 {
+    margin: 9px 0 16px;
+    text-transform: none;
+  }
+  .case-boundary > p:not(:first-child) {
+    color: #536071;
+    line-height: 1.7;
+  }
+  .case-takeaway {
+    border-left: 4px solid var(--color-primary);
+  }
+  .case-takeaway h2 {
+    margin-bottom: 0;
+    font-size: 24px;
+    line-height: 1.5;
+  }
+  .case-overview > p {
+    margin: 0;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .case-overview h2 {
+    margin: 9px 0 18px;
+    font-size: 28px;
+    text-transform: none;
+  }
+  .case-overview dl {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 0;
+  }
+  .case-overview dl > div {
+    padding: 16px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+  }
+  .case-overview dt {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .case-overview dd {
+    margin: 6px 0 0;
+    color: #334155;
+    line-height: 1.65;
+  }
+  @media (max-width: 680px) {
+    .case-overview dl {
+      grid-template-columns: 1fr;
+    }
+    .case-overview {
+      padding: 20px;
+    }
+    .case-boundary,
+    .case-takeaway {
+      padding: 22px;
+    }
+  }
+</style>

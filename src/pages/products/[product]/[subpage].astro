@@ -1,54 +1,241 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import BreadcrumbHero from '../../../components/BreadcrumbHero.astro';
-import DetailRfqStrip from '../../../components/DetailRfqStrip.astro';
-import { productSubpages } from '../../../data/product-subpages';
-import { products } from '../../../data/products';
-import { breadcrumbSchema, site } from '../../../data/site';
-import '../../../styles/resource-page.css';
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../../components/BreadcrumbHero.astro";
+import DetailPageShell from "../../../components/DetailPageShell.astro";
+import DetailRfqStrip from "../../../components/DetailRfqStrip.astro";
+import HydraulicProductSidebar from "../../../components/HydraulicProductSidebar.astro";
+import { brandCoverage } from "../../../data/brand-coverage";
+import { productSubpages } from "../../../data/product-subpages";
+import { products } from "../../../data/products";
+import { breadcrumbSchema, faqSchema, site } from "../../../data/site";
+import "../../../styles/resource-page.css";
 
 export function getStaticPaths() {
-  return productSubpages.map((subpage) => ({ params: { product: subpage.productSlug, subpage: subpage.slug }, props: { subpage } }));
+  return productSubpages.map((subpage) => ({
+    params: { product: subpage.productSlug, subpage: subpage.slug },
+    props: { subpage },
+  }));
 }
 
 const { subpage } = Astro.props;
 const parent = products.find((item) => item.slug === subpage.productSlug)!;
 const pageUrl = `${site.url}/products/${subpage.productSlug}/${subpage.slug}/`;
+const quoteHref = `/request-a-quote/?product=${subpage.slug}`;
+const brandHrefFor = (name: string) => {
+  const normalized = name.toLowerCase();
+  const match = brandCoverage.find((brand) =>
+    [brand.name, ...brand.aliases].some((label) => {
+      const candidate = label.toLowerCase();
+      return normalized.includes(candidate) || candidate.includes(normalized);
+    }),
+  );
+  return match ? `/brands/${match.slug}/` : "";
+};
 ---
 
 <BaseLayout
   title={subpage.seoTitle}
-  description={subpage.summary}
+  description={subpage.description}
   currentPath="/products"
-  jsonLd={breadcrumbSchema([{ name: 'Home', url: site.url }, { name: 'Products', url: `${site.url}/products/` }, { name: parent.title, url: `${site.url}/products/${parent.slug}/` }, { name: subpage.title, url: pageUrl }])}
+  image={parent.image}
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Products", url: `${site.url}/products/` },
+      { name: parent.title, url: `${site.url}/products/${parent.slug}/` },
+      { name: subpage.title, url: pageUrl },
+    ]),
+    ...(subpage.faqs.length ? [faqSchema(subpage.faqs)] : []),
+  ]}
 >
-  <BreadcrumbHero title={subpage.h1Title} trail={[{ label: 'Home', href: '/' }, { label: 'Products', href: '/products/' }, { label: parent.title, href: `/products/${parent.slug}/` }, { label: subpage.title }]} variant="2" />
-  <section class="hm-subpage">
-    <div class="container hm-subpage__inner">
-      <p class="hm-subpage__lead">{subpage.summary}</p>
-      <DetailRfqStrip
-        quoteHref={`/request-a-quote/?product=${subpage.slug}`}
-        title={`Request ${subpage.title.toLowerCase()} review`}
-        text="Send the complete model code, quantity, destination and a clear nameplate photo. We will identify the remaining confirmation points."
-      />
-      <h2>What must be reviewed</h2>
-      <div class="hm-subpage__table">
-        {subpage.parameterGroups.map((item, index) => <div><span>{String(index + 1).padStart(2, '0')}</span><strong>{item}</strong><p>Confirm from the original code, datasheet, nameplate, drawing or measured part as applicable.</p></div>)}
-      </div>
-      <div class="hm-subpage__columns">
-        <section><h2>Typical Applications</h2><ul>{subpage.applications.map((item) => <li>{item}</li>)}</ul></section>
-        <section><h2>Reference Brands</h2><ul>{subpage.brandReferences.map((item) => <li>{item}</li>)}</ul><p>Names are used for identification only. No affiliation or authorization is implied.</p></section>
-      </div>
-      <section class="hm-subpage__warning">
-        <h2>Required confirmation</h2>
-        <ol>{subpage.verification.map((item) => <li>{item}</li>)}</ol>
-        <p><strong>Important:</strong> A functional alternative may still require customer review of dimensions, connectors, ports or system settings. Known differences are stated in the quotation.</p>
-      </section>
-      <p class="hm-subpage__back"><a href={`/products/${parent.slug}/`}>← Back to {parent.title}</a> · <a href="/matching-process/">Matching process</a> · <a href="/request-a-quote/">Request a Match</a></p>
+  <BreadcrumbHero
+    title={subpage.h1Title}
+    trail={[
+      { label: "Home", href: "/" },
+      { label: "Products", href: "/products/" },
+      { label: parent.title, href: `/products/${parent.slug}/` },
+      { label: subpage.title },
+    ]}
+    variant="2"
+  />
+
+  <DetailPageShell intro={subpage.summary}>
+    <img
+      slot="hero"
+      src={parent.image}
+      alt={`${subpage.title} reference products for technical matching`}
+      width="1536"
+      height="1024"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+
+    <div class="resource-meta">
+      <span><strong>Category</strong> {parent.title}</span>
+      <span><strong>Review</strong> Model code and nameplate</span>
+      <span><strong>Fit</strong> Ports, mounting, and controls</span>
+      <span><strong>Delivery</strong> Global export support</span>
     </div>
-  </section>
+
+    <DetailRfqStrip
+      quoteHref={quoteHref}
+      title={`Request ${subpage.title.toLowerCase()} review`}
+      text="Send the complete model code, quantity, destination and a clear nameplate photo. We will identify the remaining confirmation points."
+    />
+
+    {
+      subpage.selectionGuide.length > 0 && (
+        <section>
+          <h2>{subpage.title} Selection Guide</h2>
+          <div class="resource-checklist-grid">
+            {subpage.selectionGuide.map((item) => (
+              <article class="resource-checklist-card">
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <h2>What Must Be Reviewed</h2>
+    <div class="resource-checklist-grid">
+      {
+        subpage.parameterGroups.map((item) => (
+          <div class="resource-checklist-card">
+            <h2>{item}</h2>
+            <p>
+              Confirm from the original code, datasheet, nameplate, drawing, or
+              measured part as applicable.
+            </p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="subpage-context-grid">
+      <section class="resource-checklist-card">
+        <h2>Typical Applications</h2>
+        <ul class="resource-list">
+          {subpage.applications.map((item) => <li>{item}</li>)}
+        </ul>
+      </section>
+      <section class="resource-checklist-card">
+        <h2>Reference Brands</h2>
+        <ul class="resource-list">
+          {
+            subpage.brandReferences.map((item) => {
+              const href = brandHrefFor(item);
+              return <li>{href ? <a href={href}>{item}</a> : item}</li>;
+            })
+          }
+        </ul>
+        <p>
+          Names are used for identification only. No affiliation or
+          authorization is implied.
+        </p>
+      </section>
+    </div>
+
+    <section class="resource-note">
+      <h2>Required Confirmation</h2>
+      <ol class="resource-olist">
+        {subpage.verification.map((item) => <li>{item}</li>)}
+      </ol>
+      <p>
+        <strong>Important:</strong> A functional alternative may still require customer
+        review of dimensions, connectors, ports, or system settings. Known differences
+        are stated in the quotation.
+      </p>
+    </section>
+
+    {
+      subpage.faqs.length > 0 && (
+        <section>
+          <h2>Frequently Asked Questions</h2>
+          <div class="subpage-faq">
+            {subpage.faqs.map((faq) => (
+              <details>
+                <summary>{faq.question}</summary>
+                <p>{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    {
+      subpage.relatedLinks.length > 0 && (
+        <section>
+          <h2>Related Technical & Product Pages</h2>
+          <div class="subpage-related">
+            {subpage.relatedLinks.map((link) => (
+              <a href={link.href}>{link.title} →</a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <p class="resource-note detail-page-back">
+      <a href={`/products/${parent.slug}/`}>Back to {parent.title}</a> ·
+      <a href="/matching-process/">Matching process</a> ·
+      <a href={quoteHref}>Request a match</a>
+    </p>
+
+    <HydraulicProductSidebar
+      slot="sidebar"
+      activeSlug={parent.slug}
+      quoteHref={quoteHref}
+    />
+  </DetailPageShell>
 </BaseLayout>
 
 <style>
-  .hm-subpage{padding:80px 0 100px;background:#fff}.hm-subpage__inner{max-width:1000px}.hm-subpage__lead{font:500 25px/1.5 var(--font-title);margin:0 0 30px}.hm-subpage h2{margin:58px 0 22px}.hm-subpage__table{border-top:1px solid var(--color-stroke)}.hm-subpage__table>div{display:grid;grid-template-columns:48px 260px 1fr;gap:18px;padding:20px 12px;border-bottom:1px solid var(--color-stroke);align-items:start}.hm-subpage__table span{color:var(--color-primary);font:600 12px var(--font-title)}.hm-subpage__table strong{font-size:16px}.hm-subpage__table p{font-size:15px;color:#596575;margin:0}.hm-subpage__columns{display:grid;grid-template-columns:1fr 1fr;gap:50px}.hm-subpage__columns li,.hm-subpage__warning li{font-size:16px;line-height:1.8;color:#536071}.hm-subpage__columns p{font-size:14px;color:#667181}.hm-subpage__warning{margin-top:60px;padding:34px;background:#eef3fa;border-left:4px solid var(--color-primary)}.hm-subpage__warning h2{margin-top:0}.hm-subpage__warning p{font-size:15px;color:#485568}.hm-subpage__back{margin-top:40px;font-size:15px}.hm-subpage__back a{color:var(--color-primary)}@media(max-width:650px){.hm-subpage__table>div{grid-template-columns:36px 1fr}.hm-subpage__table p{grid-column:2}.hm-subpage__columns{grid-template-columns:1fr}.hm-subpage{padding:60px 0}}
+  .subpage-context-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .subpage-context-grid h2 {
+    margin-top: 0;
+  }
+  .subpage-faq {
+    display: grid;
+    gap: 10px;
+  }
+  .subpage-faq details {
+    padding: 16px 18px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+  }
+  .subpage-faq summary {
+    color: var(--color-title);
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .subpage-faq p {
+    margin: 12px 0 0;
+  }
+  .subpage-related {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .subpage-related a {
+    padding: 11px 14px;
+    border: 1px solid var(--color-stroke);
+    color: var(--color-primary);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  @media (max-width: 768px) {
+    .subpage-context-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

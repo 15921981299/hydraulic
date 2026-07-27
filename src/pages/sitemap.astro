@@ -1,17 +1,163 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import BreadcrumbHero from '../components/BreadcrumbHero.astro';
-import { products } from '../data/products';
-import { hydraulicPages } from '../data/hydraulic-pages';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../components/BreadcrumbHero.astro";
+import { brandCoverage } from "../data/brand-coverage";
+import { hydraulicCaseStudies } from "../data/case-studies";
+import { products } from "../data/products";
+import { hydraulicPages } from "../data/hydraulic-pages";
+import { modelRecords } from "../data/model-records";
 ---
-<BaseLayout title="Sitemap" description="Browse Hydraulic Match product, matching, quality, alternative, guide and inquiry pages." currentPath="/sitemap">
-  <BreadcrumbHero title="Sitemap" trail={[{ label: 'Home', href: '/' }, { label: 'Sitemap' }]} variant="5" />
-  <section class="hm-sitemap"><div class="container">
-    <section><h2>Main Pages</h2><a href="/">Home</a><a href="/about/">About</a><a href="/matching-process/">Matching Process</a><a href="/quality/">Quality</a><a href="/distributor-support/">Distributor Support</a><a href="/request-a-quote/">Request a Match</a><a href="/contact/">Contact</a></section>
-    <section><h2>Products</h2><a href="/products/">All Products</a>{products.map((product) => <><a href={`/products/${product.slug}/`}>{product.title}</a>{product.subcategories.map((subcategory) => <a class="hm-sitemap__child" href={`/products/${product.slug}/${subcategory.slug}/`}>{subcategory.title}</a>)}</>)}</section>
-    <section><h2>Alternatives</h2>{hydraulicPages.filter((page) => page.slug.startsWith('alternatives/')).map((page) => <a href={`/${page.slug}/`}>{page.title}</a>)}</section>
-    <section><h2>Technical Guides</h2><a href="/resources/">All Guides</a>{hydraulicPages.filter((page) => page.slug.startsWith('resources/')).map((page) => <a href={`/${page.slug}/`}>{page.title}</a>)}</section>
-    <section><h2>Policies</h2><a href="/shipping/">Shipping</a><a href="/warranty/">Warranty</a><a href="/trademark-disclaimer/">Trademark Disclaimer</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></section>
-  </div></section>
+
+<BaseLayout
+  title="Sitemap"
+  description="Browse Hydraulic Match product, matching, quality, alternative, technical guide, industry and inquiry pages online."
+  currentPath="/sitemap"
+>
+  <BreadcrumbHero
+    title="Sitemap"
+    trail={[{ label: "Home", href: "/" }, { label: "Sitemap" }]}
+    variant="5"
+  />
+  <section class="hm-sitemap">
+    <div class="container">
+      <section>
+        <h2>Main Pages</h2><a href="/">Home</a><a href="/about/">About Us</a><a
+          href="/contact/">Contact Us</a
+        ><a href="/matching-process/">Matching Process</a><a href="/trust/"
+          >Trust &amp; Verification</a
+        ><a href="/quality/">Quality</a><a href="/commercial-proof/"
+          >Inventory &amp; Credentials</a
+        ><a href="/distributor-support/">Distributor Support</a><a
+          href="/editorial-policy/">Technical Editorial Policy</a
+        ><a href="/authors/technical-review-team/">Editorial Review Process</a
+        ><a href="/search/">Search Published References</a><a
+          href="/request-a-quote/">Request a Match</a
+        >
+      </section>
+      <section>
+        <h2>Products</h2><a href="/products/">All Products</a>{
+          products.map((product) => (
+            <>
+              <a href={`/products/${product.slug}/`}>{product.title}</a>
+              {product.subcategories.map((subcategory) => (
+                <a
+                  class="hm-sitemap__child"
+                  href={`/products/${product.slug}/${subcategory.slug}/`}
+                >
+                  {subcategory.title}
+                </a>
+              ))}
+            </>
+          ))
+        }
+      </section>
+      <section>
+        <h2>Brands &amp; Alternatives</h2><a href="/brands/"
+          >Brand Review Center</a
+        >{
+          brandCoverage.map((brand) => (
+            <a class="hm-sitemap__child" href={`/brands/${brand.slug}/`}>
+              {brand.name}
+            </a>
+          ))
+        }<a href="/series/">Brand &amp; Series Directory</a><a
+          href="/cross-reference/">Model Code Review</a
+        ><a href="/models/">Exact Model Records</a>{
+          modelRecords.map((record) => (
+            <a class="hm-sitemap__child" href={`/models/${record.slug}/`}>
+              {record.brand} {record.model}
+            </a>
+          ))
+        }{
+          hydraulicPages
+            .filter(
+              (page) =>
+                page.slug === "alternatives" ||
+                page.slug.startsWith("alternatives/"),
+            )
+            .map((page) => <a href={`/${page.slug}/`}>{page.title}</a>)
+        }
+      </section>
+      <section>
+        <h2>Industries</h2>{
+          hydraulicPages
+            .filter(
+              (page) =>
+                page.slug === "industries" ||
+                page.slug.startsWith("industries/"),
+            )
+            .map((page) => <a href={`/${page.slug}/`}>{page.title}</a>)
+        }
+      </section>
+      <section>
+        <h2>Technical Guides &amp; Evidence</h2><a href="/resources/"
+          >All Guides</a
+        ><a href="/tools/">Hydraulic Calculators</a><a href="/downloads/"
+          >RFQ Templates &amp; Checklists</a
+        ><a href="/case-studies/">Case Studies</a>{
+          hydraulicCaseStudies.map((study) => (
+            <a class="hm-sitemap__child" href={`/case-studies/${study.slug}/`}>
+              {study.title}
+            </a>
+          ))
+        }{
+          hydraulicPages
+            .filter((page) => page.slug.startsWith("resources/"))
+            .map((page) => <a href={`/${page.slug}/`}>{page.title}</a>)
+        }
+      </section>
+      <section>
+        <h2>Policies</h2><a href="/shipping/">Shipping</a><a href="/warranty/"
+          >Warranty</a
+        ><a href="/trademark-disclaimer/">Trademark Disclaimer</a><a
+          href="/privacy/">Privacy</a
+        ><a href="/terms/">Terms</a>
+      </section>
+    </div>
+  </section>
 </BaseLayout>
-<style>.hm-sitemap{padding:80px 0 100px;background:#fff}.hm-sitemap>.container{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}.hm-sitemap section{padding:26px;border:1px solid var(--color-stroke);display:flex;flex-direction:column}.hm-sitemap h2{font-size:23px;margin:0 0 16px}.hm-sitemap a{padding:8px 0;color:var(--color-title);text-decoration:none;font-size:15px}.hm-sitemap a:hover{color:var(--color-primary)}.hm-sitemap__child{padding-left:18px!important;color:#667181!important;font-size:14px!important}@media(max-width:800px){.hm-sitemap>.container{grid-template-columns:1fr 1fr}}@media(max-width:520px){.hm-sitemap>.container{grid-template-columns:1fr}}</style>
+<style>
+  .hm-sitemap {
+    padding: 80px 0 100px;
+    background: #fff;
+  }
+  .hm-sitemap > .container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  .hm-sitemap section {
+    padding: 26px;
+    border: 1px solid var(--color-stroke);
+    display: flex;
+    flex-direction: column;
+  }
+  .hm-sitemap h2 {
+    font-size: 23px;
+    margin: 0 0 16px;
+  }
+  .hm-sitemap a {
+    padding: 8px 0;
+    color: var(--color-title);
+    text-decoration: none;
+    font-size: 15px;
+  }
+  .hm-sitemap a:hover {
+    color: var(--color-primary);
+  }
+  .hm-sitemap__child {
+    padding-left: 18px !important;
+    color: #667181 !important;
+    font-size: 14px !important;
+  }
+  @media (max-width: 800px) {
+    .hm-sitemap > .container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .hm-sitemap > .container {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
