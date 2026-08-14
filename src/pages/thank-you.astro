@@ -2,7 +2,239 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site';
 ---
-<BaseLayout title="Your Match Request Was Received" description="Hydraulic Match received your hydraulic component inquiry." noindex hideFloatingCta>
-  <section class="hm-thanks"><div class="container"><p>REQUEST RECEIVED</p><h1>Thank you. We will review the model and files.</h1><span>We check inquiry completeness first. If a model suffix, photo, drawing or application detail is missing, we will ask for it before preparing a sourcing option.</span><div class="hm-thanks__steps"><div><strong>01</strong><p>Completeness check</p></div><div><strong>02</strong><p>Technical review</p></div><div><strong>03</strong><p>Supplier confirmation</p></div><div><strong>04</strong><p>Quote and open points</p></div></div><p class="hm-thanks__contact">Questions? Email <a href={`mailto:${site.email}`}>{site.email}</a>.</p><a href="/" class="primary-button"><span class="button-text">Return Home</span></a></div></section>
+
+<BaseLayout
+  title="Your Match Request Was Received | Hydraulic Match"
+  description="Hydraulic Match received your hydraulic component inquiry. We review qualified inquiries within one business day."
+  noindex
+  hideFloatingCta
+>
+  <section class="hm-thanks">
+    <div class="container">
+      <p>REQUEST RECEIVED</p>
+      <h1>Thank you. We will review the model and files.</h1>
+      <span>
+        We check inquiry completeness first. If a model suffix, photo, drawing
+        or application detail is missing, we will ask for it before preparing a
+        sourcing option. Qualified inquiries are reviewed within one business
+        day.
+      </span>
+
+      <div class="hm-thanks__steps">
+        <div>
+          <strong>01</strong><p>Completeness check</p>
+        </div>
+        <div>
+          <strong>02</strong><p>Technical review</p>
+        </div>
+        <div>
+          <strong>03</strong><p>Supplier confirmation</p>
+        </div>
+        <div>
+          <strong>04</strong><p>Quote and open points</p>
+        </div>
+      </div>
+
+      <p class="hm-thanks__contact">
+        Questions? Email <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+
+      <div class="hm-thanks__actions">
+        <a href="/" class="primary-button">
+          <span class="button-text">Return Home</span>
+        </a>
+        <a href="/resources/" class="hm-thanks__secondary">
+          Browse Technical Guides
+        </a>
+      </div>
+
+      <div class="hm-thanks__resources">
+        <p class="hm-thanks__resources-label">While you wait — helpful resources</p>
+        <div class="hm-thanks__resources-grid">
+          <a href="/resources/how-to-read-a-hydraulic-valve-model-code/">
+            <strong>How to Read a Hydraulic Valve Model Code</strong>
+            <span>Understand what each code group controls before the review comes back.</span>
+          </a>
+          <a href="/resources/hydraulic-component-pre-shipment-inspection-checklist/">
+            <strong>Pre-Shipment Inspection Checklist</strong>
+            <span>Define the evidence you need before your order ships.</span>
+          </a>
+          <a href="/matching-process/">
+            <strong>Matching & Quotation Process</strong>
+            <span>See how the review moves from model code to supplier quotation.</span>
+          </a>
+          <a href="/resources/hydraulic-terms-glossary/">
+            <strong>Hydraulic Terminology Glossary</strong>
+            <span>Look up pump, valve, cylinder and system terms while you wait.</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
-<style>.hm-thanks{padding:110px 0;text-align:center;background:#f5f7fa}.hm-thanks>div>p:first-child{color:var(--color-primary);font-size:12px;font-weight:600;letter-spacing:.13em}.hm-thanks h1{max-width:900px;margin:14px auto 20px}.hm-thanks>div>span{display:block;max-width:780px;margin:0 auto;color:#596575;line-height:1.7}.hm-thanks__steps{display:grid;grid-template-columns:repeat(4,1fr);max-width:900px;margin:50px auto 30px;border-top:1px solid var(--color-stroke);border-left:1px solid var(--color-stroke)}.hm-thanks__steps div{padding:24px;border-right:1px solid var(--color-stroke);border-bottom:1px solid var(--color-stroke);background:#fff}.hm-thanks__steps strong{color:var(--color-primary)}.hm-thanks__steps p{font-size:14px}.hm-thanks__contact{font-size:14px;margin-bottom:28px}.hm-thanks__contact a{color:var(--color-primary)}@media(max-width:650px){.hm-thanks__steps{grid-template-columns:1fr 1fr}}</style>
+
+<script>
+  // Fire RFQ submission conversion event when GA4 is available
+  const params = new URLSearchParams(window.location.search);
+  const submitSource = params.get('source') ?? 'direct';
+  const submitBrand = params.get('brand') ?? '';
+  const submitModel = params.get('model') ?? '';
+
+  function trackConversion() {
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'generate_lead', {
+        event_category: 'RFQ',
+        event_label: 'rfq_submission',
+        source: submitSource,
+        currency: 'USD',
+        ...(submitBrand ? { brand: submitBrand } : {}),
+        ...(submitModel ? { model: submitModel } : {}),
+      });
+    }
+    // Also push to dataLayer if GTM is present
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'rfq_submission',
+        source: submitSource,
+        brand: submitBrand,
+        model: submitModel,
+      });
+    }
+  }
+
+  // Track after a short delay to ensure analytics scripts have loaded
+  if (document.readyState === 'complete') {
+    setTimeout(trackConversion, 200);
+  } else {
+    window.addEventListener('load', () => setTimeout(trackConversion, 200));
+  }
+</script>
+
+<style>
+  .hm-thanks {
+    padding: 90px 0 80px;
+    text-align: center;
+    background: #f5f7fa;
+  }
+  .hm-thanks > div > p:first-child {
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.13em;
+  }
+  .hm-thanks h1 {
+    max-width: 900px;
+    margin: 14px auto 20px;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    text-transform: none;
+  }
+  .hm-thanks > div > span {
+    display: block;
+    max-width: 780px;
+    margin: 0 auto;
+    color: #596575;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  .hm-thanks__steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 900px;
+    margin: 40px auto 30px;
+    border-top: 1px solid var(--color-stroke);
+    border-left: 1px solid var(--color-stroke);
+  }
+  .hm-thanks__steps div {
+    padding: 24px;
+    border-right: 1px solid var(--color-stroke);
+    border-bottom: 1px solid var(--color-stroke);
+    background: #fff;
+  }
+  .hm-thanks__steps strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-primary);
+    font-size: 20px;
+  }
+  .hm-thanks__steps p {
+    margin: 0;
+    font-size: 13px;
+    color: #475569;
+    line-height: 1.5;
+  }
+  .hm-thanks__contact {
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+  .hm-thanks__contact a {
+    color: var(--color-primary);
+  }
+  .hm-thanks__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+  .hm-thanks__secondary {
+    color: var(--color-primary);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .hm-thanks__secondary:hover {
+    text-decoration: underline;
+  }
+  .hm-thanks__resources {
+    max-width: 920px;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .hm-thanks__resources-label {
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 16px;
+  }
+  .hm-thanks__resources-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .hm-thanks__resources-grid a {
+    display: grid;
+    gap: 6px;
+    padding: 20px;
+    border: 1px solid var(--color-stroke);
+    border-radius: 6px;
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+  .hm-thanks__resources-grid a:hover {
+    border-color: var(--color-primary);
+  }
+  .hm-thanks__resources-grid strong {
+    color: var(--color-title);
+    font-size: 15px;
+  }
+  .hm-thanks__resources-grid span {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  @media (max-width: 650px) {
+    .hm-thanks {
+      padding: 60px 0;
+    }
+    .hm-thanks__steps {
+      grid-template-columns: 1fr 1fr;
+    }
+    .hm-thanks__resources-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

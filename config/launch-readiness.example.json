@@ -1,0 +1,11 @@
+{
+  "legalDocumentsReviewed": false,
+  "quotationIdentityMatches": false,
+  "turnstileSecretConfigured": false,
+  "resendSecretConfigured": false,
+  "senderDomainVerified": false,
+  "privacyWorkflowReviewed": false,
+  "r2LifecycleConfiguredOrDisabled": false,
+  "productionRfqTested": false,
+  "technicalReviewerProfileVerified": false
+}

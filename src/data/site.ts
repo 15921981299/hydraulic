@@ -3,6 +3,39 @@ export const site = {
   company: {
     legalName: "Hydraulic Match",
     legalNameEn: "Hydraulic Match",
+    /**
+     * Verified contracting identity. Leave fields empty until they can be
+     * supported by current company documents. Empty values are never rendered
+     * as public company proof or emitted in Organization schema.
+     */
+    verifiedLegalName:
+      (typeof import.meta.env.PUBLIC_LEGAL_ENTITY_NAME === "string" &&
+        import.meta.env.PUBLIC_LEGAL_ENTITY_NAME.trim()) ||
+      "",
+    registrationNumber:
+      (typeof import.meta.env.PUBLIC_COMPANY_REGISTRATION_NUMBER === "string" &&
+        import.meta.env.PUBLIC_COMPANY_REGISTRATION_NUMBER.trim()) ||
+      "",
+    streetAddress:
+      (typeof import.meta.env.PUBLIC_COMPANY_STREET_ADDRESS === "string" &&
+        import.meta.env.PUBLIC_COMPANY_STREET_ADDRESS.trim()) ||
+      "",
+    addressLocality:
+      (typeof import.meta.env.PUBLIC_COMPANY_CITY === "string" &&
+        import.meta.env.PUBLIC_COMPANY_CITY.trim()) ||
+      "",
+    addressRegion:
+      (typeof import.meta.env.PUBLIC_COMPANY_REGION === "string" &&
+        import.meta.env.PUBLIC_COMPANY_REGION.trim()) ||
+      "",
+    postalCode:
+      (typeof import.meta.env.PUBLIC_COMPANY_POSTAL_CODE === "string" &&
+        import.meta.env.PUBLIC_COMPANY_POSTAL_CODE.trim()) ||
+      "",
+    addressCountry:
+      (typeof import.meta.env.PUBLIC_COMPANY_COUNTRY_CODE === "string" &&
+        import.meta.env.PUBLIC_COMPANY_COUNTRY_CODE.trim()) ||
+      "CN",
   },
   url: "https://hydraulicmatch.com",
   email: "sales@hydraulicmatch.com",
@@ -31,6 +64,11 @@ export const site = {
     (typeof import.meta.env.PUBLIC_GTM_CONTAINER_ID === "string" &&
       import.meta.env.PUBLIC_GTM_CONTAINER_ID.trim()) ||
     "",
+  /** Public Turnstile site key. The matching secret stays in Worker secrets. */
+  turnstileSiteKey:
+    (typeof import.meta.env.PUBLIC_TURNSTILE_SITE_KEY === "string" &&
+      import.meta.env.PUBLIC_TURNSTILE_SITE_KEY.trim()) ||
+    "",
   social: {
     /** Company LinkedIn — set here or via PUBLIC_LINKEDIN_URL in .env. */
     linkedin:
@@ -49,6 +87,27 @@ export const site = {
     lisaHuangLinkedIn:
       (typeof import.meta.env.PUBLIC_AUTHOR_LISA_HUANG_LINKEDIN === "string" &&
         import.meta.env.PUBLIC_AUTHOR_LISA_HUANG_LINKEDIN.trim()) ||
+      "",
+  },
+  /** Publish a named reviewer only when the identity and background are verified. */
+  technicalReviewer: {
+    name:
+      (typeof import.meta.env.PUBLIC_TECHNICAL_REVIEWER_NAME === "string" &&
+        import.meta.env.PUBLIC_TECHNICAL_REVIEWER_NAME.trim()) ||
+      "",
+    jobTitle:
+      (typeof import.meta.env.PUBLIC_TECHNICAL_REVIEWER_JOB_TITLE ===
+        "string" &&
+        import.meta.env.PUBLIC_TECHNICAL_REVIEWER_JOB_TITLE.trim()) ||
+      "",
+    background:
+      (typeof import.meta.env.PUBLIC_TECHNICAL_REVIEWER_BACKGROUND ===
+        "string" &&
+        import.meta.env.PUBLIC_TECHNICAL_REVIEWER_BACKGROUND.trim()) ||
+      "",
+    linkedin:
+      (typeof import.meta.env.PUBLIC_TECHNICAL_REVIEWER_LINKEDIN === "string" &&
+        import.meta.env.PUBLIC_TECHNICAL_REVIEWER_LINKEDIN.trim()) ||
       "",
   },
   /**
@@ -89,11 +148,23 @@ export const site = {
 };
 
 const organizationLogoUrl = `${site.url}${site.logo.default}`;
+const verifiedOrganizationName =
+  site.company.verifiedLegalName || site.company.legalNameEn;
+const verifiedAddress = site.company.streetAddress
+  ? {
+      "@type": "PostalAddress",
+      streetAddress: site.company.streetAddress,
+      addressLocality: site.company.addressLocality || undefined,
+      addressRegion: site.company.addressRegion || undefined,
+      postalCode: site.company.postalCode || undefined,
+      addressCountry: site.company.addressCountry,
+    }
+  : undefined;
 
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: site.company.legalNameEn,
+  name: verifiedOrganizationName,
   alternateName: [site.name, site.company.legalName],
   url: site.url,
   email: site.email,
@@ -101,10 +172,10 @@ export const organizationSchema = {
   description: site.defaultDescription,
   logo: organizationLogoUrl,
   areaServed: "Worldwide",
-  address: {
-    "@type": "PostalAddress",
-    addressCountry: "CN",
-  },
+  ...(site.company.registrationNumber
+    ? { identifier: site.company.registrationNumber }
+    : {}),
+  ...(verifiedAddress ? { address: verifiedAddress } : {}),
   contactPoint: [
     {
       "@type": "ContactPoint",
@@ -276,16 +347,16 @@ export function aboutPageSchema(page: {
     },
     mainEntity: {
       "@type": "Organization",
-      name: site.company.legalNameEn,
+      name: verifiedOrganizationName,
       alternateName: [site.name, site.company.legalName],
       url: site.url,
       email: site.email,
       telephone: site.phone,
       description: site.defaultDescription,
-      address: {
-        "@type": "PostalAddress",
-        addressCountry: "CN",
-      },
+      ...(site.company.registrationNumber
+        ? { identifier: site.company.registrationNumber }
+        : {}),
+      ...(verifiedAddress ? { address: verifiedAddress } : {}),
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "sales",
@@ -317,15 +388,15 @@ export function contactPageSchema(page: {
     },
     about: {
       "@type": "Organization",
-      name: site.company.legalNameEn,
+      name: verifiedOrganizationName,
       alternateName: [site.name, site.company.legalName],
       url: site.url,
       email: site.email,
       telephone: site.phone,
-      address: {
-        "@type": "PostalAddress",
-        addressCountry: "CN",
-      },
+      ...(site.company.registrationNumber
+        ? { identifier: site.company.registrationNumber }
+        : {}),
+      ...(verifiedAddress ? { address: verifiedAddress } : {}),
       contactPoint: {
         "@type": "ContactPoint",
         contactType: "sales",

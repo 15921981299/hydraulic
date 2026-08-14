@@ -1,0 +1,276 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../components/BreadcrumbHero.astro";
+import HydraulicProductSidebar from "../components/HydraulicProductSidebar.astro";
+import { breadcrumbSchema, faqSchema, site } from "../data/site";
+
+const pageTitle = "Hydraulic Sourcing FAQ";
+const pageDescription =
+  "Frequently asked questions about hydraulic component sourcing, model-code review, cross-referencing, Chinese alternatives, pre-shipment inspection and order documentation.";
+const pageUrl = `${site.url}/faq/`;
+
+const faqCategories = [
+  {
+    title: "Sourcing & Model-Code Review",
+    faqs: [
+      {
+        question: "Can a hydraulic component be confirmed from the series name alone?",
+        answer: "Usually not. Products in the same series can differ by displacement, control, rotation, spool function, voltage, shaft, mounting flange, ports, seals and design revision. The complete model code and application must be reviewed before a replacement can be confirmed.",
+      },
+      {
+        question: "What information is needed for a hydraulic cross-reference review?",
+        answer: "Start with the original brand, complete model or part number, quantity and destination. Add a clear nameplate photo, product and interface photos, machine model, pressure, flow or displacement, voltage and any available drawing or datasheet. The more complete the evidence, the faster and more reliable the technical review.",
+      },
+      {
+        question: "Can you review an obsolete or discontinued hydraulic model?",
+        answer: "Yes, when enough identification evidence is available. The review may consider an original source, remanufactured unit, documented aftermarket candidate, repair route or service part. The quotation states which route is proposed and what remains conditional.",
+      },
+      {
+        question: "How long does a hydraulic model-code review take?",
+        answer: "A complete review — from model-code breakdown to a quotation with comparison status, known differences, proposed route and commercial terms — is typically delivered within one business day for qualified inquiries. Inquiries with incomplete information or unusual configurations may require additional supplier communication.",
+      },
+    ],
+  },
+  {
+    title: "Aftermarket vs OEM",
+    faqs: [
+      {
+        question: "Is an aftermarket hydraulic replacement always a direct fit?",
+        answer: "No. 'Aftermarket' describes the supply route, not automatic interchangeability. Function, ratings, interfaces, material condition and application limits must be compared for the exact offered model. A documented aftermarket replacement should state what is confirmed, what differs and what still requires customer approval.",
+      },
+      {
+        question: "Are Chinese aftermarket hydraulic parts reliable?",
+        answer: "Chinese aftermarket hydraulic parts span a wide quality range. Reliability depends on the specific manufacturer, its quality system, the completeness of the technical comparison, the availability of order-linked test data and the buyer's receiving inspection. The question is not 'are they reliable' but 'what evidence supports this specific supplier and model for this application.'",
+      },
+      {
+        question: "How do I choose between OEM and aftermarket for my hydraulic component?",
+        answer: "Consider: system criticality and failure consequence, availability of complete technical data, supplier history and inspection evidence, your ability to validate the alternative, total downtime and replacement cost, and whether the original model is still available. OEM is preferred for safety-critical or warranty-sensitive equipment. A documented aftermarket route can be appropriate when the comparison evidence, differences and acceptance criteria are clear.",
+      },
+    ],
+  },
+  {
+    title: "Inquiry & Quotation Process",
+    faqs: [
+      {
+        question: "What will a hydraulic replacement quotation show?",
+        answer: "A useful quotation identifies the requested reference, proposed model and source, compatibility status, known differences, open confirmation points, condition, MOQ, lead-time basis, inspection scope, packing, warranty and Incoterm. It separates confirmed facts from items requiring further verification.",
+      },
+      {
+        question: "Do you charge for a model-code review or quotation?",
+        answer: "The initial model-code review and quotation preparation are provided at no charge for qualified inquiries. Costs for third-party inspection, laboratory testing, expedited sampling or special documentation are confirmed before they are incurred.",
+      },
+      {
+        question: "Can I get a price without sending the complete model code?",
+        answer: "A price without a model-specific comparison is misleading. A series-level price does not account for configuration differences that affect cost, compatibility and lead time. Hydraulic Match provides a quotation only after the complete code and application have been reviewed.",
+      },
+      {
+        question: "Do you support small-batch or single-unit orders?",
+        answer: "Yes. Small-batch and single-unit inquiries are welcome. The actual supplier MOQ is stated per line item. For products with a stated MOQ above the requested quantity, we confirm whether a sample or small-batch route is available before the quotation is finalised.",
+      },
+    ],
+  },
+  {
+    title: "Quality & Inspection",
+    faqs: [
+      {
+        question: "What pre-shipment inspection can be provided?",
+        answer: "Available inspection scope depends on the product, supplier capability and order agreement. Common checks include: model and quantity verification, visual condition, critical dimensions and mounting details, connector and port confirmation, and pre-shipment packing photos. Functional test data is available only when the method, equipment, conditions and acceptance limits are agreed before order placement.",
+      },
+      {
+        question: "Are hydraulic components tested before shipment?",
+        answer: "Test scope is confirmed per order. It is not assumed. If a pressure, leakage, function or response test is required, state it in the RFQ. The quotation confirms availability, method, acceptance criteria and whether the record will be order-linked. A generic certificate that does not identify the unit, method and result is not treated as order-specific evidence.",
+      },
+      {
+        question: "What quality certifications do your suppliers hold?",
+        answer: "Supplier certifications vary. Many reviewed suppliers hold ISO 9001. The presence of a certificate is a starting point — model-specific comparison, order-linked evidence and corrective-action readiness are assessed separately. A certificate alone does not guarantee a correct model match or a consistent batch.",
+      },
+    ],
+  },
+  {
+    title: "Shipping & Logistics",
+    faqs: [
+      {
+        question: "Which countries do you ship hydraulic components to?",
+        answer: "Hydraulic Match coordinates exports worldwide. Shipping routes — express courier, air freight or sea freight — are selected based on product size, weight, urgency and destination. The Incoterm, shipping method and estimated transit time are stated in the quotation.",
+      },
+      {
+        question: "What are the typical shipping times from China?",
+        answer: "Express courier (DHL, FedEx, UPS): 3-7 business days for small valves, seal kits and samples. Air freight: 7-14 days including consolidation and customs. Sea freight: 25-40 days door-to-door depending on the destination port and inland transport. Actual transit time is confirmed per shipment.",
+      },
+      {
+        question: "Can neutral packing be provided?",
+        answer: "Neutral export packing — without supplier branding on outer cartons — can be discussed. Confirm the requirement in the RFQ. Packing, labelling and document requirements are stated before order placement.",
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  currentPath="/faq"
+  image="/images/hydraulic/hydraulic-valves.webp"
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "FAQ", url: pageUrl },
+    ]),
+    faqSchema(faqCategories.flatMap((cat) => cat.faqs)),
+  ]}
+>
+  <BreadcrumbHero
+    title="Hydraulic Sourcing — Frequently Asked Questions"
+    trail={[
+      { label: "Home", href: "/" },
+      { label: "FAQ" },
+    ]}
+    variant="5"
+  />
+
+  <section class="blog-details-section detail-page-section">
+    <div class="section-gap bottom">
+      <div class="container">
+        <article class="blog-details-content-block resource-page fade-in">
+          <p class="resource-intro">
+            Answers to common questions about hydraulic component sourcing,
+            model-code review, aftermarket alternatives, inspection and export
+            delivery — organised by topic for quick reference.
+          </p>
+
+          <div class="detail-page-layout has-sidebar">
+            <div class="detail-page-main">
+              {
+                faqCategories.map((category) => (
+                  <section>
+                    <h2>{category.title}</h2>
+                    <div class="faq-list">
+                      {category.faqs.map((faq) => (
+                        <details>
+                          <summary>{faq.question}</summary>
+                          <div class="faq-answer">
+                            <p>{faq.answer}</p>
+                          </div>
+                        </details>
+                      ))}
+                    </div>
+                  </section>
+                ))
+              }
+
+              <div class="faq-cta-box">
+                <p>
+                  <strong>Didn't find your answer?</strong> Send your hydraulic
+                  component reference — we will explain what can be reviewed and
+                  which confirmation points are still open.
+                </p>
+                <a href="/request-a-quote/?source=faq" class="faq-cta-link">
+                  Request a model review →
+                </a>
+              </div>
+            </div>
+
+            <aside class="detail-page-sidebar">
+              <HydraulicProductSidebar
+                activeSlug=""
+                quoteHref="/request-a-quote/?source=faq-sidebar"
+              />
+            </aside>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .faq-list {
+    display: grid;
+    gap: 10px;
+    margin: 0 0 28px;
+  }
+  .faq-list details {
+    border: 1px solid var(--color-stroke);
+    border-radius: 6px;
+    background: #fff;
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+  }
+  .faq-list details[open] {
+    border-color: rgba(20, 110, 245, 0.5);
+    box-shadow: 0 12px 28px rgba(15, 39, 66, 0.08);
+  }
+  .faq-list summary {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 48px 18px 18px;
+    cursor: pointer;
+    list-style: none;
+    color: var(--color-title);
+    font: 600 16px/1.45 var(--font-title);
+    position: relative;
+  }
+  .faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-list summary::after {
+    content: "+";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 16px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #eef4fb;
+    color: var(--color-primary);
+    font: 500 22px/1 var(--font-title);
+  }
+  .faq-list details[open] summary::after {
+    content: "−";
+  }
+  .faq-answer {
+    padding: 0 20px 20px;
+  }
+  .faq-answer p {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.72;
+  }
+  .faq-cta-box {
+    margin-top: 20px;
+    padding: 28px;
+    border: 1px solid rgba(20, 110, 245, 0.18);
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(20, 110, 245, 0.06), #fff 60%);
+  }
+  .faq-cta-box p {
+    margin: 0 0 16px;
+    color: var(--color-title);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .faq-cta-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 10px 20px;
+    border-radius: 4px;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .faq-cta-link:hover {
+    background: #0c5ed7;
+  }
+  @media (max-width: 767px) {
+    .faq-list summary {
+      font-size: 15px;
+      padding: 16px 44px 16px 14px;
+    }
+  }
+</style>

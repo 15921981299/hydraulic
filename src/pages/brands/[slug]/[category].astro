@@ -1,0 +1,730 @@
+---
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../../components/BreadcrumbHero.astro";
+import DetailRfqStrip from "../../../components/DetailRfqStrip.astro";
+import FunnelPageView from "../../../components/FunnelPageView.astro";
+import {
+  brandCategoryPages,
+  type BrandCategoryPage,
+} from "../../../data/brand-category-pages";
+import {
+  breadcrumbSchema,
+  itemListSchema,
+  serviceSchema,
+  site,
+} from "../../../data/site";
+import "../../../styles/resource-page.css";
+
+export const getStaticPaths = (() =>
+  brandCategoryPages.map((page) => ({
+    params: { slug: page.brandSlug, category: page.category },
+    props: { page },
+  }))) satisfies GetStaticPaths;
+
+const { page } = Astro.props as { page: BrandCategoryPage };
+const pageUrl = `${site.url}/brands/${page.brandSlug}/${page.category}/`;
+const quoteHref = `/request-a-quote/?brand=${encodeURIComponent(
+  page.brandName,
+)}&category=${encodeURIComponent(
+  page.categoryLabel,
+)}&source=brand-category`;
+const brandHref = `/brands/${page.brandSlug}/`;
+const productHref = `/products/${page.productSlug}/`;
+const itemLabel = (series: string, productType: string) =>
+  `${page.brandName} ${series} ${productType}`;
+const referenceTotal = page.series.length + page.models.length;
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  currentPath="/brands"
+  image={page.models[0]?.image ?? undefined}
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Brands", url: `${site.url}/brands/` },
+      { name: page.brandName, url: `${site.url}${brandHref}` },
+      { name: page.categoryH1Label, url: pageUrl },
+    ]),
+    serviceSchema({
+      name: `${page.brandName} ${page.categoryH1Label} replacement and sourcing review`,
+      description: page.description,
+      url: pageUrl,
+      image: page.models[0]
+        ? `${site.url}${page.models[0].image}`
+        : undefined,
+    }),
+    ...(page.series.length > 0
+      ? [
+          itemListSchema(
+            page.series.map((item) => ({
+              name: itemLabel(item.series, item.productType),
+              url: `${pageUrl}#${item.series
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, "-")}`,
+            })),
+          ),
+        ]
+      : []),
+  ]}
+>
+  <FunnelPageView
+    stage="selection"
+    label={`brand-${page.brandSlug}-${page.category}`}
+  />
+  <BreadcrumbHero
+    title={page.h1}
+    trail={[
+      { label: "Home", href: "/" },
+      { label: "Brands", href: "/brands/" },
+      { label: page.brandName, href: brandHref },
+      { label: page.categoryH1Label },
+    ]}
+    variant="2"
+  />
+
+  <section class="brand-category">
+    <div class="container">
+      <header class="brand-category__intro">
+        <div>
+          <p class="brand-category__kicker">
+            {page.brandName.toUpperCase()} {page.categoryH1Label.toUpperCase()} —
+            MODEL-CODE REVIEW
+          </p>
+          <h2>{page.intro}</h2>
+          <p class="brand-category__lead">{page.positioning}</p>
+        </div>
+        <aside class="brand-category__disclaimer">
+          <strong>Relationship statement</strong>
+          <p>
+            Hydraulic Match is not affiliated with, authorized by or endorsed by{" "}
+            {page.brandName}. Names and codes are used only to identify the
+            customer&rsquo;s installed component.
+          </p>
+        </aside>
+      </header>
+
+      <div class="brand-category__route" aria-label="Review summary">
+        <div>
+          <span>Published references</span>
+          <strong>
+            {referenceTotal > 0
+              ? `${referenceTotal} series and model entries`
+              : `${page.families.length} published family groups`}
+          </strong>
+        </div>
+        <div>
+          <span>Decision basis</span>
+          <strong>Complete code + interfaces + application</strong>
+        </div>
+        <div>
+          <span>Commercial status</span>
+          <strong>Price, stock and route confirmed per RFQ</strong>
+        </div>
+      </div>
+
+      <section class="brand-category__section">
+        <div class="brand-category__heading">
+          <p>PRODUCT COVERAGE</p>
+          <h2>{page.brandName} {page.categoryH1Label} references accepted</h2>
+          <p class="brand-category__section-lead">
+            The families below can enter the structured review process. A
+            family label is a routing step, not a compatibility claim.
+          </p>
+        </div>
+        <div class="brand-category__chips">
+          {(page.families.length > 0
+            ? page.families
+            : [`${page.brandName} ${page.categoryH1Label}`]
+          ).map((family) => (
+            <span>{family}</span>
+          ))}
+        </div>
+      </section>
+
+      {
+        page.series.length > 0 && (
+          <section class="brand-category__section">
+            <div class="brand-category__heading">
+              <p>SERIES DIRECTORY</p>
+              <h2>Commonly submitted {page.brandName} references</h2>
+              <p class="brand-category__section-lead">
+                The table is an inquiry-routing index. Every suffix and
+                installed interface remains subject to review.
+              </p>
+            </div>
+            <div class="resource-table-wrap brand-category__table">
+              <table class="resource-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Series reference</th>
+                    <th scope="col">Product type</th>
+                    <th scope="col">Primary review focus</th>
+                    <th scope="col">RFQ route</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    page.series.map((item) => (
+                      <tr
+                        id={item.series
+                          .toLowerCase()
+                          .replace(/[^a-z0-9]+/g, "-")}
+                      >
+                        <td>
+                          <strong>{item.series}</strong>
+                        </td>
+                        <td>{item.productType}</td>
+                        <td>{item.reviewFocus.join("; ")}</td>
+                        <td>
+                          <a
+                            href={`${quoteHref}&model=${encodeURIComponent(
+                              item.series,
+                            )}`}
+                          >
+                            Send full code
+                          </a>
+                        </td>
+                      </tr>
+                    ))
+                  }
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )
+      }
+
+      {
+        page.models.length > 0 && (
+          <section class="brand-category__section">
+            <div class="brand-category__heading">
+              <p>EXACT MODEL RECORDS</p>
+              <h2>Published {page.brandName} records for this category</h2>
+              <p class="brand-category__section-lead">
+                Exact-code records reach search indexing only after
+                record-specific evidence is on file.
+              </p>
+            </div>
+            <div class="brand-category__models">
+              {page.models.map((model) => (
+                <a
+                  href={`/models/${model.slug}/`}
+                  class="brand-category__model"
+                >
+                  <strong>{model.model}</strong>
+                  <span>{model.compatibilityStatus}</span>
+                </a>
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {
+        page.parameterGroups.length > 0 && (
+          <section class="brand-category__section">
+            <div class="brand-category__heading">
+              <p>TECHNICAL REVIEW SCOPE</p>
+              <h2>Parameters compared before quotation</h2>
+              <p class="brand-category__section-lead">
+                These fields are separated into confirmed facts, open points
+                and conditional compatibility in the response.
+              </p>
+            </div>
+            <ul class="brand-category__params">
+              {page.parameterGroups.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+
+      <div class="brand-category__columns">
+        <section>
+          <p>REQUIRED EVIDENCE</p>
+          <h2>Prepare before quotation</h2>
+          <ol>
+            {page.requiredEvidence.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ol>
+        </section>
+        <section>
+          <p>APPLICATION ROUTING</p>
+          <h2>Common inquiry environments</h2>
+          <ul>
+            {page.applications.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
+      <section class="brand-category__related">
+        <p>RELATED ROUTES</p>
+        <h2>Start from the brand, the category or the series</h2>
+        <div class="brand-category__related-grid">
+          <a href={brandHref} class="brand-category__related-card">
+            <strong>{page.brandName} brand review</strong>
+            <span>Full brand coverage and required evidence.</span>
+          </a>
+          <a href={productHref} class="brand-category__related-card">
+            <strong>{page.productTitle}</strong>
+            <span>{page.categoryH1Label} category scope and parameters.</span>
+          </a>
+          {
+            page.series.slice(0, 3).map((item) => (
+              <a
+                href={`/series/${item.slug}/`}
+                class="brand-category__related-card"
+              >
+                <strong>{item.series}</strong>
+                <span>{item.productType} series identification hub.</span>
+              </a>
+            ))
+          }
+        </div>
+      </section>
+
+      <aside class="brand-category__boundary">
+        <strong>Commercial evidence boundary</strong>
+        <p>
+          A published brand, family or series means the reference can enter
+          review. Stock, condition, manufacturer identity, lead time, warranty
+          and the exact supply route exist only when stated on the
+          order-specific quotation.
+        </p>
+      </aside>
+
+      <DetailRfqStrip
+        quoteHref={quoteHref}
+        title={`Submit a ${page.brandName} ${page.categoryH1Label.toLowerCase()} reference`}
+        text="Send the complete code, nameplate, quantity, destination and application. We separate confirmed facts, open points and conditional compatibility in the response."
+        modalContext={`${page.brandName} ${page.categoryH1Label} inquiry`}
+        modalSource={`brand-${page.brandSlug}-${page.category}`}
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .brand-category {
+    padding: 64px 0 80px;
+    background:
+      radial-gradient(
+        900px 280px at 50% -8%,
+        rgba(20, 110, 245, 0.06),
+        transparent 70%
+      ),
+      linear-gradient(180deg, #f8fafc 0%, #fff 22%, #fff 100%);
+  }
+
+  .brand-category > .container {
+    width: 100%;
+    max-width: 1880px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 60px;
+    padding-right: 60px;
+    box-sizing: border-box;
+  }
+
+  .brand-category__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.8fr);
+    gap: 32px;
+    align-items: start;
+    margin-bottom: 32px;
+  }
+
+  .brand-category__kicker,
+  .brand-category__heading > p,
+  .brand-category__columns section > p,
+  .brand-category__related > p {
+    margin: 0 0 8px;
+    color: var(--color-primary);
+    font-family: var(--font-title);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .brand-category__intro h2 {
+    margin: 0 0 16px;
+    max-width: 36ch;
+    color: #0f172a;
+    font-size: clamp(1.5rem, 2.8vw, 2.15rem);
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    text-transform: none;
+  }
+
+  .brand-category__lead,
+  .brand-category__section-lead {
+    margin: 0;
+    max-width: 72ch;
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .brand-category__disclaimer {
+    padding: 24px;
+    border: 1px solid rgba(20, 110, 245, 0.16);
+    border-top: 3px solid var(--color-primary);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+  }
+
+  .brand-category__disclaimer strong {
+    color: #0f172a;
+    font-size: 14px;
+  }
+
+  .brand-category__disclaimer p {
+    margin: 10px 0 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .brand-category__route {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0 0 48px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .brand-category__route div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 96px;
+    padding: 20px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+  }
+
+  .brand-category__route span {
+    display: block;
+    margin: 0;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .brand-category__route strong {
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .brand-category__section {
+    margin: 0 0 48px;
+  }
+
+  .brand-category__heading {
+    max-width: 72ch;
+    margin-bottom: 20px;
+  }
+
+  .brand-category__heading h2,
+  .brand-category__columns h2,
+  .brand-category__related h2 {
+    margin: 0 0 12px;
+    color: #0f172a;
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    line-height: 1.25;
+    text-transform: none;
+  }
+
+  .brand-category__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .brand-category__chips span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 8px 14px;
+    border: 1px solid rgba(20, 110, 245, 0.14);
+    border-radius: 999px;
+    background: rgba(20, 110, 245, 0.05);
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .brand-category__table {
+    margin-bottom: 0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .brand-category .resource-table a {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .brand-category .resource-table a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .brand-category__models {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+
+  .brand-category__model {
+    display: grid;
+    gap: 8px;
+    padding: 20px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: #fff;
+    color: #0f172a;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .brand-category__model:hover {
+    border-color: rgba(20, 110, 245, 0.32);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    transform: translateY(-2px);
+  }
+
+  .brand-category__model strong {
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  .brand-category__model span {
+    color: #475569;
+    font-size: 13px;
+  }
+
+  .brand-category__params {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .brand-category__params li {
+    position: relative;
+    padding-left: 22px;
+    color: #334155;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .brand-category__params li::before {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 0.6em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-primary);
+  }
+
+  .brand-category__columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0 0 48px;
+  }
+
+  .brand-category__columns section {
+    padding: 28px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+  }
+
+  .brand-category__columns ol,
+  .brand-category__columns ul {
+    margin: 16px 0 0;
+    padding-left: 20px;
+    color: #475569;
+    font-size: 15px;
+  }
+
+  .brand-category__columns li {
+    margin: 10px 0;
+    line-height: 1.65;
+  }
+
+  .brand-category__related {
+    margin: 0 0 24px;
+    padding: 28px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+  }
+
+  .brand-category__related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  .brand-category__related-card {
+    display: grid;
+    gap: 8px;
+    min-height: 108px;
+    padding: 20px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: #f8fafc;
+    color: #0f172a;
+    text-decoration: none;
+    transition:
+      border-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .brand-category__related-card:hover {
+    border-color: rgba(20, 110, 245, 0.32);
+    transform: translateY(-2px);
+  }
+
+  .brand-category__related-card strong {
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  .brand-category__related-card span {
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .brand-category__boundary {
+    margin: 0 0 28px;
+    padding: 24px;
+    border: 1px solid rgba(217, 119, 6, 0.28);
+    border-radius: 12px;
+    background: #fffbeb;
+  }
+
+  .brand-category__boundary strong {
+    color: #0f172a;
+  }
+
+  .brand-category__boundary p {
+    margin: 10px 0 0;
+    color: #475569;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  a:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 1050px) {
+    .brand-category > .container {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  @media (max-width: 850px) {
+    .brand-category {
+      padding: 56px 0 72px;
+    }
+    .brand-category__intro,
+    .brand-category__columns,
+    .brand-category__related-grid {
+      grid-template-columns: 1fr;
+    }
+    .brand-category__intro {
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+    .brand-category__intro h2 {
+      max-width: none;
+    }
+    .brand-category__route {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .brand-category__section {
+      margin-bottom: 40px;
+    }
+    .brand-category__params {
+      grid-template-columns: 1fr;
+    }
+    .brand-category__columns {
+      margin-bottom: 40px;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .brand-category {
+      padding: 48px 0 64px;
+    }
+    .brand-category > .container {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .brand-category__chips span {
+      min-height: 44px;
+    }
+    .brand-category__table .resource-table {
+      min-width: 720px;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .brand-category > .container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-category__model,
+    .brand-category__related-card {
+      transition: none;
+    }
+    .brand-category__model:hover,
+    .brand-category__related-card:hover {
+      transform: none;
+    }
+  }
+</style>

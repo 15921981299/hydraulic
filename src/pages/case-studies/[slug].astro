@@ -17,12 +17,23 @@ export function getStaticPaths() {
 
 const { study } = Astro.props;
 const pageUrl = `${site.url}/case-studies/${study.slug}/`;
+const reviewer = site.technicalReviewer;
+const hasNamedReviewer = Boolean(reviewer.name && reviewer.jobTitle);
+const seoTitleBySlug: Record<string, string> = {
+  "directional-valve-model-code-review-germany":
+    "Directional Valve Model-Code Review | Hydraulic Match Case Study",
+  "pump-identification-from-nameplate-united-states":
+    "Hydraulic Pump Nameplate ID: US Case | Hydraulic Match",
+  "mixed-hydraulic-rfq-export-uae":
+    "Mixed Hydraulic RFQ: UAE Distributor Case | Hydraulic Match",
+  "hydraulic-motor-replacement-southeast-asia":
+    "Hydraulic Motor Replacement: SE Asia Case | Hydraulic Match",
+  "multi-line-rfq-european-distributor":
+    "Multi-Line Hydraulic RFQ Processing: EU Case | Hydraulic Match",
+};
 const seoTitle =
-  study.slug === "directional-valve-model-code-review-germany"
-    ? "Directional Valve Model-Code Review Case Study"
-    : study.slug === "pump-identification-from-nameplate-united-states"
-      ? "Hydraulic Pump Identification Case Study"
-      : "Mixed Hydraulic RFQ Export Case Study";
+  seoTitleBySlug[study.slug] ??
+  `${study.title} | Hydraulic Match Case Study`;
 ---
 
 <BaseLayout
@@ -45,9 +56,14 @@ const seoTitle =
       image: `${site.url}${study.image}`,
       datePublished: study.published,
       dateModified: study.modified,
-      authorName: "Hydraulic Match Editorial Review",
+      authorName: hasNamedReviewer
+        ? reviewer.name
+        : "Hydraulic Match Editorial Review",
       authorUrl: `${site.url}/authors/technical-review-team/`,
-      authorType: "Organization",
+      authorJobTitle: hasNamedReviewer ? reviewer.jobTitle : undefined,
+      authorSameAs:
+        hasNamedReviewer && reviewer.linkedin ? [reviewer.linkedin] : undefined,
+      authorType: hasNamedReviewer ? "Person" : "Organization",
     }),
   ]}
 >
@@ -75,6 +91,10 @@ const seoTitle =
       <span><strong>Industry</strong> {study.industry}</span>
       <span><strong>Region</strong> {study.region}</span>
       <span><strong>Record type</strong> Anonymized process example</span>
+      <span>
+        <strong>Search status</strong>
+        {study.indexReady ? "Evidence-ready case" : "Private-evidence example"}
+      </span>
       {
         study.published && (
           <span>
@@ -84,7 +104,13 @@ const seoTitle =
       }
       <span>
         <strong>Reviewed by</strong>
-        <a href="/authors/technical-review-team/">Editorial Review Process</a>
+        <a href="/authors/technical-review-team/">
+          {
+            hasNamedReviewer
+              ? `${reviewer.name}, ${reviewer.jobTitle}`
+              : "Editorial Review Process"
+          }
+        </a>
       </span>
     </div>
 
@@ -129,6 +155,30 @@ const seoTitle =
         }
       </div>
     </section>
+
+    {
+      study.evidenceAssets?.length ? (
+        <section>
+          <h2>Published Supporting Evidence</h2>
+          <div class="resource-checklist-grid">
+            {study.evidenceAssets.map((asset) => (
+              <article class="resource-checklist-card">
+                <h3>
+                  <a href={asset.url}>{asset.label}</a>
+                </h3>
+                {asset.disclosure && <p>{asset.disclosure}</p>}
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : (
+        <p class="resource-note">
+          This process example is withheld from search indexing until a
+          publication date, exact original and supplied references, and at least
+          one redacted supporting artifact can be published.
+        </p>
+      )
+    }
 
     <section>
       <h2>Review Record</h2>

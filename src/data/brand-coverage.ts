@@ -934,6 +934,45 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
     officialLabel: "HYDAC products",
     officialUrl: "https://www.hydac.com/shop/en/",
   },
+  {
+    slug: "caterpillar",
+    name: "Caterpillar",
+    aliases: ["CAT", "Caterpillar Inc."],
+    summary:
+      "Construction and mobile equipment hydraulic piston pump and service-part references reviewed from complete part numbers and machine application.",
+    positioning:
+      "Caterpillar references often mix part numbers, machine serial ranges and revision codes. The review separates the installed component from the machine identity before any replacement route is proposed.",
+    image: "/images/owned-network/cat-piston-pump.png",
+    productFamilies: [
+      "Variable displacement piston pumps",
+      "Pump parts and seal kits",
+      "Construction equipment hydraulics",
+    ],
+    seriesReferences: [
+      {
+        series: "CAT Piston Pump",
+        productType: "Construction-equipment variable piston pump",
+        reviewFocus:
+          "Complete part numbers, machine model, displacement and installed evidence",
+      },
+    ],
+    applications: [
+      "Construction equipment",
+      "Mobile machinery",
+      "Excavator and loader service",
+      "Industrial MRO",
+    ],
+    requiredEvidence: [
+      "Complete Caterpillar part number(s) and revision",
+      "Machine model, serial number and year",
+      "Nameplate and installed-unit photos",
+      "Pressure, flow or displacement details",
+      "Application and operating conditions",
+    ],
+    officialLabel: "Caterpillar product information",
+    officialUrl: "https://www.cat.com/en_US/products.html",
+    detailedHref: "/series/cat-piston-pump/",
+  },
 ];
 
 export const brandCoverageStats = {

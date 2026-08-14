@@ -123,6 +123,16 @@ const searchItems = [
         <p aria-live="polite" data-site-search-count>
           Enter at least two characters to search {searchItems.length} published records.
         </p>
+        <div class="site-search__examples" aria-label="Example searches">
+          <span>Try:</span>
+          {
+            ["A10VSO", "PVH98", "Denison T6", "orbital motor"].map((term) => (
+              <button type="button" data-search-example={term}>
+                {term}
+              </button>
+            ))
+          }
+        </div>
       </form>
 
       <div class="site-search__filters" aria-label="Filter by content type">
@@ -144,7 +154,8 @@ const searchItems = [
               hidden
               data-search-card
               data-type={item.type}
-              data-search={`${item.title} ${item.description} ${item.terms}`.toLowerCase()}
+              data-title={item.title}
+              data-search={`${item.title} ${item.description} ${item.terms}`}
             >
               <p>{item.type}</p>
               <h2>
@@ -184,19 +195,56 @@ const searchItems = [
   const filterButtons = [
     ...document.querySelectorAll<HTMLButtonElement>("[data-type-filter]"),
   ];
+  const exampleButtons = [
+    ...document.querySelectorAll<HTMLButtonElement>("[data-search-example]"),
+  ];
   let activeType = "All";
 
+  const normalize = (value: string) =>
+    value
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+
+  const compact = (value: string) => normalize(value).replace(/\s+/g, "");
+
   const update = () => {
-    const query = input?.value.trim().toLowerCase() ?? "";
-    const ready = query.length >= 2;
+    const rawQuery = input?.value.trim() ?? "";
+    const query = normalize(rawQuery);
+    const queryTokens = query.split(/\s+/).filter(Boolean);
+    const compactQuery = compact(rawQuery);
+    const ready = compactQuery.length >= 2;
     let visible = 0;
     cards.forEach((card) => {
-      const queryMatch = ready && card.dataset.search?.includes(query);
+      const haystack = normalize(card.dataset.search ?? "");
+      const compactHaystack = compact(card.dataset.search ?? "");
+      const queryMatch =
+        ready &&
+        (queryTokens.every((token) => haystack.includes(token)) ||
+          compactHaystack.includes(compactQuery));
       const typeMatch =
         activeType === "All" || card.dataset.type === activeType;
       const show = Boolean(queryMatch && typeMatch);
       card.hidden = !show;
-      if (show) visible += 1;
+      if (show) {
+        visible += 1;
+        const exactTitleMatch = compact(card.dataset.title ?? "").includes(
+          compactQuery,
+        );
+        card.style.order = String(
+          exactTitleMatch && card.dataset.type === "Exact model"
+            ? 0
+            : exactTitleMatch
+              ? 1
+              : card.dataset.type === "Exact model"
+                ? 2
+                : 3,
+        );
+      } else {
+        card.style.removeProperty("order");
+      }
     });
     if (count) {
       count.textContent = ready
@@ -209,6 +257,11 @@ const searchItems = [
   form?.addEventListener("submit", (event) => {
     event.preventDefault();
     update();
+    const query = input?.value.trim() ?? "";
+    const url = new URL(window.location.href);
+    if (query) url.searchParams.set("q", query);
+    else url.searchParams.delete("q");
+    window.history.replaceState({}, "", url);
   });
   input?.addEventListener("input", update);
   filterButtons.forEach((button) => {
@@ -217,6 +270,14 @@ const searchItems = [
       filterButtons.forEach((item) =>
         item.classList.toggle("active", item === button),
       );
+      update();
+    });
+  });
+  exampleButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!input) return;
+      input.value = button.dataset.searchExample ?? "";
+      input.focus();
       update();
     });
   });
@@ -299,6 +360,30 @@ const searchItems = [
     margin: 9px 0 0;
     color: #64748b;
     font-size: 13px;
+  }
+  .site-search__examples {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px;
+    margin-top: 12px;
+    color: #64748b;
+    font-size: 12px;
+  }
+  .site-search__examples button {
+    min-height: 30px;
+    padding: 4px 9px;
+    border: 1px solid #d7dee8;
+    border-radius: 999px;
+    background: #f8fafc;
+    color: #334155;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+  }
+  .site-search__examples button:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
   }
   .site-search__filters {
     display: flex;

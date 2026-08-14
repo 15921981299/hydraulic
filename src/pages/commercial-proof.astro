@@ -15,6 +15,15 @@ import {
 } from "../data/commercial-proof";
 import { breadcrumbSchema, site } from "../data/site";
 import "../styles/resource-page.css";
+
+const navItems = [
+  { href: "#published", label: "Published" },
+  { href: "#availability", label: "Availability" },
+  { href: "#credentials", label: "Credentials" },
+  { href: "#claims", label: "Claim thresholds" },
+  { href: "#warranty", label: "Warranty" },
+  { href: "#compatibility", label: "Compatibility" },
+];
 ---
 
 <BaseLayout
@@ -35,42 +44,55 @@ import "../styles/resource-page.css";
     variant="5"
   />
 
-  <section class="proof-page">
-    <div class="container">
+  <section class="proof-page" aria-labelledby="proof-intro-heading">
+    <div class="container proof-page__inner">
       <header class="proof-intro">
-        <p>PRE-LAUNCH DISCLOSURE</p>
-        <h2>Separate published site content from transaction evidence.</h2>
-        <span>
+        <p class="proof-kicker">PRE-LAUNCH DISCLOSURE</p>
+        <h2 id="proof-intro-heading">
+          Separate published site content from transaction evidence.
+        </h2>
+        <p class="proof-lead">
           Hydraulic Match currently publishes research pages, review methods and
           inquiry tools. The website does not by itself prove legal identity,
           warehouse ownership, live inventory, manufacturer authorization,
           certification, customer endorsements or completed transactions.
-        </span>
+        </p>
+        <p class="proof-intro__note">
+          For distributors, MRO teams and repair shops: use this page to see what
+          is publicly verifiable before you request order-specific confirmation
+          in an RFQ.
+        </p>
       </header>
 
-      <nav class="resource-nav proof-nav" aria-label="Evidence sections">
-        <a href="#published" class="resource-nav-link">Published</a>
-        <a href="#availability" class="resource-nav-link">Availability</a>
-        <a href="#credentials" class="resource-nav-link">Credentials</a>
-        <a href="#claims" class="resource-nav-link">Claim Thresholds</a>
-        <a href="#warranty" class="resource-nav-link">Warranty</a>
-        <a href="#compatibility" class="resource-nav-link">Compatibility</a>
+      <nav class="proof-nav" aria-label="Evidence sections">
+        {
+          navItems.map((item) => (
+            <a href={item.href} class="proof-nav__link">
+              {item.label}
+            </a>
+          ))
+        }
       </nav>
 
-      <section id="published" class="proof-section">
-        <header>
-          <p>PUBLISHED SITE EVIDENCE</p>
-          <h2>What a visitor can inspect now</h2>
-          <span>
+      <section
+        id="published"
+        class="proof-section"
+        aria-labelledby="published-heading"
+      >
+        <header class="proof-section__head">
+          <p class="proof-kicker">PUBLISHED SITE EVIDENCE</p>
+          <h2 id="published-heading">What a visitor can inspect now</h2>
+          <p class="proof-lead">
             These records demonstrate the structure and limitations of the
             website. They are not substitutes for business, supplier or order
             documents.
-          </span>
+          </p>
         </header>
-        <div class="proof-metrics">
+
+        <div class="proof-metrics" role="list">
           {
             inventoryMetrics.map((metric) => (
-              <article>
+              <article class="proof-metric" role="listitem">
                 <strong>{metric.value}</strong>
                 <span>{metric.label}</span>
                 <small>Public page coverage</small>
@@ -78,22 +100,39 @@ import "../styles/resource-page.css";
             ))
           }
         </div>
+
         <div class="proof-grid">
           {
             ownedNetworkEvidence.map((item) => (
-              <article>
-                <p>{item.status}</p>
+              <article class="proof-card">
+                <p class="proof-card__status">{item.status}</p>
                 <h3>{item.site}</h3>
-                <span>{item.contribution}</span>
-                <strong>{item.evidence}</strong>
-                <a href={item.sourceUrl}>Inspect record →</a>
+                <p class="proof-card__text">{item.contribution}</p>
+                <p class="proof-card__evidence">{item.evidence}</p>
+                <a href={item.sourceUrl} class="proof-card__link">
+                  Inspect record
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M5 12h14m0 0-5-5m5 5-5 5"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path>
+                  </svg>
+                </a>
               </article>
             ))
           }
         </div>
 
         <h3 class="proof-subheading">Current public evidence status</h3>
-        <div class="resource-table-wrap">
+        <div class="proof-table-wrap resource-table-wrap">
           <table class="resource-table">
             <thead>
               <tr>
@@ -119,7 +158,7 @@ import "../styles/resource-page.css";
         </div>
 
         <h3 class="proof-subheading">Evidence levels</h3>
-        <div class="resource-table-wrap">
+        <div class="proof-table-wrap resource-table-wrap">
           <table class="resource-table">
             <thead>
               <tr>
@@ -143,16 +182,22 @@ import "../styles/resource-page.css";
         </div>
       </section>
 
-      <section id="availability" class="proof-section">
-        <header>
-          <p>AVAILABILITY BOUNDARY</p>
-          <h2>Published coverage is not live inventory</h2>
-          <span>
+      <section
+        id="availability"
+        class="proof-section"
+        aria-labelledby="availability-heading"
+      >
+        <header class="proof-section__head">
+          <p class="proof-kicker">AVAILABILITY BOUNDARY</p>
+          <h2 id="availability-heading">
+            Published coverage is not live inventory
+          </h2>
+          <p class="proof-lead">
             Exact stock, condition, quantity, location and dispatch time must be
             checked for the individual RFQ.
-          </span>
+          </p>
         </header>
-        <div class="resource-table-wrap">
+        <div class="proof-table-wrap resource-table-wrap">
           <table class="resource-table">
             <thead>
               <tr>
@@ -175,58 +220,54 @@ import "../styles/resource-page.css";
             </tbody>
           </table>
         </div>
-        <p class="resource-note">
+        <p class="resource-note proof-note">
           The quotation must identify the exact model, quantity, condition,
           supplier route, checked date and lead-time basis. A category or model
           page is not an inventory feed.
         </p>
       </section>
 
-      <section id="credentials" class="proof-section">
-        <header>
-          <p>CREDENTIAL DISCLOSURE</p>
-          <h2>Claims that require genuine third-party documents</h2>
-          <span>
+      <section
+        id="credentials"
+        class="proof-section"
+        aria-labelledby="credentials-heading"
+      >
+        <header class="proof-section__head">
+          <p class="proof-kicker">CREDENTIAL DISCLOSURE</p>
+          <h2 id="credentials-heading">
+            Claims that require genuine third-party documents
+          </h2>
+          <p class="proof-lead">
             Placeholder numbers, generic issuers and self-created authorization
             records are not evidence.
-          </span>
+          </p>
         </header>
         <div class="credential-grid">
           {
             credentials.map((credential) => (
-              <article>
-                <p>{credential.type}</p>
+              <article class="credential-card">
+                <p class="proof-kicker">{credential.type}</p>
                 <h3>{credential.title}</h3>
                 <dl>
                   <div>
-                    <>
-                      <dt>Holder</dt>
-                      <dd>{credential.holder}</dd>
-                    </>
+                    <dt>Holder</dt>
+                    <dd>{credential.holder}</dd>
                   </div>
                   <div>
-                    <>
-                      <dt>Issuer</dt>
-                      <dd>{credential.issuer}</dd>
-                    </>
+                    <dt>Issuer</dt>
+                    <dd>{credential.issuer}</dd>
                   </div>
                   <div>
-                    <>
-                      <dt>Reference</dt>
-                      <dd>{credential.reference}</dd>
-                    </>
+                    <dt>Reference</dt>
+                    <dd>{credential.reference}</dd>
                   </div>
                   <div>
-                    <>
-                      <dt>Validity</dt>
-                      <dd>{credential.validity}</dd>
-                    </>
+                    <dt>Validity</dt>
+                    <dd>{credential.validity}</dd>
                   </div>
                   <div>
-                    <>
-                      <dt>Scope</dt>
-                      <dd>{credential.scope}</dd>
-                    </>
+                    <dt>Scope</dt>
+                    <dd>{credential.scope}</dd>
                   </div>
                 </dl>
               </article>
@@ -235,72 +276,94 @@ import "../styles/resource-page.css";
         </div>
       </section>
 
-      <section id="claims" class="proof-section">
-        <header>
-          <p>PUBLICATION THRESHOLDS</p>
-          <h2>Evidence required before a commercial claim goes public</h2>
-          <span>
+      <section
+        id="claims"
+        class="proof-section"
+        aria-labelledby="claims-heading"
+      >
+        <header class="proof-section__head">
+          <p class="proof-kicker">PUBLICATION THRESHOLDS</p>
+          <h2 id="claims-heading">
+            Evidence required before a commercial claim goes public
+          </h2>
+          <p class="proof-lead">
             Anonymous scenarios and internally written quotes are not customer
             reviews. Until source evidence exists, the correct status is “not
             publicly established.”
-          </span>
+          </p>
         </header>
         <div class="claim-grid">
           {
             evidenceGaps.map((item) => (
-              <article>
+              <article class="claim-card">
                 <h3>{item.claim}</h3>
                 <p>{item.publishWhen}</p>
-                <strong>{item.currentStatus}</strong>
+                <p class="claim-card__status">{item.currentStatus}</p>
               </article>
             ))
           }
         </div>
       </section>
 
-      <section id="warranty" class="proof-section">
-        <header>
-          <p>ORDER-SPECIFIC WARRANTY</p>
-          <h2>Website language does not create a fixed warranty</h2>
-          <span>
+      <section
+        id="warranty"
+        class="proof-section"
+        aria-labelledby="warranty-heading"
+      >
+        <header class="proof-section__head">
+          <p class="proof-kicker">ORDER-SPECIFIC WARRANTY</p>
+          <h2 id="warranty-heading">
+            Website language does not create a fixed warranty
+          </h2>
+          <p class="proof-lead">
             Duration, eligible items, start point, claim timing, exclusions and
             remedies must be stated in the accepted quotation or warranty
             document.
-          </span>
+          </p>
         </header>
         <div class="warranty-grid">
-          <article>
-            <span>Duration</span><strong>{warranty.duration}</strong>
+          <article class="warranty-card">
+            <span>Duration</span>
+            <strong>{warranty.duration}</strong>
           </article>
-          <article>
-            <span>Start point</span><strong>{warranty.starts}</strong>
+          <article class="warranty-card">
+            <span>Start point</span>
+            <strong>{warranty.starts}</strong>
           </article>
-          <article>
-            <span>Claim timing</span><strong>{warranty.response}</strong>
+          <article class="warranty-card">
+            <span>Claim timing</span>
+            <strong>{warranty.response}</strong>
           </article>
-          <article>
-            <span>Possible remedies</span><strong>{warranty.remedies}</strong>
+          <article class="warranty-card">
+            <span>Possible remedies</span>
+            <strong>{warranty.remedies}</strong>
           </article>
         </div>
         <h3 class="proof-subheading">
           Typical boundaries requiring written terms
         </h3>
-        <ul class="resource-list">
+        <ul class="resource-list proof-list">
           {warranty.exclusions.map((item) => <li>{item}</li>)}
         </ul>
       </section>
 
-      <section id="compatibility" class="proof-section">
-        <header>
-          <p>COMPATIBILITY LANGUAGE</p>
-          <h2>Wording becomes stronger only when evidence becomes stronger</h2>
-          <span>
+      <section
+        id="compatibility"
+        class="proof-section proof-section--last"
+        aria-labelledby="compatibility-heading"
+      >
+        <header class="proof-section__head">
+          <p class="proof-kicker">COMPATIBILITY LANGUAGE</p>
+          <h2 id="compatibility-heading">
+            Wording becomes stronger only when evidence becomes stronger
+          </h2>
+          <p class="proof-lead">
             A public page can identify a family or describe comparison
             requirements. Only an order-specific review can approve an offered
             item for the recorded conditions.
-          </span>
+          </p>
         </header>
-        <div class="resource-table-wrap">
+        <div class="proof-table-wrap resource-table-wrap">
           <table class="resource-table">
             <thead>
               <tr>
@@ -323,219 +386,567 @@ import "../styles/resource-page.css";
             </tbody>
           </table>
         </div>
-        <p class="resource-note">
+        <p class="resource-note proof-note">
           Avoid “identical,” “genuine,” “authorized,” “in stock” and “direct
           replacement” unless the exact claim is supported and its scope is
           visible. Referenced manufacturer names remain identification terms.
         </p>
       </section>
 
-      <DetailRfqStrip
-        quoteHref="/request-a-quote/?source=commercial-evidence"
-        title="Request order-specific evidence."
-        text="Submit the exact code and quantity. A responsible response will state what is confirmed, what remains conditional and which commercial documents are available."
-        modalContext="Commercial evidence inquiry"
-        modalSource="commercial-evidence"
-      />
+      <div class="proof-cta">
+        <DetailRfqStrip
+          quoteHref="/request-a-quote/?source=commercial-evidence"
+          title="Request order-specific evidence"
+          text="Submit the exact code and quantity. A responsible response will state what is confirmed, what remains conditional and which commercial documents are available."
+          modalContext="Commercial evidence inquiry"
+          modalSource="commercial-evidence"
+        />
+      </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
+  /*
+    Commercial proof — trust / disclosure layout
+    - Container inset aligned with navbar (global .container is 0)
+    - Readable leads ~68ch; tables scroll on mobile; sticky section nav
+  */
   .proof-page {
-    padding: 72px 0 96px;
-    background: #fff;
+    padding: 48px 0 96px;
+    background:
+      radial-gradient(
+        900px 280px at 14% -8%,
+        rgba(20, 110, 245, 0.07),
+        transparent 68%
+      ),
+      radial-gradient(
+        640px 220px at 96% 4%,
+        rgba(20, 110, 245, 0.04),
+        transparent 70%
+      ),
+      linear-gradient(180deg, #f8fafc 0%, #f1f5f9 32%, #fff 100%);
   }
-  .proof-intro,
-  .proof-section > header {
-    max-width: 920px;
+
+  .proof-page > .container {
+    width: 100%;
+    max-width: 1880px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
   }
+
+  .proof-kicker {
+    margin: 0 0 10px;
+    color: var(--color-primary);
+    font-family: var(--font-title);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
   .proof-intro {
+    max-width: 68ch;
+    margin-bottom: 28px;
+    padding: 28px 30px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 16px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      0 14px 36px rgba(15, 23, 42, 0.05);
+  }
+
+  .proof-intro h2 {
+    margin: 0 0 14px;
+    color: #0f172a;
+    font-size: clamp(1.55rem, 2.8vw, 2.35rem);
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    text-transform: none;
+  }
+
+  .proof-lead {
+    margin: 0;
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .proof-intro__note {
+    margin: 16px 0 0;
+    padding: 12px 14px;
+    border-left: 3px solid rgba(20, 110, 245, 0.45);
+    border-radius: 0 8px 8px 0;
+    background: rgba(20, 110, 245, 0.05);
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .proof-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    position: sticky;
+    top: 88px;
+    z-index: 20;
+    margin-bottom: 36px;
+    padding: 14px 16px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  }
+
+  .proof-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 8px 14px;
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    border-radius: 999px;
+    background: #fff;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease,
+      background-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .proof-nav__link:hover {
+    border-color: rgba(20, 110, 245, 0.4);
+    background: rgba(20, 110, 245, 0.06);
+    color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(20, 110, 245, 0.08);
+  }
+
+  .proof-nav__link:focus-visible {
+    outline: 3px solid rgba(20, 110, 245, 0.28);
+    outline-offset: 2px;
+  }
+
+  .proof-section {
+    scroll-margin-top: 132px;
+    margin-bottom: 40px;
+    padding: 32px 28px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 6px 22px rgba(15, 23, 42, 0.04);
+  }
+
+  .proof-section--last {
     margin-bottom: 28px;
   }
-  .proof-intro > p,
-  .proof-section > header > p,
-  .proof-grid article > p,
-  .credential-grid article > p {
-    margin: 0;
+
+  .proof-section__head {
+    max-width: 68ch;
+    margin-bottom: 28px;
+  }
+
+  .proof-section__head h2 {
+    margin: 0 0 12px;
+    color: #0f172a;
+    font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+    line-height: 1.28;
+    letter-spacing: -0.015em;
+    text-transform: none;
+  }
+
+  .proof-subheading {
+    margin: 32px 0 14px;
+    color: #0f172a;
+    font-size: 1.1rem;
+    line-height: 1.35;
+    text-transform: none;
+  }
+
+  .proof-metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .proof-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 108px;
+    padding: 20px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .proof-metric:hover {
+    border-color: rgba(20, 110, 245, 0.28);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+  }
+
+  .proof-metric strong {
+    color: #0f172a;
+    font-family: var(--font-title);
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .proof-metric span {
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  .proof-metric small {
+    margin-top: auto;
+    color: #b45309;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .proof-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .proof-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: 22px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: #f8fafc;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .proof-card:hover {
+    border-color: rgba(20, 110, 245, 0.3);
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  .proof-card__status {
+    margin: 0 0 8px;
     color: var(--color-primary);
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.11em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
-  .proof-intro h2 {
-    margin: 9px 0 12px;
-    font-size: clamp(32px, 4vw, 48px);
+
+  .proof-card h3 {
+    margin: 0 0 10px;
+    color: #0f172a;
+    font-size: 1.15rem;
+    line-height: 1.3;
     text-transform: none;
   }
-  .proof-intro span,
-  .proof-section > header > span,
-  .proof-grid article > span {
-    color: #536071;
-    line-height: 1.7;
+
+  .proof-card__text {
+    margin: 0;
+    color: #475569;
+    font-size: 15px;
+    line-height: 1.65;
   }
-  .proof-nav {
-    position: sticky;
-    top: 72px;
-    z-index: 10;
-    padding: 12px 0;
-    background: rgba(255, 255, 255, 0.96);
-  }
-  .proof-section {
-    scroll-margin-top: 145px;
-    padding: 52px 0;
-    border-bottom: 1px solid var(--color-stroke);
-  }
-  .proof-section > header {
-    margin-bottom: 24px;
-  }
-  .proof-section > header h2 {
-    margin: 8px 0 10px;
-    font-size: 34px;
-    text-transform: none;
-  }
-  .proof-metrics,
-  .proof-grid,
-  .claim-grid,
-  .warranty-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-  }
-  .proof-metrics article,
-  .proof-grid article,
-  .claim-grid article,
-  .warranty-grid article {
-    padding: 22px;
-    border: 1px solid var(--color-stroke);
-    background: #f7f9fc;
-  }
-  .proof-metrics strong {
-    font-size: 32px;
-    color: var(--color-title);
-  }
-  .proof-metrics span,
-  .proof-metrics small {
-    display: block;
-    margin-top: 7px;
-    color: #536071;
-  }
-  .proof-metrics small {
-    color: #8a6500;
-    font-weight: 700;
-  }
-  .proof-grid {
-    grid-template-columns: repeat(2, 1fr);
-    margin-top: 18px;
-  }
-  .proof-grid h3,
-  .claim-grid h3 {
-    margin: 8px 0;
-    font-size: 22px;
-    text-transform: none;
-  }
-  .proof-grid strong {
-    display: block;
-    margin: 18px 0;
+
+  .proof-card__evidence {
+    margin: 14px 0 18px;
     color: #334155;
-    line-height: 1.55;
+    font-size: 14px;
+    line-height: 1.6;
+    flex: 1;
   }
-  .proof-grid a {
+
+  .proof-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 40px;
     color: var(--color-primary);
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
   }
-  .proof-subheading {
-    margin: 30px 0 12px;
-    font-size: 21px;
+
+  .proof-card__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
-  .credential-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
+
+  .proof-card__link:focus-visible {
+    outline: 3px solid rgba(20, 110, 245, 0.28);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
-  .credential-grid article {
-    padding: 24px;
-    border: 1px solid var(--color-stroke);
+
+  .proof-table-wrap {
+    margin-top: 4px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(15, 23, 42, 0.08);
   }
-  .credential-grid h3 {
-    margin: 9px 0 18px;
-    font-size: 22px;
-    text-transform: none;
-  }
-  .credential-grid dl {
+
+  .proof-table-wrap .resource-table {
     margin: 0;
   }
-  .credential-grid dl > div {
-    display: grid;
-    grid-template-columns: 75px 1fr;
-    gap: 10px;
-    padding: 8px 0;
-    border-top: 1px solid var(--color-stroke);
+
+  .proof-note {
+    max-width: 68ch;
+    margin-top: 18px;
   }
-  .credential-grid dt {
+
+  .credential-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .credential-card {
+    padding: 22px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+  }
+
+  .credential-card h3 {
+    margin: 0 0 16px;
+    color: #0f172a;
+    font-size: 1.1rem;
+    line-height: 1.35;
+    text-transform: none;
+  }
+
+  .credential-card dl {
+    margin: 0;
+  }
+
+  .credential-card dl > div {
+    display: grid;
+    grid-template-columns: 78px 1fr;
+    gap: 10px;
+    padding: 9px 0;
+    border-top: 1px solid #e8edf3;
+  }
+
+  .credential-card dt {
     color: #64748b;
     font-size: 12px;
     font-weight: 700;
   }
-  .credential-grid dd {
+
+  .credential-card dd {
     margin: 0;
     color: #334155;
-    line-height: 1.5;
-  }
-  .claim-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .claim-grid p {
-    color: #536071;
-    line-height: 1.65;
-  }
-  .claim-grid strong {
-    display: block;
-    color: #8a6500;
+    font-size: 14px;
     line-height: 1.55;
   }
-  .warranty-grid {
-    grid-template-columns: repeat(2, 1fr);
+
+  .claim-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
   }
-  .warranty-grid span {
+
+  .claim-card {
+    padding: 22px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-left: 3px solid #d97706;
+    border-radius: 12px;
+    background: #fffbeb;
+  }
+
+  .claim-card h3 {
+    margin: 0 0 10px;
+    color: #0f172a;
+    font-size: 1.05rem;
+    line-height: 1.35;
+    text-transform: none;
+  }
+
+  .claim-card p {
+    margin: 0;
+    color: #475569;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .claim-card__status {
+    margin-top: 14px !important;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: rgba(217, 119, 6, 0.12);
+    color: #92400e !important;
+    font-size: 13px !important;
+    font-weight: 600;
+    line-height: 1.5 !important;
+  }
+
+  .warranty-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .warranty-card {
+    padding: 20px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: #f8fafc;
+  }
+
+  .warranty-card span {
     display: block;
     margin-bottom: 8px;
     color: var(--color-primary);
     font-size: 11px;
     font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-  .warranty-grid strong {
-    line-height: 1.55;
+
+  .warranty-card strong {
+    color: #0f172a;
+    font-size: 15px;
+    line-height: 1.6;
+    font-weight: 600;
   }
-  @media (max-width: 900px) {
-    .proof-metrics,
+
+  .proof-list {
+    max-width: 68ch;
+    margin-top: 8px;
+  }
+
+  .proof-cta {
+    padding: 28px;
+    border: 1px solid rgba(20, 110, 245, 0.18);
+    border-radius: 16px;
+    background:
+      radial-gradient(
+        700px 200px at 100% 0%,
+        rgba(20, 110, 245, 0.1),
+        transparent 60%
+      ),
+      linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+  }
+
+  .proof-cta :global(.detail-rfq-strip) {
+    margin: 0;
+  }
+
+  .proof-cta :global(.detail-rfq-strip p) {
+    max-width: 68ch;
+    color: #334155;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .proof-cta :global(.detail-rfq-link) {
+    min-height: 44px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(20, 110, 245, 0.2);
+  }
+
+  @media (max-width: 1100px) {
+    .proof-page > .container {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .proof-metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .credential-grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-  @media (max-width: 700px) {
-    .proof-page {
-      padding: 52px 0 72px;
+
+  @media (max-width: 767px) {
+    .proof-page > .container {
+      padding-left: 20px;
+      padding-right: 20px;
     }
+
+    .proof-page {
+      padding-top: 32px;
+      padding-bottom: 72px;
+    }
+
+    .proof-intro,
+    .proof-section {
+      padding: 22px 18px;
+    }
+
     .proof-nav {
-      top: 60px;
+      top: 72px;
       flex-wrap: nowrap;
       overflow-x: auto;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
     }
+
+    .proof-nav__link {
+      flex: none;
+    }
+
     .proof-grid,
     .claim-grid,
     .warranty-grid {
       grid-template-columns: 1fr;
     }
-    .proof-section > header h2 {
-      font-size: 29px;
-    }
   }
-  @media (max-width: 480px) {
+
+  @media (max-width: 650px) {
+    .proof-page > .container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
     .proof-metrics,
     .credential-grid {
       grid-template-columns: 1fr;
+    }
+
+    .proof-cta {
+      padding: 20px 18px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .proof-nav__link,
+    .proof-metric,
+    .proof-card,
+    .proof-card__link {
+      transition: none;
     }
   }
 </style>

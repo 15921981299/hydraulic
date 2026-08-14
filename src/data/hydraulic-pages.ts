@@ -105,6 +105,253 @@ export const hydraulicPages: HydraulicContentPage[] = [
       "We will tell you what can be reviewed now and what information is still missing.",
   },
   {
+    slug: "manufacturing-partners",
+    title: "How We Review Manufacturing Partners",
+    seoTitle: "Hydraulic Manufacturing Partner Review",
+    description:
+      "See how Hydraulic Match separates supplier leads, reviewed suppliers and order-approved manufacturing sources using identity, capability and order evidence.",
+    kicker: "A FACTORY RELATIONSHIP NEEDS EVIDENCE",
+    intro:
+      "We do not publish an invented factory list. When a source is described as a manufacturing partner, the wording should reflect what has actually been checked: who the business is, what it can make, what evidence it can provide and how the specific order will be released.",
+    sections: [
+      {
+        title: "Why supplier labels matter",
+        intro:
+          "A marketplace seller, trading company, service workshop and manufacturer can all be useful, but they are not interchangeable. We identify the role that can be supported instead of calling every source a factory.",
+      },
+      {
+        title: "Three existing source sites behind the current research",
+        intro:
+          "The operator has identified these three sites as source properties for Hydraulic Match. Their public pages provide real catalog, identity and process evidence, but they do not all display the same legal entity. We therefore preserve the source and do not merge every claim into one company biography.",
+        table: {
+          headers: [
+            "Public source",
+            "What its own pages establish",
+            "How Hydraulic Match may use it",
+          ],
+          rows: [
+            [
+              "RexrothReplacements.com",
+              "Maintained by Metro Fluid Power in Clinton Township, Michigan; publishes aftermarket A2F, A4V, A6V, A10V and A11V pump records plus valves",
+              "Exact aftermarket model and series research; operator, warranty and compatibility claims remain attributed to that source",
+            ],
+            [
+              "RestoPower.com",
+              "Describes a Lake Orion, Michigan aftermarket hydraulic-parts operation covering Vickers, Parker, Denison, Rexroth, Sundstrand, Poclain and other brands",
+              "Part-number, parent-series and sourceable-part research; stock, warranty and interchange claims remain source-site claims",
+            ],
+            [
+              "HydraulicPumpSupply.com",
+              "Identifies Hunan Shanbu Zhuanshui Zhuan Power Technology Co., Ltd. as a China-based fluid-power trading company",
+              "China sourcing, product-family and exact product-reference research; manufacturing source still requires order-specific disclosure",
+            ],
+          ],
+        },
+        note: "Before launch, the legal or contractual relationship among these properties should be documented. Until then, Hydraulic Match describes them as operator-identified source sites, not as one legal entity or three owned factories.",
+      },
+      {
+        title: "Partner review stages",
+        table: {
+          headers: ["Stage", "What we check", "Permitted status"],
+          rows: [
+            [
+              "1. Source lead",
+              "Listing, referral or catalog reference has been found",
+              "Candidate source; no manufacturing claim",
+            ],
+            [
+              "2. Identity review",
+              "Legal name, business scope, address, contact and stated role",
+              "Identity reviewed; capability not yet approved",
+            ],
+            [
+              "3. Capability review",
+              "Relevant product family, technical data, process evidence and inspection access",
+              "Reviewed supplier for the named scope",
+            ],
+            [
+              "4. Order approval",
+              "Exact model, specification, condition, acceptance criteria and commercial route",
+              "Approved source for that order only",
+            ],
+            [
+              "5. Ongoing review",
+              "Delivery accuracy, defects, corrective action and repeatability",
+              "Manufacturing partner only within the supported scope",
+            ],
+          ],
+        },
+      },
+      {
+        title: "What we ask a prospective factory",
+        items: [
+          "Which legal entity will manufacture, invoice or export the item",
+          "Which operations are performed in-house and which are subcontracted",
+          "Whether the team can interpret the complete model code and drawing revision",
+          "Which material, dimension, function or test records can be tied to the order",
+          "How nonconforming units are contained, investigated and corrected",
+          "Whether neutral packing, traceable labels and order-specific photos are available",
+        ],
+      },
+      {
+        title: "Evidence is tied to a product scope",
+        intro:
+          "A supplier that is credible for a machined pump part is not automatically approved for a complete piston pump, proportional valve or welded cylinder. Review is limited to the product family and process evidence actually seen.",
+      },
+      {
+        title: "What we will not claim",
+        items: [
+          "That a source is an original manufacturer or authorized distributor without current written evidence",
+          "That every product image was photographed in a factory we visited",
+          "That a supplier can make every item shown on this website",
+          "That one sample, certificate or successful order proves every future batch",
+          "That a supplier identity may be disclosed publicly without permission",
+        ],
+        note: "No named public manufacturing-partner roster is currently published. A quotation may identify the contracting and supply entities when disclosure is permitted and relevant to the order.",
+      },
+    ],
+    ctaTitle: "Need the supply route disclosed before purchase?",
+    ctaText:
+      "State the identity, factory, authorization or process evidence your approval requires in the RFQ.",
+    relatedLinks: [
+      {
+        href: "https://www.rexrothreplacements.com/pages/about-us",
+        title: "Rexroth Replacements identity source",
+        text: "Public operator and contact disclosure used for the source profile.",
+      },
+      {
+        href: "https://restopower.com/pages/resources",
+        title: "RestoPower source profile",
+        text: "Public location, customer scope, brand and sourcing statements.",
+      },
+      {
+        href: "https://hydraulicpumpsupply.com/about-us/",
+        title: "Hydraulic Pump Supply identity",
+        text: "Public legal identity, trading role and product scope.",
+      },
+      {
+        href: "/quality/",
+        title: "Quality control",
+        text: "Match evidence depth to the product and consequence of failure.",
+      },
+      {
+        href: "/inspection-process/",
+        title: "Inspection process",
+        text: "See how an agreed order moves from checklist to release status.",
+      },
+      {
+        href: "/shipping/",
+        title: "Packaging and shipping",
+        text: "Connect released units to protected, identified packages.",
+      },
+    ],
+  },
+  {
+    slug: "inspection-process",
+    title: "Hydraulic Inspection Process",
+    seoTitle: "Hydraulic Component Inspection Process",
+    description:
+      "A practical hydraulic component inspection workflow covering the approved reference, visual and dimensional checks, functional evidence, hold points and shipment release.",
+    kicker: "CHECKLIST, EVIDENCE, HOLD OR RELEASE",
+    intro:
+      "Inspection is not a generic “100% tested” badge. The useful version starts with an approved reference and written acceptance criteria, records what was checked on the actual order and leaves unsupported characteristics open.",
+    sections: [
+      {
+        title: "1. Freeze the inspection input",
+        items: [
+          "Buyer reference and approved proposed model",
+          "Drawing revision, datasheet or agreed comparison record",
+          "Quantity, sampling plan and critical characteristics",
+          "Required markings, condition, documents and packing",
+          "Acceptance limits and the person authorized to approve deviations",
+        ],
+        note: "Without a frozen reference, an inspector can confirm appearance and quantity but cannot decide technical conformity.",
+      },
+      {
+        title: "2. Select checks that answer the actual risk",
+        table: {
+          headers: [
+            "Check",
+            "Typical evidence",
+            "What it does not prove alone",
+          ],
+          rows: [
+            [
+              "Identity and quantity",
+              "Nameplate, part label, serial or batch photos and count",
+              "Internal configuration or performance",
+            ],
+            [
+              "Visual condition",
+              "Surface, casting, machining, ports, connectors and damage photos",
+              "Material grade or hydraulic function",
+            ],
+            [
+              "Dimensions and interfaces",
+              "Recorded values for agreed mounting, shaft, flange, port or envelope points",
+              "Performance under pressure or load",
+            ],
+            [
+              "Function or pressure test",
+              "Test method, unit identity, conditions, readings and result",
+              "Characteristics outside the recorded test points",
+            ],
+            [
+              "Packing release",
+              "Protection, labels, package count, weight and final photos",
+              "Product conformity not checked earlier",
+            ],
+          ],
+        },
+      },
+      {
+        title: "3. Record exceptions before release",
+        items: [
+          "Pass: the recorded check meets the agreed criterion",
+          "Hold: evidence is missing, unclear or outside the limit",
+          "Conditional approval: the buyer accepts a documented deviation in writing",
+          "Reject or rework: the source must correct or replace the affected unit",
+        ],
+      },
+      {
+        title: "4. Build the order evidence pack",
+        items: [
+          "Order and line-item reference",
+          "Actual unit, label or batch identity",
+          "Dated photos and measurement or test records when included",
+          "Exception, corrective-action and approval record",
+          "Final packing list and release status",
+        ],
+      },
+      {
+        title: "Inspection boundaries",
+        intro:
+          "The quotation must say whether checks are performed by the supplier, coordinated by Hydraulic Match, performed by an independent inspector or witnessed by the buyer. Test availability, sample size and cost are confirmed before order placement.",
+        note: "Inspection reduces defined risks; it does not create evidence for characteristics that were not checked.",
+      },
+    ],
+    ctaTitle: "Send your acceptance criteria with the RFQ.",
+    ctaText:
+      "We will separate available evidence from checks that need a supplier, laboratory or independent inspection route.",
+    relatedLinks: [
+      {
+        href: "/manufacturing-partners/",
+        title: "Manufacturing partner review",
+        text: "See how a source advances from lead to order-approved supplier.",
+      },
+      {
+        href: "/quality/",
+        title: "Quality evidence levels",
+        text: "Choose the evidence level that supports the purchase decision.",
+      },
+      {
+        href: "/resources/hydraulic-component-pre-shipment-inspection-checklist/",
+        title: "Pre-shipment checklist",
+        text: "Use the checklist when defining order-specific release evidence.",
+      },
+    ],
+  },
+  {
     slug: "quality",
     title: "Quality and Pre-Shipment Verification",
     seoTitle: "Hydraulic Quality & Pre-Shipment Checks",
@@ -122,6 +369,32 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Communication and corrective-action responsiveness",
           "Historical model-code and delivery accuracy where available",
         ],
+      },
+      {
+        title: "Process evidence already published by the source sites",
+        intro:
+          "The three source properties provide different depths of evidence. These statements can inform an RFQ, but the named source and product scope must remain visible.",
+        table: {
+          headers: ["Source", "Publicly described evidence", "Use boundary"],
+          rows: [
+            [
+              "Rexroth Replacements",
+              "Warranty page states units are tested to stated pressure and flow or torque specifications before shipment",
+              "Treat as a source-site statement until the exact unit test record and conditions are supplied",
+            ],
+            [
+              "RestoPower",
+              "Product and resource pages identify aftermarket and OEM-equivalent part scope, Michigan dispatch and warranty terms",
+              "Useful for source and part identification; does not by itself provide order-specific inspection data",
+            ],
+            [
+              "Hydraulic Pump Supply",
+              "Product pages publish quality-control and testing descriptions for selected product families",
+              "Confirm the actual manufacturer, test method and order-linked record before repeating the claim",
+            ],
+          ],
+        },
+        note: "Hydraulic Match may cite a source-site process. It should only say “inspected” or “tested” for an order when the applicable record identifies the actual item and acceptance criteria.",
       },
       {
         title: "Incoming and pre-shipment checks",
@@ -193,6 +466,23 @@ export const hydraulicPages: HydraulicContentPage[] = [
     ctaTitle: "Need a specific inspection record?",
     ctaText:
       "List the dimensions, markings, photos or test documents required with your inquiry.",
+    relatedLinks: [
+      {
+        href: "/manufacturing-partners/",
+        title: "Manufacturing partner review",
+        text: "Review supplier identity, capability and order-approval stages.",
+      },
+      {
+        href: "/inspection-process/",
+        title: "Inspection process",
+        text: "Turn agreed requirements into pass, hold or release evidence.",
+      },
+      {
+        href: "/shipping/",
+        title: "Packaging and shipping",
+        text: "Connect released units to the final packages and transport record.",
+      },
+    ],
   },
   {
     slug: "distributor-support",
@@ -782,6 +1072,10 @@ export const hydraulicPages: HydraulicContentPage[] = [
     seoTitle: "How to Read a Hydraulic Valve Model Code",
     description:
       "A practical guide to collecting the complete hydraulic valve model code before requesting a replacement.",
+    published: "2026-05-10",
+    modified: "2026-08-01",
+    readingTime: "8 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     kicker: "MODEL-CODE GUIDE",
     intro:
       "A valve code can encode size, spool function, actuation, voltage, connector, seals and special options. A missing suffix can change the product.",
@@ -878,6 +1172,10 @@ export const hydraulicPages: HydraulicContentPage[] = [
     seoTitle: "Identify a Hydraulic Pump from Its Nameplate",
     description:
       "Learn which nameplate, shaft, flange, port and application details are needed to identify a hydraulic pump.",
+    published: "2026-05-15",
+    modified: "2026-08-01",
+    readingTime: "9 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     kicker: "PUMP IDENTIFICATION GUIDE",
     intro:
       "Pump identification starts with a complete nameplate, but mechanical details and application data are often needed to confirm the exact build.",
@@ -975,6 +1273,10 @@ export const hydraulicPages: HydraulicContentPage[] = [
     seoTitle: "Directional Valve Replacement Checklist",
     description:
       "Directional valve replacement checklist covering spool function, pressure, flow, mounting, voltage, connector and seals.",
+    published: "2026-05-20",
+    modified: "2026-08-01",
+    readingTime: "8 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     kicker: "DIRECTIONAL VALVE CHECKLIST",
     intro:
       "A valve that fits the mounting pattern can still operate the circuit incorrectly. Function and electrical details must be checked before installation.",
@@ -1073,6 +1375,7 @@ export const hydraulicPages: HydraulicContentPage[] = [
     kicker: "PURCHASING GUIDE",
     intro:
       "Original and aftermarket routes can both be useful. The right decision depends on application risk, technical evidence, lifecycle cost and supply urgency.",
+    excludeFromIndex: true,
     sections: [
       {
         title: "Original route",
@@ -1174,6 +1477,10 @@ export const hydraulicPages: HydraulicContentPage[] = [
     seoTitle: "Custom Hydraulic Cylinder RFQ Guide",
     description:
       "Custom hydraulic cylinder RFQ checklist for drawings, dimensions, pressure, mounting, seals, speed, load and quantity.",
+    published: "2026-06-01",
+    modified: "2026-08-01",
+    readingTime: "8 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     kicker: "CUSTOM CYLINDER RFQ GUIDE",
     intro:
       "A clear cylinder quotation needs both dimensions and operating conditions. A drawing is the best starting point.",
@@ -1281,6 +1588,10 @@ export const hydraulicPages: HydraulicContentPage[] = [
     seoTitle: "Why Hydraulic Series May Not Interchange",
     description:
       "Series names can hide differences in function, size, control, voltage, shaft, flange, ports, seals and revisions.",
+    published: "2026-06-05",
+    modified: "2026-08-01",
+    readingTime: "7 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     kicker: "COMPATIBILITY GUIDE",
     intro:
       "A series identifies a product family. It rarely captures every option needed to approve a direct replacement.",
@@ -1594,6 +1905,10 @@ export const hydraulicPages: HydraulicContentPage[] = [
     seoTitle: "Cross-Reference an Obsolete Hydraulic Valve",
     description:
       "A practical workflow for identifying and replacing an obsolete hydraulic valve without relying on appearance or a shortened series name.",
+    published: "2026-06-10",
+    modified: "2026-08-01",
+    readingTime: "7 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     kicker: "OBSOLETE VALVE WORKFLOW",
     intro:
       "When the original valve is obsolete, first reconstruct its function and installation requirements. A candidate should be compared against evidence, not selected from appearance alone.",
@@ -1650,6 +1965,41 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Sample, commissioning and approval plan",
         ],
       },
+      {
+        title: "Where obsolete references commonly turn up",
+        intro:
+          "Recognizing the source of an obsolete reference helps route it to the right evidence. The same series name can arrive through very different channels.",
+        table: {
+          headers: ["Situation", "Typical evidence available", "Main risk"],
+          rows: [
+            [
+              "Machine still in service with a failed valve",
+              "Nameplate, machine model, schematic and operating history",
+              "A visually similar valve with a different function or size",
+            ],
+            [
+              "Storeroom or second-hand stock",
+              "Part label, box marking and limited installation history",
+              "A stored unit whose revision or suffix differs from the drawing",
+            ],
+            [
+              "Catalog or BOM entry from an old machine manual",
+              "Old catalog page, order code and machine BOM",
+              "Multiple catalog generations sharing one series label",
+            ],
+          ],
+        },
+      },
+      {
+        title: "Evidence to keep with the final record",
+        items: [
+          "Photograph or scan of the original nameplate",
+          "Machine make, model, serial number and circuit reference",
+          "The complete code from the catalog generation that matches the machine",
+          "Any dimension, drawing or test note used to compare the candidate",
+          "The approved differences and the person responsible for approval",
+        ],
+      },
     ],
   },
   {
@@ -1658,6 +2008,10 @@ export const hydraulicPages: HydraulicContentPage[] = [
     seoTitle: "Hydraulic Pump Rotation, Flange & Shaft Guide",
     description:
       "Identify hydraulic pump rotation, mounting flange, shaft and port arrangement before requesting a replacement.",
+    published: "2026-06-15",
+    modified: "2026-08-01",
+    readingTime: "7 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     kicker: "PUMP INSTALLATION GUIDE",
     intro:
       "Rotation, flange and shaft errors can prevent installation or damage a pump. Use the manufacturer view convention and dimensional evidence rather than hose position alone.",
@@ -1707,6 +2061,42 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Port-side view",
           "Control or compensator",
           "Overall installed pump and coupling",
+        ],
+      },
+      {
+        title: "Common mounting families",
+        intro:
+          "Most pump mounting flanges belong to established two-bolt or four-bolt families. The family name is only a starting point; the pilot diameter, bolt circle, bolt size and shaft extension decide whether a unit actually fits.",
+        table: {
+          headers: ["Mounting family", "What to record", "Risk of guessing"],
+          rows: [
+            [
+              "Two-bolt flange (SAE-style)",
+              "Pilot diameter, bolt spacing, shaft type and keyway",
+              "Similar-looking two-bolt flanges differ across displacements",
+            ],
+            [
+              "Four-bolt flange (SAE/ISO-style)",
+              "Bolt circle, pilot diameter, bolt size and shaft end",
+              "Bolt pattern and pilot are checked separately, not assumed",
+            ],
+            [
+              "Inline or cartridge mount",
+              "Port spacing, housing bore and retention detail",
+              "Inline mounting depends on exact housing dimensions",
+            ],
+          ],
+        },
+      },
+      {
+        title: "Verification order before ordering",
+        items: [
+          "Read the complete model code and confirm every suffix",
+          "Compare the flange pilot and bolt circle against the existing unit",
+          "Compare shaft type, diameter, keyway or spline against the coupling",
+          "Confirm rotation direction using the manufacturer view convention",
+          "Check port size, thread, position and through-drive interface",
+          "Keep the nameplate photograph attached to the inquiry record",
         ],
       },
     ],
@@ -3407,14 +3797,47 @@ export const hydraulicPages: HydraulicContentPage[] = [
   },
   {
     slug: "shipping",
-    title: "Shipping and Export Support",
-    seoTitle: "Hydraulic Component Shipping & Export",
+    title: "Packaging and Shipping Process",
+    seoTitle: "Hydraulic Packaging & Shipping Process",
     description:
-      "Export packing, commercial invoice, packing list and international shipping coordination for hydraulic valves, pumps, cylinders and parts.",
-    kicker: "FROM CHINA TO YOUR DESTINATION",
+      "Order-specific protective packaging, package identification, release evidence, export documents and shipping coordination for hydraulic components.",
+    kicker: "FROM RELEASED UNIT TO IDENTIFIED PACKAGE",
     intro:
-      "Shipping options are quoted against the actual product weight, dimensions, urgency and destination. We do not promise one route or transit time for every order.",
+      "Packaging starts with the actual product risk, not a generic carton promise. Protection, labels, documents and transport are confirmed against the released units, packed dimensions, urgency and destination.",
     sections: [
+      {
+        title: "Packaging is selected by product risk",
+        table: {
+          headers: [
+            "Product or risk",
+            "Protection to define",
+            "Release evidence when agreed",
+          ],
+          rows: [
+            [
+              "Valves and electrical controls",
+              "Port caps, connector protection, moisture barrier and unit separation",
+              "Model label, capped interfaces, quantity and packed-unit photos",
+            ],
+            [
+              "Pumps and motors",
+              "Shaft restraint, port sealing, corrosion protection and impact control",
+              "Shaft and port condition, protection method and package identity",
+            ],
+            [
+              "Cylinders and heavy assemblies",
+              "Rod protection, stable supports, lifting points and reinforced case",
+              "Rod condition, restraint, case construction, weight and lifting marks",
+            ],
+            [
+              "Seal kits and small service parts",
+              "Part segregation, moisture protection and readable line-item labels",
+              "Kit identity, quantity, inner-pack separation and outer marks",
+            ],
+          ],
+        },
+        note: "These are planning examples, not a promise that every order includes every method. The accepted quotation defines the actual packing scope.",
+      },
       {
         title: "Transport options",
         items: [
@@ -3432,6 +3855,34 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Reinforced cartons or wooden cases as applicable",
           "Packing photos on request before shipment",
         ],
+      },
+      {
+        title: "Logistics facts visible on the three source sites",
+        table: {
+          headers: [
+            "Source",
+            "Public logistics statement",
+            "What remains open",
+          ],
+          rows: [
+            [
+              "Rexroth Replacements",
+              "Public contact page states items are quoted FOB its warehouse unless noted otherwise",
+              "Actual warehouse, package, carrier, export route and Hydraulic Match responsibility",
+            ],
+            [
+              "RestoPower",
+              "Public resource pages describe dispatch from its Michigan facility",
+              "Exact stock, package protection and international route for the submitted order",
+            ],
+            [
+              "Hydraulic Pump Supply",
+              "Public pages describe global delivery and China-based trading support",
+              "Supplier location, packed dimensions, export entity, Incoterm and carrier quote",
+            ],
+          ],
+        },
+        note: "A source-site shipping statement is not copied into the Hydraulic Match quotation as a fixed transit or packing commitment.",
       },
       {
         title: "Documents",
@@ -3493,6 +3944,23 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Transport document or tracking reference linked to the shipment",
           "Open document or consignee issues closed before handover",
         ],
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/inspection-process/",
+        title: "Inspection process",
+        text: "See what must pass or be approved before packing release.",
+      },
+      {
+        href: "/quality/",
+        title: "Quality control",
+        text: "Define which visual, dimensional or functional evidence is required.",
+      },
+      {
+        href: "/manufacturing-partners/",
+        title: "Manufacturing partner review",
+        text: "Understand who is responsible for supply and process evidence.",
       },
     ],
   },
@@ -3604,6 +4072,7 @@ export const hydraulicPages: HydraulicContentPage[] = [
     published: "2026-07-26",
     modified: "2026-07-26",
     readingTime: "6 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     sections: [
       {
         title: "Before changing the setting",
@@ -3635,6 +4104,39 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Replace or service the valve only after confirming the complete model code",
         ],
       },
+      {
+        title: "Settings, symptoms and likely causes",
+        table: {
+          headers: ["Observed behaviour", "Likely causes", "Check before changing the valve"],
+          rows: [
+            [
+              "Downstream pressure rises with demand",
+              "Low upstream margin, incorrect drain, or internal leakage",
+              "Supply pressure, drain line and pilot connection",
+            ],
+            [
+              "Downstream pressure drifts over time",
+              "Temperature-sensitive viscosity, contamination, or sticking spool",
+              "Oil temperature, filter condition and valve cleanliness",
+            ],
+            [
+              "Pressure cannot be set within range",
+              "Wrong valve family, damaged seat, or wrong spring",
+              "Complete model code, rating and documented adjustment range",
+            ],
+          ],
+        },
+      },
+      {
+        title: "Record kept after commissioning",
+        items: [
+          "Complete valve model code and serial or order reference",
+          "Final setting, gauge position and oil temperature",
+          "Supply and downstream pressure under static and flowing conditions",
+          "Any circuit changes or differences from the original drawing",
+          "The person and date responsible for the adjustment",
+        ],
+      },
     ],
     ctaTitle: "Need a pressure-control valve replacement?",
     ctaText:
@@ -3652,6 +4154,7 @@ export const hydraulicPages: HydraulicContentPage[] = [
     published: "2026-07-26",
     modified: "2026-07-26",
     readingTime: "7 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     sections: [
       {
         title: "Start with the power path",
@@ -3682,6 +4185,50 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Treat any unresolved symbol or connection as an open compatibility point",
         ],
       },
+      {
+        title: "Symbols you will see in most circuits",
+        table: {
+          headers: ["Symbol group", "What it tells you", "What to verify on the machine"],
+          rows: [
+            [
+              "Pump and motor circles",
+              "Fixed or variable displacement and flow direction",
+              "Model code, rotation, mounting and shaft data",
+            ],
+            [
+              "Directional valve boxes",
+              "Number of positions and the flow paths in each",
+              "Spool symbol, voltage, connector and manual override",
+            ],
+            [
+              "Pressure-control symbols",
+              "Relief, reducing, sequence or unloading function",
+              "Set pressure, pilot source and adjustment location",
+            ],
+            [
+              "Line types",
+              "Main flow, pilot/control, drain and enclosure boundaries",
+              "Actual port labels and external pilot or drain plumbing",
+            ],
+            [
+              "Reservoir, filter, cooler and accumulator",
+              "Support functions and cleanliness path",
+              "Element rating, accumulator gas precharge and connections",
+            ],
+          ],
+        },
+      },
+      {
+        title: "A repeatable reading order",
+        items: [
+          "Identify every major component tag and its manufacturer reference",
+          "Trace the neutral or de-energized state first",
+          "Trace each energized or shifted state and note which components move",
+          "List every pressure, flow, pilot and drain connection the component needs",
+          "Compare the schematic claim against the nameplate and installed plumbing",
+          "Keep the circuit tag alongside the RFQ so each item stays traceable",
+        ],
+      },
     ],
     ctaTitle: "Turn a circuit reference into a component RFQ.",
     ctaText:
@@ -3699,6 +4246,7 @@ export const hydraulicPages: HydraulicContentPage[] = [
     published: "2026-07-26",
     modified: "2026-07-26",
     readingTime: "6 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     sections: [
       {
         title: "Terms that are often confused",
@@ -3729,6 +4277,44 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Confirm seal and component compatibility before changing fluid chemistry",
         ],
       },
+      {
+        title: "What the fluid data sheet actually gives you",
+        table: {
+          headers: ["Data sheet value", "What it does", "How to use it"],
+          rows: [
+            [
+              "Kinematic viscosity grades",
+              "Describes resistance to flow at reference temperatures",
+              "Estimate whether inlet flow and lubrication are achievable at ambient temperature",
+            ],
+            [
+              "Pour point",
+              "Laboratory indicator of lowest measured fluid movement",
+              "A starting filter, not a system start limit",
+            ],
+            [
+              "Viscosity index",
+              "Shows how strongly viscosity changes with temperature",
+              "Compare candidate fluids for wide-temperature duty",
+            ],
+            [
+              "Minimum starting viscosity",
+              "Component-dependent limit from the pump or motor manufacturer",
+              "The governing value for a cold-start procedure",
+            ],
+          ],
+        },
+      },
+      {
+        title: "Cold-start record to keep",
+        items: [
+          "Ambient and fluid temperature at start",
+          "Fluid grade, batch reference and water content check",
+          "Pump inlet condition, filter differential and prime mover load",
+          "Time, pressure and speed used during warm-up",
+          "Any anomaly recorded before the system reached operating temperature",
+        ],
+      },
     ],
     ctaTitle: "Review a pump for low-temperature duty.",
     ctaText:
@@ -3746,6 +4332,7 @@ export const hydraulicPages: HydraulicContentPage[] = [
     published: "2026-07-26",
     modified: "2026-07-26",
     readingTime: "7 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     sections: [
       {
         title: "Main components in a hydrostatic drive",
@@ -3811,6 +4398,7 @@ export const hydraulicPages: HydraulicContentPage[] = [
     published: "2026-07-26",
     modified: "2026-07-26",
     readingTime: "7 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     sections: [
       {
         title: "How a relief valve works",
@@ -3876,6 +4464,7 @@ export const hydraulicPages: HydraulicContentPage[] = [
     published: "2026-07-26",
     modified: "2026-07-26",
     readingTime: "6 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     sections: [
       {
         title: "Common pump symbol features",
@@ -3941,6 +4530,7 @@ export const hydraulicPages: HydraulicContentPage[] = [
     published: "2026-07-26",
     modified: "2026-07-26",
     readingTime: "7 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
     sections: [
       {
         title: "Main piston motor types",
@@ -3972,6 +4562,45 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Machine model, gearbox or wheel interface and operating symptoms",
         ],
       },
+      {
+        title: "Family comparison at a glance",
+        table: {
+          headers: ["Motor family", "Typical strength", "Interface to confirm"],
+          rows: [
+            [
+              "Axial swashplate motor",
+              "Compact package, wide speed range, variable-displacement options",
+              "Swashplate angle range, control, shaft and case pressure",
+            ],
+            [
+              "Bent-axis piston motor",
+              "High efficiency and speed capability",
+              "Bent angle, displacement, mounting and drain routing",
+            ],
+            [
+              "Radial piston motor",
+              "High torque at low speed for direct drives",
+              "Torque rating, speed limit, shaft load and brake option",
+            ],
+            [
+              "Motor with integrated brake or gearbox",
+              "Complete drive package with one supply interface",
+              "Brake release pressure, ratio, sensor and wheel mounting",
+            ],
+          ],
+        },
+      },
+      {
+        title: "Data needed before a quote",
+        items: [
+          "Complete motor model code and revision",
+          "Nameplate plus shaft, flange, port and control photographs",
+          "Required torque and speed envelope, including start and peak values",
+          "Working, peak and case pressure limits for the application",
+          "Machine function, duty cycle, fluid and ambient conditions",
+          "Brake, sensor, reduction or wheel-mount requirements",
+        ],
+      },
     ],
     ctaTitle: "Request a hydraulic piston motor match.",
     ctaText:
@@ -3991,6 +4620,625 @@ export const hydraulicPages: HydraulicContentPage[] = [
         href: "/series/mcr/",
         title: "MCR replacement motors",
         text: "Open the Poclain MCR family hub.",
+      },
+    ],
+  },
+  {
+    slug: "resources/hydraulic-terms-glossary",
+    title: "Hydraulic Terminology Glossary",
+    seoTitle: "Hydraulic Terms Glossary",
+    description:
+      "Clear definitions of common hydraulic terms covering pumps, valves, cylinders, motors, circuits and industry acronyms for buyers and maintenance teams.",
+    published: "2026-08-01",
+    modified: "2026-08-01",
+    readingTime: "12 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
+    kicker: "HYDRAULIC TERMINOLOGY REFERENCE",
+    intro:
+      "This glossary defines common hydraulic terms used in component identification, sourcing, replacement and system troubleshooting. Use it alongside model-code guides and technical checklists.",
+    sections: [
+      {
+        title: "Pumps",
+        table: {
+          headers: ["Term", "Definition"],
+          rows: [
+            [
+              "Axial piston pump",
+              "A pump where pistons move parallel to the drive shaft. Available in variable-displacement (swashplate) and fixed-displacement (bent-axis) configurations. Common for high-pressure industrial and mobile applications.",
+            ],
+            [
+              "Vane pump",
+              "A pump using sliding vanes in a rotor to move fluid. Available in single, double and triple configurations. Typically used at medium pressure in industrial systems.",
+            ],
+            [
+              "Gear pump",
+              "A fixed-displacement pump using meshing gears. Simple construction, tolerant of contamination, commonly used for low-to-medium pressure applications and charge circuits.",
+            ],
+            [
+              "Displacement",
+              "The theoretical volume of fluid a pump delivers per revolution, expressed in cm³/rev or in³/rev. Actual flow is displacement × speed × volumetric efficiency.",
+            ],
+            [
+              "Pressure compensator",
+              "A pump control that adjusts displacement to maintain a set pressure. When system pressure reaches the compensator setting, the pump de-strokes to near-zero flow.",
+            ],
+            [
+              "Load sensing",
+              "A pump control that adjusts displacement to maintain a set pressure margin above the highest load pressure. Improves efficiency in multi-function systems.",
+            ],
+            [
+              "Through-drive",
+              "A rear mounting pad and coupling on a pump that accepts an auxiliary pump. The auxiliary pump is driven by the main pump shaft.",
+            ],
+            [
+              "Case drain",
+              "A dedicated return line from the pump or motor housing to the reservoir. Carries internal leakage and provides cooling and lubrication. Must never be plugged.",
+            ],
+          ],
+        },
+      },
+      {
+        title: "Valves",
+        table: {
+          headers: ["Term", "Definition"],
+          rows: [
+            [
+              "Directional control valve",
+              "A valve that directs fluid flow to a selected path. Classified by number of ways (ports) and positions. Spool type determines flow paths in each position.",
+            ],
+            [
+              "Spool",
+              "The moving element inside a directional valve. The spool lands and grooves determine which ports are connected or blocked in each position. The spool symbol is critical for correct circuit function.",
+            ],
+            [
+              "Center condition",
+              "The flow-path configuration when a directional valve is in its spring-centered (de-energized) position. Options include all ports closed, pump to tank (open center), A and B to tank (float), etc.",
+            ],
+            [
+              "Solenoid valve",
+              "A valve shifted by an electromagnetic solenoid. Available in AC and DC voltages. Wet-armature (wet-pin) solenoids are immersed in hydraulic fluid; dry types are separated.",
+            ],
+            [
+              "Proportional valve",
+              "A valve where spool position is proportional to an electrical input signal. Used when variable flow or pressure control is needed. Requires compatible electronics/amplifier.",
+            ],
+            [
+              "Modular (sandwich) valve",
+              "A valve that mounts between a directional valve and its subplate or manifold. Common types: pressure relief, pressure reducing, flow control, pilot-operated check.",
+            ],
+            [
+              "Pressure relief valve",
+              "A normally closed valve that opens at a set pressure to limit maximum system pressure. Direct-acting for low flow; pilot-operated for higher flow and stability.",
+            ],
+            [
+              "Pressure reducing valve",
+              "A normally open valve that reduces outlet pressure to a set level below inlet pressure. Used when a branch circuit needs lower pressure than the main system.",
+            ],
+            [
+              "Check valve",
+              "A valve that allows flow in one direction and blocks reverse flow. A pilot-operated check valve can be opened by an external pilot signal.",
+            ],
+            [
+              "Mounting pattern / interface",
+              "The standardised bolt pattern and port layout for mounting a valve. Common standards: ISO 4401 / CETOP (NG6, NG10, NG16), NFPA D03/D05/D07.",
+            ],
+          ],
+        },
+      },
+      {
+        title: "Cylinders",
+        table: {
+          headers: ["Term", "Definition"],
+          rows: [
+            [
+              "Bore",
+              "The internal diameter of a cylinder barrel. Together with pressure, it determines the extending force (Force = Pressure × Bore area).",
+            ],
+            [
+              "Rod diameter",
+              "The diameter of the piston rod. Together with bore, it determines the retracting force via the annular area. Rod diameter affects buckling resistance.",
+            ],
+            [
+              "Stroke",
+              "The distance the piston travels from fully retracted to fully extended. Stroke plus retracted length gives the extended pin-to-pin dimension.",
+            ],
+            [
+              "Mounting style",
+              "How the cylinder is attached to the machine. Common types: clevis, flange, trunnion, foot, eye. Mounting affects force transmission and alignment tolerance.",
+            ],
+            [
+              "Cushioning",
+              "A device at the cylinder end that restricts flow near stroke-end to decelerate the piston. Reduces impact and noise. May be fixed or adjustable.",
+            ],
+          ],
+        },
+      },
+      {
+        title: "Motors",
+        table: {
+          headers: ["Term", "Definition"],
+          rows: [
+            [
+              "Orbital (gerotor) motor",
+              "A low-speed high-torque motor using an orbiting gear set. Simple, robust, widely used in mobile equipment for wheel drives, augers and conveyors.",
+            ],
+            [
+              "Axial piston motor",
+              "A motor where pistons are arranged parallel to the drive shaft. Available in fixed and variable displacement. Used where high efficiency and speed range are needed.",
+            ],
+            [
+              "Radial piston motor",
+              "A motor where pistons are arranged radially around the crankshaft. Capable of very high torque at low speed. Used in winches, slewing drives and heavy machinery.",
+            ],
+            [
+              "Flushing valve",
+              "A valve in a closed-circuit hydrostatic transmission that exchanges a portion of the loop fluid to control temperature and contamination.",
+            ],
+          ],
+        },
+      },
+      {
+        title: "Systems & Performance",
+        table: {
+          headers: ["Term", "Definition"],
+          rows: [
+            [
+              "Working pressure",
+              "The pressure at which a system or component normally operates. Components should be rated for working pressure plus a safety margin for peaks.",
+            ],
+            [
+              "Flow rate",
+              "The volume of fluid passing a point per unit time, typically L/min or GPM. Pump flow is displacement × speed; actuator flow is area × velocity.",
+            ],
+            [
+              "Cavitation",
+              "The formation and collapse of vapour bubbles in hydraulic fluid when inlet pressure falls below vapour pressure. Causes noise, erosion and component damage.",
+            ],
+            [
+              "Filtration",
+              "The removal of solid contaminants from hydraulic fluid. Typically measured in microns (µm). Return-line, pressure-line and off-line filtration protect components.",
+            ],
+            [
+              "ISO VG",
+              "ISO Viscosity Grade — a standard classification for hydraulic oil viscosity at 40°C. Common grades: ISO VG 32, 46, 68. Selection depends on pump type, temperature and duty.",
+            ],
+            [
+              "NBR / FKM",
+              "Nitrile (NBR) is the standard hydraulic seal material. FKM (Viton) is used for higher temperatures or aggressive fluids. Seal compatibility must match the actual fluid and operating temperature.",
+            ],
+            [
+              "Open circuit",
+              "A hydraulic circuit where pump inlet is connected to the reservoir and return flow goes back to the reservoir. Most industrial systems are open-circuit.",
+            ],
+            [
+              "Closed circuit",
+              "A hydrostatic circuit where pump outlet connects directly to motor inlet and motor return connects back to pump inlet. Uses a charge pump to compensate for leakage. Common in mobile propel drives.",
+            ],
+          ],
+        },
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/resources/how-to-read-a-hydraulic-valve-model-code/",
+        title: "Read a valve model code",
+        text: "Apply these terms when decoding Rexroth, Vickers and Parker valve codes.",
+      },
+      {
+        href: "/resources/how-to-identify-a-hydraulic-pump-from-its-nameplate/",
+        title: "Identify a hydraulic pump",
+        text: "Use terminology to confirm nameplate, shaft, flange and port details.",
+      },
+      {
+        href: "/resources/why-the-same-hydraulic-series-may-not-be-interchangeable/",
+        title: "Why series names mislead",
+        text: "See how suffixes encode the functional differences defined in this glossary.",
+      },
+    ],
+  },
+  {
+    slug: "resources/hydraulic-system-troubleshooting-guide",
+    title: "Hydraulic System Troubleshooting Guide",
+    seoTitle: "Hydraulic System Troubleshooting Guide",
+    description:
+      "Systematic troubleshooting guide for common hydraulic system problems: low pressure, overheating, noisy pump, slow actuator, drifting cylinder and erratic operation.",
+    published: "2026-08-01",
+    modified: "2026-08-01",
+    readingTime: "10 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
+    kicker: "MAINTENANCE & DIAGNOSTICS",
+    intro:
+      "A hydraulic system problem is rarely solved by replacing one component without first understanding what caused it to fail. This guide provides a systematic approach to diagnosing common hydraulic problems before ordering replacement parts.",
+    sections: [
+      {
+        title: "Low or No System Pressure",
+        table: {
+          headers: ["Possible cause", "What to check", "Before replacing"],
+          rows: [
+            [
+              "Relief valve open or set too low",
+              "Confirm setting with a pressure gauge at the pump outlet or relief valve test point",
+              "Adjust or clean the relief valve first. Replace only if the seat or spring is damaged.",
+            ],
+            [
+              "Worn pump",
+              "Measure case-drain flow at operating pressure and temperature; compare with the pump's published case-drain limit",
+              "Rule out inlet restrictions, air ingress and excessive temperature before condemning the pump.",
+            ],
+            [
+              "Internal valve leakage",
+              "Isolate circuit sections and measure pressure drop; feel for hot valve bodies indicating bypass flow",
+              "Test individual valves before replacing the pump. A bypassing relief or directional valve is cheaper to fix.",
+            ],
+            [
+              "Damaged cylinder seal",
+              "Isolate the cylinder and check for drift under load; inspect for external rod leakage",
+              "Confirm the seal is the cause — a drifting load can also be caused by a leaking valve spool.",
+            ],
+          ],
+        },
+      },
+      {
+        title: "Overheating",
+        items: [
+          "Check the reservoir fluid level — low fluid reduces heat dissipation capacity",
+          "Inspect the heat exchanger (air/oil cooler or water/oil cooler) for fouling, blocked airflow or coolant failure",
+          "Measure pressure drop across return filters — a clogged filter forces fluid through the bypass, reducing cooling",
+          "Check for continuous relief valve operation — a stuck-open relief or a misadjusted compensator can generate continuous heat",
+          "Measure case-drain flow on pumps and motors — excessive internal leakage generates heat",
+          "Confirm the fluid viscosity grade matches the ambient and operating temperature range",
+          "Check for internal leakage through closed-center directional valves — a worn spool can bypass flow at rest",
+        ],
+        note: "Adding a cooler without finding the heat source treats the symptom, not the cause. Start by measuring flow and pressure where energy is being converted to heat.",
+      },
+      {
+        title: "Noisy Pump",
+        items: [
+          "Check for cavitation: restricted suction strainer, collapsed suction hose, high fluid viscosity or insufficient reservoir head",
+          "Check for aeration: loose suction-line fittings, low reservoir level, faulty shaft seal or excessive return-line turbulence above the fluid surface",
+          "Inspect the pump coupling: misalignment, wear, or loose elements can produce noise that sounds like a pump problem",
+          "Check for trapped air: bleed the pump case and the highest point in the circuit",
+          "Measure case-drain flow: an increase over time can indicate wear that also changes pump sound",
+          "Confirm the drive speed is within the pump's published range",
+        ],
+        note: "Cavitation and aeration damage pumps quickly. A noisy pump should be investigated immediately — do not run it hoping the noise will go away.",
+      },
+      {
+        title: "Slow or Erratic Actuator",
+        items: [
+          "Confirm the pump is delivering flow: measure flow at the pump outlet or use a flow meter in the pressure line",
+          "Check for a partially shifted directional valve: a sticking spool or inadequate pilot pressure can restrict flow",
+          "Inspect flow-control valves for contamination or incorrect setting",
+          "Check for external leakage at cylinder rod seals, fittings or hoses",
+          "Check for internal cylinder leakage: isolate the cylinder and check for piston bypass under load",
+          "Confirm the load has not changed: increased mechanical friction, binding or additional weight",
+          "Check for air in the circuit: bleed the system and inspect the suction side",
+        ],
+      },
+      {
+        title: "Cylinder Drift Under Load",
+        items: [
+          "Isolate the cylinder with a shut-off valve or by blocking the ports — if drift stops, the problem is in the valve, not the cylinder",
+          "If drift continues with the cylinder isolated, the piston seal is bypassing internally",
+          "Check the directional valve spool for wear — a closed-center spool with excessive clearance can allow creep",
+          "Check the counterbalance or load-holding valve for contamination or incorrect setting",
+          "For vertical loads, confirm the load-holding valve pilot ratio is appropriate for the application",
+        ],
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/resources/hydraulic-pump-cavitation-suction-line/",
+        title: "Pump cavitation diagnosis",
+        text: "Check the inlet system before replacing the pump.",
+      },
+      {
+        href: "/resources/hydraulic-valve-pressure-drop-heat/",
+        title: "Valve pressure drop and heat",
+        text: "Estimate power loss where high cycle flow creates excess heat.",
+      },
+      {
+        href: "/resources/hydraulic-pressure-relief-valve-function-adjustment/",
+        title: "Relief valve adjustment",
+        text: "Understand the function and limits before adjusting settings.",
+      },
+      {
+        href: "/request-a-quote/",
+        title: "Request a replacement review",
+        text: "Send the failed component code, failure symptoms and machine data.",
+      },
+    ],
+  },
+  {
+    slug: "resources/how-to-verify-hydraulic-supplier-credentials",
+    title: "How to Verify a Hydraulic Component Supplier",
+    seoTitle: "How to Verify Hydraulic Supplier Credentials",
+    description:
+      "A practical framework for verifying hydraulic component supplier identity, capability, evidence and corrective-action readiness before placing an order.",
+    published: "2026-08-01",
+    modified: "2026-08-01",
+    readingTime: "9 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
+    kicker: "SUPPLIER QUALIFICATION GUIDE",
+    intro:
+      "A catalogue page, a quick reply and a low price do not by themselves establish a reliable hydraulic component supplier. This guide separates the questions that reveal capability from the claims that reveal nothing.",
+    sections: [
+      {
+        title: "1. Legal identity — start with who the business actually is",
+        items: [
+          "Request the supplier's registered legal name and business registration number",
+          "Confirm the business scope includes the product family you are ordering",
+          "Verify the physical operating address — a virtual office or residential address alone is not disqualifying, but it should be known",
+          "Ask who will appear as the exporter/shipper on documents and whether they are the same legal entity as the manufacturer",
+        ],
+        note: "A supplier that refuses to share its legal identity before an order is a red flag. A supplier that provides an identity but cannot link it to the product being offered is a lead, not an approved source.",
+      },
+      {
+        title: "2. Product capability — not 'everything', but 'this exact model'",
+        items: [
+          "Ask which product families the supplier produces or trades regularly — a focused list is more credible than 'all hydraulic parts'",
+          "Request a model-code interpretation for your exact reference — can the supplier decode the function, control, interface and options?",
+          "Ask which operations are performed in-house and which are subcontracted",
+          "Request a dimensional comparison or drawing for the proposed item — not only a datasheet for the series",
+          "Ask about available test equipment and whether test records are order-linked",
+        ],
+        note: "A supplier that cannot interpret the complete model code is sourcing from a catalogue, not from product knowledge. Price may be the only differentiator.",
+      },
+      {
+        title: "3. Evidence depth — separate what exists from what is claimed",
+        table: {
+          headers: ["Evidence level", "What it can confirm", "What it cannot confirm"],
+          rows: [
+            [
+              "Product photo",
+              "Visible condition, markings, packaging appearance",
+              "Internal configuration, material, performance or conformity to order",
+            ],
+            [
+              "Company registration",
+              "Legal identity, business scope, registration date",
+              "Capability, quality, delivery reliability or product-specific competence",
+            ],
+            [
+              "ISO / quality certificate",
+              "That a certification body assessed the management system at a point in time",
+              "That the certificate covers your product family, location or current capability",
+            ],
+            [
+              "Sample unit",
+              "Physical product quality for that one unit",
+              "Batch consistency, future delivery conformity or dimensional accuracy without measurement",
+            ],
+            [
+              "Order-linked test record",
+              "That the identified unit was tested under stated conditions and met stated criteria",
+              "Performance outside the tested conditions or future batch behaviour",
+            ],
+          ],
+        },
+      },
+      {
+        title: "4. Corrective action — what happens when something goes wrong",
+        items: [
+          "Ask how a nonconforming unit is reported, investigated and corrected",
+          "Request the warranty duration, scope, claim evidence requirements and exclusions in writing",
+          "Ask whether the supplier has a documented corrective-action process for quality issues",
+          "Confirm who pays for return shipping, inspection and replacement in a warranty claim",
+          "Ask how repeat-order consistency is maintained when the revision, material or sub-supplier changes",
+        ],
+        note: "'We will replace it' without a defined process, responsible party, timeline or shipping arrangement is not a warranty — it is a hope.",
+      },
+      {
+        title: "5. Communication as a qualification signal",
+        items: [
+          "Does the supplier ask clarifying questions about the model code, application and required evidence — or only about quantity and price?",
+          "Does the supplier state when a parameter cannot be confirmed — or does everything sound 'no problem'?",
+          "Does the supplier provide written technical data — or only voice messages and promises?",
+          "Does the supplier respect an evidence boundary — or promise documents they cannot produce?",
+        ],
+        note: "A supplier that never says 'I need to check that' is probably not checking anything.",
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/manufacturing-partners/",
+        title: "Manufacturing partner review",
+        text: "See the five-stage source evaluation framework used for Hydraulic Match RFQs.",
+      },
+      {
+        href: "/quality/",
+        title: "Quality evidence levels",
+        text: "Match the required evidence depth to the purchase decision.",
+      },
+      {
+        href: "/resources/hydraulic-component-pre-shipment-inspection-checklist/",
+        title: "Pre-shipment inspection",
+        text: "Define order-specific checks that answer the actual release question.",
+      },
+    ],
+  },
+  {
+    slug: "resources/hydraulic-export-documentation-guide",
+    title: "Hydraulic Component Export Documentation Guide",
+    seoTitle: "Hydraulic Export Documentation Guide",
+    description:
+      "A practical guide to export documentation for hydraulic components sourced from China: commercial invoice, packing list, bill of lading, certificate of origin and Incoterms.",
+    published: "2026-08-01",
+    modified: "2026-08-01",
+    readingTime: "8 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
+    kicker: "EXPORT & LOGISTICS GUIDE",
+    intro:
+      "Correct export documentation keeps a shipment moving through customs and into the buyer's hands without delay. This guide explains the core documents and terms for hydraulic component exports from China.",
+    sections: [
+      {
+        title: "Core export documents",
+        table: {
+          headers: ["Document", "Purpose", "Hydraulic-specific notes"],
+          rows: [
+            [
+              "Commercial invoice",
+              "States the seller, buyer, goods description, harmonised-system (HS) code, value, currency and Incoterm. Required for customs clearance in both countries.",
+              "Model codes and quantities should match the quotation and packing list exactly. HS codes for hydraulic valves (8481.20), pumps (8413.60) and cylinders (8412.21) should be verified for the destination country.",
+            ],
+            [
+              "Packing list",
+              "Lists every package with Gross weight, net weight, dimensions, package count and contents per package.",
+              "Each line should reference the hydraulic model code and quantity inside that carton or crate. A packing list that only states 'hydraulic parts' invites customs delay.",
+            ],
+            [
+              "Bill of lading (sea) or air waybill (air)",
+              "The transport contract and document of title. The carrier issues it after receiving the goods.",
+              "Verify the consignee and notify-party details are exactly as required. For sea freight, a telex release can avoid couriering original bills.",
+            ],
+            [
+              "Certificate of origin",
+              "States the country where the goods were produced. May be required for preferential tariff treatment under a trade agreement.",
+              "Hydraulic components assembled in China from globally sourced parts may qualify for a China CO. The specific rule of origin should be confirmed with the supplier.",
+            ],
+            [
+              "Inspection certificate",
+              "Records the inspection result when pre-shipment inspection was agreed. May be issued by the supplier, a third party or the buyer's representative.",
+              "The certificate should list the models, quantities, checked characteristics and results — not only 'inspected and approved'.",
+            ],
+          ],
+        },
+      },
+      {
+        title: "Key Incoterms for hydraulic exports",
+        items: [
+          "FOB (Free On Board) — seller delivers goods on board the vessel at the named port. Buyer arranges and pays for ocean freight and insurance. Common for full-container hydraulic shipments.",
+          "CIF (Cost, Insurance, Freight) — seller arranges and pays for freight and insurance to the named destination port. Buyer handles import clearance. Gives the buyer a delivered cost to the port.",
+          "EXW (Ex Works) — buyer collects from the seller's premises and handles all transport, export and import formalities. Risk transfers at pickup. Only suitable when the buyer has a China-based logistics partner.",
+          "DAP (Delivered at Place) — seller delivers to the named destination, ready for unloading. Buyer handles import clearance. Useful when the buyer wants a delivered price to their door or warehouse.",
+          "FCA (Free Carrier) — seller delivers to the buyer's nominated carrier at a named place. More flexible than FOB for air freight or consolidated shipments.",
+        ],
+        note: "The Incoterm determines when risk transfers from seller to buyer, who pays for transport and who handles customs formalities. It must be stated in the quotation — a price without an Incoterm is incomplete.",
+      },
+      {
+        title: "Shipping practicalities for hydraulic components",
+        items: [
+          "Heavy items (pumps, motors, large cylinders) usually ship by sea freight in crates or on pallets. Air freight is economical only for small valves, seal kits or urgent replacements.",
+          "Protect machined surfaces: shaft ends, port threads and mounting faces need caps, plugs or protective covers. Rust-preventive treatment should be specified for sea freight.",
+          "Flexible hoses, seals and elastomeric parts should be protected from heat, direct sunlight and ozone during transit and storage.",
+          "Neutral packing (no supplier branding on outer cartons) is commonly requested by distributors. Confirm availability before ordering.",
+          "Wood packaging (crates, pallets) must comply with ISPM 15 for international shipments — heat treatment or fumigation with the IPPC mark.",
+          "Express courier (DHL, FedEx, UPS) is practical for samples, small seal kits, or single small valves. Faster but more expensive per kg than air freight for larger shipments.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/shipping/",
+        title: "Shipping and packaging",
+        text: "Review the packing, documentation and transport process for hydraulic orders.",
+      },
+      {
+        href: "/downloads/",
+        title: "RFQ templates",
+        text: "Structure model, quantity and destination requirements before inquiry.",
+      },
+      {
+        href: "/resources/hydraulic-component-pre-shipment-inspection-checklist/",
+        title: "Pre-shipment checklist",
+        text: "Define the inspection evidence needed before shipment release.",
+      },
+    ],
+  },
+  {
+    slug: "resources/china-hydraulic-market-overview",
+    title: "China Hydraulic Component Market — A Buyer's Overview",
+    seoTitle: "China Hydraulic Market Overview",
+    description:
+      "An overview of the China hydraulic component manufacturing landscape: key production regions, product specialisations, quality tiers and practical sourcing considerations for international buyers.",
+    published: "2026-08-01",
+    modified: "2026-08-01",
+    readingTime: "9 min",
+    reviewedBy: "Hydraulic Match Editorial Review",
+    kicker: "MARKET OVERVIEW",
+    intro:
+      "China is a major producer of hydraulic components, but 'China hydraulic' is not one thing. The market spans state-owned enterprises, privately held specialists, trading companies and workshops with very different capabilities, quality systems and export readiness. This overview helps buyers understand the landscape before selecting a sourcing route.",
+    sections: [
+      {
+        title: "Key production clusters",
+        table: {
+          headers: ["Region", "Specialisation", "Buyer relevance"],
+          rows: [
+            [
+              "Zhejiang / Shanghai",
+              "Industrial hydraulic valves, power units, hydraulic presses, cylinders. Strong in high-volume standard components and complete systems.",
+              "Good for standard solenoid and modular valves, power units, and industrial cylinders. Many factories with export experience.",
+            ],
+            [
+              "Jiangsu / Shandong",
+              "Gear pumps, vane pumps, industrial cylinders, hydraulic fittings. Concentration of hydraulic component and system manufacturers.",
+              "Good for gear pumps and standard industrial cylinders. Medium-to-large enterprises with established quality systems.",
+            ],
+            [
+              "Guangdong / Fujian",
+              "Mobile hydraulic components, hydraulic breakers, compact power units. Strong in construction-equipment hydraulics.",
+              "Relevant for mobile equipment pumps, motors and valves. Smaller average factory size but faster response.",
+            ],
+            [
+              "Hunan / Hubei",
+              "Axial piston pumps and motors, larger hydraulic systems. Home to several major Chinese hydraulic enterprises.",
+              "Important for piston pump inquiries. May have state-owned heritage, different commercial behaviour than private firms.",
+            ],
+            [
+              "Beijing / Tianjin",
+              "High-end proportional and servo hydraulics, aerospace components. Research-institute spin-offs and joint ventures.",
+              "Relevant for proportional and servo valve inquiries. Often higher cost but better technical capability.",
+            ],
+          ],
+        },
+        note: "Production clusters suggest capability concentration, not that every factory in the region has equal quality. Supplier screening is still required.",
+      },
+      {
+        title: "Supplier types — not all are factories",
+        items: [
+          "Direct manufacturer — produces components in-house. May or may not be willing to sell small quantities or provide order-specific test data. Usually identifiable by a focused product catalogue and model-code literacy.",
+          "Trading company — sources from one or more factories and handles export logistics. Can provide access to factories that do not export directly. Add a margin but may reduce the buyer's coordination burden.",
+          "Manufacturer-owned trading company — a separate legal entity created by a factory for export. Legitimate but the factory relationship should be confirmed.",
+          "Workshop / small-batch specialist — produces simple components (cylinders, manifolds, fittings) in low volume. May have limited documentation capability. Suitable when a drawing and dimensional check are sufficient.",
+          "Online marketplace seller — lists everything, knows nobody. Typically cannot provide technical comparison, order-specific evidence or consistent quality. Highest risk for a hydraulic replacement purchase.",
+        ],
+      },
+      {
+        title: "Quality tiers — understand what you are comparing",
+        items: [
+          "Top tier: ISO 9001 or IATF 16949 certified, documented production process, in-house testing, export experience to Europe or North America, willing to provide order-linked test records. Higher price but lower qualification burden.",
+          "Middle tier: ISO 9001 certified, reasonable product focus, some export experience, technical data available on request. Represents the practical sweet spot for many hydraulic replacement RFQs.",
+          "Entry tier: business license only, broad product claims, limited technical data, no export documentation capability. Price may be lower, but the buyer carries the full quality-assurance burden.",
+        ],
+        note: "A certificate is a starting point for qualification, not a substitute for model-specific comparison and order-specific evidence.",
+      },
+      {
+        title: "Practical sourcing considerations",
+        items: [
+          "Ask for the complete model code comparison, not a 'similar product' suggestion. A series-level match is not a model-level match.",
+          "Request a dimensional drawing or confirmation sheet for the proposed item before production or shipment.",
+          "For higher-risk replacements, start with one sample unit before batch ordering. Define the sample acceptance criteria first.",
+          "Confirm the Incoterm, shipping route and delivery window before placing the order. A price without delivery terms is incomplete.",
+          "Payment terms (T/T, L/C, deposit/balance split) should be agreed before production. Standard practice: 30% deposit, 70% before shipment or against copy documents.",
+          "IP protection: if the component is proprietary, consider an NDA and confirm that drawings are controlled. China has IP laws, but enforcement requires documentation.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      {
+        href: "/resources/how-to-verify-hydraulic-supplier-credentials/",
+        title: "Supplier verification guide",
+        text: "Apply the five-stage screening framework to any prospective supplier.",
+      },
+      {
+        href: "/resources/hydraulic-export-documentation-guide/",
+        title: "Export documentation",
+        text: "Prepare commercial invoices, packing lists and shipping documents.",
+      },
+      {
+        href: "/manufacturing-partners/",
+        title: "Manufacturing partner review",
+        text: "Understand how Hydraulic Match evaluates prospective suppliers.",
       },
     ],
   },

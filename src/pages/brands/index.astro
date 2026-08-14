@@ -35,24 +35,31 @@ const pageUrl = `${site.url}/brands/`;
   <section class="brand-index">
     <div class="container">
       <header class="brand-index__intro">
-        <p>BRAND → PRODUCT FAMILY → SERIES → COMPLETE CODE</p>
+        <p class="brand-index__kicker">
+          BRAND → PRODUCT FAMILY → SERIES → COMPLETE CODE
+        </p>
         <h2>Broader brand coverage, with the same evidence threshold.</h2>
-        <span>
+        <p class="brand-index__lead">
           Use this directory to route valve, pump, motor and repair-part
           inquiries. A listed brand or series means we accept the reference for
           technical review—not that we are an authorized distributor, hold every
           configuration in stock or have already confirmed a direct replacement.
-        </span>
+        </p>
       </header>
 
       <div class="brand-index__metrics" aria-label="Coverage summary">
-        <span><strong>{brandCoverageStats.brands}</strong> brand groups</span>
-        <span
-          ><strong>{brandCoverageStats.seriesReferences}</strong> series-level entries</span
-        >
-        <span
-          ><strong>{brandCoverageStats.productFamilies}</strong> product-family labels</span
-        >
+        <div class="brand-metric">
+          <strong>{brandCoverageStats.brands}</strong>
+          <span>brand groups</span>
+        </div>
+        <div class="brand-metric">
+          <strong>{brandCoverageStats.seriesReferences}</strong>
+          <span>series-level entries</span>
+        </div>
+        <div class="brand-metric">
+          <strong>{brandCoverageStats.productFamilies}</strong>
+          <span>product-family labels</span>
+        </div>
       </div>
 
       <div class="brand-filter">
@@ -85,11 +92,13 @@ const pageUrl = `${site.url}/brands/`;
                 .toLowerCase()}
             >
               <div class="brand-card__body">
-                <p>{brand.productFamilies.length} PRODUCT FAMILIES</p>
+                <p class="brand-card__meta">
+                  {brand.productFamilies.length} PRODUCT FAMILIES
+                </p>
                 <h2>
                   <a href={`/brands/${brand.slug}/`}>{brand.name}</a>
                 </h2>
-                <span>{brand.summary}</span>
+                <p class="brand-card__summary">{brand.summary}</p>
                 <ul>
                   {brand.seriesReferences.slice(0, 4).map((item) => (
                     <li>
@@ -112,7 +121,7 @@ const pageUrl = `${site.url}/brands/`;
         nameplate for manual identification.
       </p>
 
-      <div class="resource-note">
+      <div class="resource-note brand-index__note">
         Manufacturer names and model references are used for identification and
         cross-reference only. Hydraulic Match is independent from the listed
         manufacturers.
@@ -154,174 +163,394 @@ const pageUrl = `${site.url}/brands/`;
 </script>
 
 <style>
+  /*
+    SEO / Core Web Vitals layout notes:
+    - Match navbar/breadcrumb horizontal inset (avoid edge-flush content)
+    - Keep intro ≤ ~75ch for readable crawl + UX
+    - Touch targets ≥ 44px; body copy ≥ 16px
+  */
   .brand-index {
-    padding: 80px 0 100px;
-    background: #f5f7fa;
+    padding: 64px 0 80px;
+    background:
+      radial-gradient(
+        900px 280px at 50% -8%,
+        rgba(20, 110, 245, 0.07),
+        transparent 70%
+      ),
+      linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
   }
+
+  /* Global .container has padding-left/right: 0 — align with navbar 60px inset. */
+  .brand-index > .container {
+    width: 100%;
+    max-width: 1880px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 60px;
+    padding-right: 60px;
+    box-sizing: border-box;
+  }
+
   .brand-index__intro {
-    max-width: 930px;
+    max-width: 72ch;
+    margin-bottom: 32px;
   }
-  .brand-index__intro > p,
-  .brand-card__body > p {
-    margin: 0;
+
+  .brand-index__kicker,
+  .brand-card__meta {
+    margin: 0 0 8px;
     color: var(--color-primary);
-    font-size: 11px;
+    font-family: var(--font-title);
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.11em;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
+
   .brand-index__intro h2 {
-    margin: 10px 0 14px;
-    font-size: clamp(32px, 4vw, 48px);
-    line-height: 1.12;
+    margin: 0 0 16px;
+    color: #0f172a;
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     text-transform: none;
   }
-  .brand-index__intro > span {
-    color: #536071;
-    font-size: 17px;
+
+  .brand-index__lead {
+    margin: 0;
+    color: #475569;
+    font-size: 16px;
     line-height: 1.75;
   }
+
   .brand-index__metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0 0 32px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .brand-metric {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px 28px;
-    margin: 28px 0;
-    padding: 18px 20px;
-    border: 1px solid var(--color-stroke);
-    background: #fff;
-    color: #536071;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 96px;
+    padding: 20px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
   }
-  .brand-index__metrics strong {
-    color: var(--color-title);
+
+  .brand-metric:hover {
+    border-color: rgba(20, 110, 245, 0.28);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
   }
+
+  .brand-metric strong {
+    color: #0f172a;
+    font-family: var(--font-title);
+    font-size: 1.55rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .brand-metric span {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
   .brand-filter {
-    margin-bottom: 24px;
-    padding: 22px;
+    margin-bottom: 32px;
+    padding: 24px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
     border-left: 3px solid var(--color-primary);
+    border-radius: 12px;
     background: #fff;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
   }
+
   .brand-filter label {
     display: block;
-    margin-bottom: 8px;
-    color: var(--color-title);
+    margin-bottom: 10px;
+    color: #0f172a;
+    font-size: 15px;
     font-weight: 700;
   }
+
   .brand-filter input {
     width: 100%;
     min-height: 48px;
-    padding: 0 14px;
-    border: 1px solid #cbd5e1;
-    border-radius: 4px;
-    color: var(--color-title);
-    font: inherit;
+    padding: 0 16px;
+    border: 1px solid #d7dee8;
+    border-radius: 8px;
+    color: #0f172a;
+    font: 400 16px/1.5 var(--font-primary);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
   }
+
+  .brand-filter input:hover {
+    border-color: #b8c4d4;
+  }
+
   .brand-filter input:focus {
     border-color: var(--color-primary);
-    outline: 2px solid rgba(20, 110, 245, 0.18);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(20, 110, 245, 0.14);
   }
+
+  .brand-filter input:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
   .brand-filter p {
-    margin: 8px 0 0;
+    margin: 10px 0 0;
     color: #64748b;
     font-size: 13px;
+    line-height: 1.5;
   }
+
   .brand-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
-    margin-bottom: 30px;
+    gap: 16px;
+    margin-bottom: 32px;
   }
+
   .brand-card {
-    border: 1px solid var(--color-stroke);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
     background: #fff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
     transition:
-      border-color 0.2s,
-      box-shadow 0.2s;
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
   }
+
   .brand-card:hover {
-    border-color: rgba(20, 110, 245, 0.4);
+    border-color: rgba(20, 110, 245, 0.32);
     box-shadow: 0 12px 28px rgba(15, 23, 42, 0.07);
+    transform: translateY(-2px);
   }
+
   .brand-card__body {
     display: flex;
     min-height: 100%;
     flex-direction: column;
-    padding: 26px;
+    padding: 24px;
   }
+
   .brand-card h2 {
-    margin: 10px 0;
-    font-size: 25px;
+    margin: 0 0 10px;
+    font-size: clamp(1.2rem, 1.5vw, 1.45rem);
+    line-height: 1.25;
     text-transform: none;
   }
+
   .brand-card h2 a {
-    color: var(--color-title);
+    color: #0f172a;
     text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
   }
-  .brand-card__body > span {
-    min-height: 75px;
-    color: #536071;
-    line-height: 1.6;
+
+  .brand-card h2 a:hover {
+    color: var(--color-primary);
   }
+
+  .brand-card__summary {
+    margin: 0;
+    min-height: 4.8em;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
   .brand-card ul {
-    margin: 20px 0;
+    margin: 16px 0 20px;
     padding: 0;
     list-style: none;
   }
+
   .brand-card li {
     display: flex;
     justify-content: space-between;
     gap: 12px;
-    padding: 9px 0;
-    border-top: 1px solid var(--color-stroke);
+    padding: 10px 0;
+    border-top: 1px solid #e2e8f0;
     color: #64748b;
-    font-size: 12px;
+    font-size: 13px;
+    line-height: 1.45;
   }
+
+  .brand-card li:last-child {
+    border-bottom: 1px solid #e2e8f0;
+  }
+
   .brand-card li strong {
-    color: #334155;
+    color: #0f172a;
+    font-family: var(--font-title);
+    font-weight: 600;
   }
+
   .brand-card li span {
     text-align: right;
+    color: #64748b;
   }
+
   .brand-card__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     width: max-content;
     margin-top: auto;
     color: var(--color-primary);
     font-weight: 700;
     text-decoration: none;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
   }
-  .brand-card a:hover {
-    text-decoration: underline;
+
+  .brand-card__link:hover {
+    border-color: var(--color-primary);
+    text-decoration: none;
   }
-  .brand-card a:focus-visible {
+
+  .brand-card a:focus-visible,
+  .brand-filter input:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 3px;
+    border-radius: 4px;
   }
+
   .brand-index__empty {
+    margin-bottom: 24px;
     padding: 24px;
-    border: 1px solid var(--color-stroke);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
     background: #fff;
-    color: #536071;
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.65;
   }
+
+  .brand-index__note {
+    margin: 8px 0 32px;
+    border-radius: 12px;
+    background: #fff;
+  }
+
   @media (max-width: 1050px) {
+    .brand-index > .container {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
     .brand-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
     }
   }
-  @media (max-width: 680px) {
+
+  @media (max-width: 991px) {
     .brand-index {
       padding: 56px 0 72px;
     }
+    .brand-index__metrics {
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .brand-filter {
+      margin-bottom: 28px;
+      padding: 20px;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .brand-index {
+      padding: 48px 0 64px;
+    }
+    .brand-index > .container {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .brand-index__intro {
+      margin-bottom: 24px;
+    }
+    .brand-index__intro h2 {
+      margin-bottom: 12px;
+    }
+    .brand-index__metrics {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .brand-metric {
+      min-height: 80px;
+      padding: 16px;
+    }
+    .brand-filter {
+      margin-bottom: 24px;
+      padding: 18px;
+    }
+    .brand-filter input {
+      min-height: 48px;
+      font-size: 16px; /* prevents iOS zoom; readable body size */
+    }
     .brand-grid {
       grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
     }
-    .brand-card__body > span {
+    .brand-card__body {
+      padding: 20px;
+    }
+    .brand-card__summary {
       min-height: 0;
     }
     .brand-card li {
       align-items: flex-start;
       flex-direction: column;
-      gap: 2px;
+      gap: 4px;
     }
     .brand-card li span {
       text-align: left;
+    }
+    .brand-index__note {
+      margin-bottom: 24px;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .brand-index > .container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-metric,
+    .brand-card,
+    .brand-card h2 a,
+    .brand-card__link,
+    .brand-filter input {
+      transition: none;
+    }
+    .brand-card:hover {
+      transform: none;
     }
   }
 </style>

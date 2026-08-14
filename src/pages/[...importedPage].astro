@@ -21,6 +21,8 @@ export function getStaticPaths() {
 }
 
 const { page } = Astro.props;
+const reviewer = site.technicalReviewer;
+const hasNamedReviewer = Boolean(reviewer.name && reviewer.jobTitle);
 const pageUrl = `${site.url}/${page.slug}/`;
 const trail = page.slug.split("/");
 const isResource = trail[0] === "resources";
@@ -78,9 +80,14 @@ const pageSchema = isResource
       image: `${site.url}${imagePath}`,
       datePublished: page.published,
       dateModified: page.modified,
-      authorName: "Hydraulic Match Editorial Review",
+      authorName: hasNamedReviewer
+        ? reviewer.name
+        : "Hydraulic Match Editorial Review",
       authorUrl: `${site.url}/authors/technical-review-team/`,
-      authorType: "Organization",
+      authorJobTitle: hasNamedReviewer ? reviewer.jobTitle : undefined,
+      authorSameAs:
+        hasNamedReviewer && reviewer.linkedin ? [reviewer.linkedin] : undefined,
+      authorType: hasNamedReviewer ? "Person" : "Organization",
     })
   : isAlternative
     ? serviceSchema({
@@ -177,7 +184,9 @@ const trustLinks = [
             <span>
               <strong>Reviewed by</strong>{" "}
               <a href="/authors/technical-review-team/">
-                {page.reviewedBy ?? "Hydraulic Match Editorial Review"}
+                {hasNamedReviewer
+                  ? `${reviewer.name}, ${reviewer.jobTitle}`
+                  : (page.reviewedBy ?? "Hydraulic Match Editorial Review")}
               </a>
             </span>
           </>

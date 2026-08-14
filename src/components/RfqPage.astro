@@ -75,15 +75,16 @@ const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
     trail={[{ label: "Home", href: "/" }, { label: breadcrumbLabel }]}
     variant="5"
   />
-  <section class="hm-rfq">
+  <section class="hm-rfq" aria-labelledby="rfq-form-heading">
     <div class="container hm-rfq__layout">
       <div class="hm-rfq__form-card">
         <header>
           <p class="hm-kicker">COMPLETE RFQ</p>
-          <h2>Tell us what must be matched.</h2>
-          <p>
-            Fields marked * are required. If you do not have a complete model
-            code, upload the nameplate and product photos.
+          <h2 id="rfq-form-heading">Tell us what must be matched.</h2>
+          <p class="hm-rfq__lead">
+            Required: name, email, country, manufacturer and quantity. A full
+            model code <em>or</em> a clear nameplate / photo is enough to submit.
+            Technical fields are optional and can be added when known.
           </p>
         </header>
         <form
@@ -119,22 +120,12 @@ const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
                   autocomplete="tel"
                 /></label
               >
-              <label
+              <label class="hm-rfq-full"
                 >Destination Country *<input
                   name="country"
                   autocomplete="country-name"
                   required
                 /></label
-              >
-              <label
-                >Buyer Type<select name="role"
-                  ><option value="">Select</option><option>Distributor</option
-                  ><option>Repair / Service Company</option><option
-                    >MRO / Factory Maintenance</option
-                  ><option>Equipment Manufacturer</option><option
-                    >Other Business Buyer</option
-                  ></select
-                ></label
               >
             </div>
           </fieldset>
@@ -154,7 +145,6 @@ const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
                   placeholder="Enter the complete code, or upload a clear reference file"
                 /></label
               >
-              <label>Order / Part Number<input name="part_number" /></label>
               <label
                 >Product Type<select name="product_type"
                   ><option value="">Select</option><option
@@ -172,6 +162,53 @@ const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
                   required
                 /></label
               >
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Files and message</legend>
+            <div class="hm-rfq-grid">
+              <label class="hm-rfq-full hm-file-label"
+                >Upload nameplates, product photos, drawings, datasheets or an
+                RFQ list
+                <input
+                  name="attachments"
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.webp,.pdf,.xls,.xlsx,.doc,.docx,.csv"
+                  multiple
+                />
+                <span
+                  >Up to 5 files. JPG, PNG, WebP, PDF, Excel, Word or CSV;
+                  maximum 5 MB per file and 20 MB combined.</span
+                >
+              </label>
+              <label class="hm-rfq-full"
+                >Additional Message<textarea
+                  name="details"
+                  rows="3"
+                  placeholder="Add commercial, packing or inspection notes if needed."
+                ></textarea></label
+              >
+            </div>
+          </fieldset>
+          <details class="hm-rfq-disclosure">
+            <summary>
+              <span>More options</span>
+              <span class="hm-rfq-disclosure__hint"
+                >Buyer type, part number, delivery date</span
+              >
+            </summary>
+            <div class="hm-rfq-grid">
+              <label
+                >Buyer Type<select name="role"
+                  ><option value="">Select</option><option>Distributor</option
+                  ><option>Repair / Service Company</option><option
+                    >MRO / Factory Maintenance</option
+                  ><option>Equipment Manufacturer</option><option
+                    >Other Business Buyer</option
+                  ></select
+                ></label
+              >
+              <label>Order / Part Number<input name="part_number" /></label>
               <label
                 >Required Delivery Date<input
                   name="deadline"
@@ -179,9 +216,14 @@ const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
                 /></label
               >
             </div>
-          </fieldset>
-          <fieldset>
-            <legend>Technical information</legend>
+          </details>
+          <details class="hm-rfq-disclosure">
+            <summary>
+              <span>Technical details (optional)</span>
+              <span class="hm-rfq-disclosure__hint"
+                >Skip if the model code or nameplate is clear</span
+              >
+            </summary>
             <div class="hm-rfq-grid">
               <label
                 >Working Pressure<input
@@ -203,42 +245,14 @@ const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
                 >Fluid and Temperature<input name="fluid_temperature" /></label
               >
               <label class="hm-rfq-full"
-                >Machine / Application<textarea name="application" rows="3"
-                ></textarea></label
-              >
-              <label class="hm-rfq-full"
-                >Known Failure or Replacement Reason<textarea
-                  name="replacement_reason"
-                  rows="3"></textarea></label
-              >
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend>Files and message</legend>
-            <div class="hm-rfq-grid">
-              <label class="hm-rfq-full hm-file-label"
-                >Upload nameplates, product photos, drawings, datasheets or an
-                RFQ list
-                <input
-                  name="attachments"
-                  type="file"
-                  accept=".jpg,.jpeg,.png,.webp,.pdf,.xls,.xlsx,.doc,.docx,.csv,.zip"
-                  multiple
-                />
-                <span
-                  >Up to 5 files. JPG, PNG, WebP, PDF, Excel, Word, CSV or ZIP;
-                  maximum 5 MB per file and 20 MB combined.</span
-                >
-              </label>
-              <label class="hm-rfq-full"
-                >Additional Message<textarea
-                  name="details"
+                >Application / replacement notes<textarea
+                  name="application"
                   rows="4"
-                  placeholder="Add technical, commercial, packing or inspection requirements."
+                  placeholder="Machine, duty cycle, failure mode, or why a replacement is needed."
                 ></textarea></label
               >
             </div>
-          </fieldset>
+          </details>
           <input
             type="hidden"
             name="source"
@@ -253,35 +267,65 @@ const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
                 name="website"
                 tabindex="-1"
                 autocomplete="off"
-              /></label>
+              /></label
+            >
           </div>
+          {
+            site.turnstileSiteKey && (
+              <div class="hm-rfq-turnstile">
+                <div
+                  class="cf-turnstile"
+                  data-sitekey={site.turnstileSiteKey}
+                  data-theme="light"
+                />
+                <p>
+                  Security verification protects this technical inquiry form
+                  from automated abuse.
+                </p>
+              </div>
+            )
+          }
           <div class="hm-rfq-submit">
-            <button type="submit">Send Match Request</button>
+            <button type="submit">
+              <span>Send Match Request</span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12h14m0 0-5-5m5 5-5 5"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+            </button>
             <p>
               Response timing depends on inquiry completeness, supplier
               confirmation and time zone. A quotation is not a compatibility
               guarantee until the required technical confirmation is complete.
             </p>
           </div>
-          <div class="form-result" aria-live="polite"></div>
+          <div class="form-result" aria-live="polite" role="status"></div>
         </form>
       </div>
-      <aside>
+      <aside class="hm-rfq__aside" aria-label="RFQ process and contact">
         <div class="hm-rfq__aside-card hm-rfq__aside-card--dark">
-          <p class="hm-kicker">WHAT HAPPENS NEXT</p>
+          <p class="hm-kicker hm-kicker--light">WHAT HAPPENS NEXT</p>
           <ol>
             {
               steps.map((step, index) => (
                 <li>
-                  <>
-                    <span>{String(index + 1).padStart(2, "0")}</span>
-                    <div>
-                      <>
-                        <strong>{step.name}</strong>
-                        <p>{step.text}</p>
-                      </>
-                    </div>
-                  </>
+                  <span aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <strong>{step.name}</strong>
+                    <p>{step.text}</p>
+                  </div>
                 </li>
               ))
             }
@@ -290,9 +334,11 @@ const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
         <div class="hm-rfq__aside-card">
           <h3>Minimum useful information</h3>
           <ul>
-            <li>Original brand</li><li>Complete model code</li><li>
-              Quantity
-            </li><li>Destination country</li><li>Nameplate or photos</li>
+            <li>Original brand</li>
+            <li>Complete model code</li>
+            <li>Quantity</li>
+            <li>Destination country</li>
+            <li>Nameplate or photos</li>
           </ul>
         </div>
         <div class="hm-rfq__aside-card">
@@ -320,40 +366,32 @@ const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
           </header>
           <div class="hm-rfq-guidance__grid">
             <article>
-              <>
-                <strong>Original reference</strong>
-                <p>
-                  The manufacturer, complete code and source files used for
-                  identification.
-                </p>
-              </>
+              <strong>Original reference</strong>
+              <p>
+                The manufacturer, complete code and source files used for
+                identification.
+              </p>
             </article>
             <article>
-              <>
-                <strong>Offered route</strong>
-                <p>
-                  The proposed manufacturer or supply condition, rather than an
-                  ambiguous “replacement” label.
-                </p>
-              </>
+              <strong>Offered route</strong>
+              <p>
+                The proposed manufacturer or supply condition, rather than an
+                ambiguous “replacement” label.
+              </p>
             </article>
             <article>
-              <>
-                <strong>Technical status</strong>
-                <p>
-                  Matched fields, known differences and confirmations still
-                  required before release.
-                </p>
-              </>
+              <strong>Technical status</strong>
+              <p>
+                Matched fields, known differences and confirmations still
+                required before release.
+              </p>
             </article>
             <article>
-              <>
-                <strong>Commercial scope</strong>
-                <p>
-                  Price, MOQ, lead time, warranty, inspection, packing, Incoterm
-                  and quote validity.
-                </p>
-              </>
+              <strong>Commercial scope</strong>
+              <p>
+                Price, MOQ, lead time, warranty, inspection, packing, Incoterm
+                and quote validity.
+              </p>
             </article>
           </div>
           <div class="hm-rfq-guidance__boundary">
@@ -475,6 +513,7 @@ const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
     if (fileError) {
       if (result) {
         result.className = "form-result is-visible is-error";
+        result.setAttribute("role", "alert");
         result.textContent = fileError;
       }
       return;
@@ -493,107 +532,279 @@ const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
       `Mounting / ports: ${data.get("mounting_ports") || "-"}`,
       `Rotation / shaft: ${data.get("rotation_shaft") || "-"}`,
       `Fluid / temperature: ${data.get("fluid_temperature") || "-"}`,
-      `Machine / application: ${data.get("application") || "-"}`,
-      `Failure / replacement reason: ${data.get("replacement_reason") || "-"}`,
+      `Application / replacement notes: ${data.get("application") || "-"}`,
       "",
       `Additional message: ${data.get("details") || "-"}`,
     ];
     data.set("message", lines.join("\n"));
+    data.set("replacement_reason", "");
     submit?.setAttribute("disabled", "true");
-    if (submit) submit.textContent = "Sending...";
+    if (submit) {
+      const label = submit.querySelector("span");
+      if (label) label.textContent = "Sending...";
+      else submit.textContent = "Sending...";
+    }
+    if (result) {
+      result.className = "form-result";
+      result.setAttribute("role", "status");
+      result.textContent = "";
+    }
     try {
       const response = await fetch(rfqForm.dataset.endpoint ?? "/api/rfq/", {
         method: "POST",
         body: data,
         headers: { Accept: "application/json" },
       });
-      if (!response.ok) throw new Error("Request failed");
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null);
+        throw new Error(
+          typeof payload?.message === "string"
+            ? payload.message
+            : "The form could not be sent.",
+        );
+      }
       window.location.href = "/thank-you/?source=rfq";
-    } catch {
+    } catch (error) {
       if (result) {
         result.className = "form-result is-visible is-error";
-        result.innerHTML = `<strong>The form could not be sent.</strong> Please email <a href="mailto:${rfqForm.dataset.fallbackEmail}">${rfqForm.dataset.fallbackEmail}</a> with your files.`;
+        result.setAttribute("role", "alert");
+        const message =
+          error instanceof Error
+            ? error.message
+            : "The form could not be sent.";
+        result.textContent = `${message} If the problem continues, email ${rfqForm.dataset.fallbackEmail} with your files.`;
       }
       submit?.removeAttribute("disabled");
-      if (submit) submit.textContent = "Send Match Request";
+      if (submit) {
+        const label = submit.querySelector("span");
+        if (label) label.textContent = "Send Match Request";
+        else submit.textContent = "Send Match Request";
+      }
     }
   });
 </script>
 
 <style>
+  /*
+    RFQ page SEO / conversion layout
+    Structure: Hero → Form+Aside → Guidance (quote) | Contact details (contact)
+    - Horizontal inset aligned with navbar (global .container is 0)
+    - Readable copy ≥16px; form inputs 16px (mobile zoom prevention)
+    - Touch targets ≥44px; visible focus; reduced-motion
+  */
   .hm-rfq {
-    padding: 80px 0 100px;
-    background: #f5f7fa;
+    margin-top: 14px;
+    padding: 24px 0 30px;
+    background: radial-gradient(
+      900px 280px at 40% -10%,
+      rgba(20, 110, 245, 0.07),
+      transparent 70%
+    );
+    /* linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%); */
   }
+
+  .hm-rfq > .container,
+  .hm-rfq-guidance > .container,
+  .hm-contact-details > .container {
+    width: 100%;
+    max-width: 1880px;
+    margin-left: auto;
+    margin-right: auto;
+    /* padding-left: 20px;
+    padding-right: 20px; */
+    box-sizing: border-box;
+  }
+
   .hm-rfq__layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 340px;
-    gap: 28px;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+    gap: 24px;
     align-items: start;
   }
+
   .hm-rfq__form-card {
+    padding: 36px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    /* border-radius: 14px; */
     background: #fff;
-    border: 1px solid var(--color-stroke);
-    padding: 38px;
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      0 16px 40px rgba(15, 23, 42, 0.05);
   }
+
   .hm-rfq__form-card header {
-    max-width: 760px;
-    margin-bottom: 36px;
+    max-width: 68ch;
+    margin-bottom: 32px;
   }
+
   .hm-kicker {
+    margin: 0 0 8px;
     color: var(--color-primary);
+    font-family: var(--font-title);
     font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.13em;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
+
+  .hm-kicker--light {
+    color: #93c5fd;
+  }
+
   .hm-rfq__form-card h2 {
-    margin: 10px 0;
+    margin: 0 0 12px;
+    color: #0f172a;
+    font-size: clamp(1.55rem, 2.4vw, 2rem);
+    line-height: 1.25;
+    text-transform: none;
   }
-  .hm-rfq__form-card header p:last-child {
-    color: #596575;
+
+  .hm-rfq__lead {
+    margin: 0;
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.7;
   }
+
   .hm-rfq-form {
     display: grid;
-    gap: 30px;
+    gap: 28px;
   }
+
+  .hm-rfq__lead em {
+    font-style: normal;
+    font-weight: 600;
+    color: #0f172a;
+  }
+
   .hm-rfq-form fieldset {
-    border: 0;
-    padding: 0;
     margin: 0;
+    padding: 0;
+    border: 0;
   }
+
   .hm-rfq-form legend {
     width: 100%;
+    margin-bottom: 16px;
     padding: 0 0 12px;
-    border-bottom: 1px solid var(--color-stroke);
-    font: 600 20px var(--font-title);
-    margin-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #0f172a;
+    font: 600 1.1rem/1.3 var(--font-title);
   }
+
+  .hm-rfq-disclosure {
+    margin: 0;
+    padding: 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #f8fafc;
+    overflow: hidden;
+  }
+
+  .hm-rfq-disclosure summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+    min-height: 52px;
+    padding: 14px 18px;
+    color: #0f172a;
+    font: 600 0.95rem/1.35 var(--font-title);
+    list-style: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .hm-rfq-disclosure summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .hm-rfq-disclosure summary::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    margin-left: auto;
+    border-right: 2px solid #64748b;
+    border-bottom: 2px solid #64748b;
+    transform: rotate(45deg) translateY(-2px);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .hm-rfq-disclosure[open] summary::after {
+    transform: rotate(-135deg) translateY(-2px);
+  }
+
+  .hm-rfq-disclosure summary:hover {
+    background: #f1f5f9;
+  }
+
+  .hm-rfq-disclosure summary:focus-visible {
+    outline: 3px solid rgba(20, 110, 245, 0.28);
+    outline-offset: -3px;
+  }
+
+  .hm-rfq-disclosure__hint {
+    color: #64748b;
+    font: 400 13px/1.4 var(--font-primary);
+  }
+
+  .hm-rfq-disclosure .hm-rfq-grid {
+    padding: 4px 18px 18px;
+  }
+
   .hm-rfq-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
+
   .hm-rfq-form label {
     display: grid;
     gap: 8px;
-    color: #2b333d;
-    font-size: 14px;
+    color: #0f172a;
+    font-size: 13px;
     font-weight: 600;
   }
+
   .hm-rfq-form input,
   .hm-rfq-form select,
   .hm-rfq-form textarea {
     width: 100%;
-    min-height: 50px;
-    padding: 12px 13px;
-    border: 1px solid #d5dbe4;
-    background: #fbfcfd;
-    color: var(--color-title);
-    font: 400 15px var(--font-primary);
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid #d7dee8;
+    border-radius: 8px;
+    background: #fff;
+    color: #0f172a;
+    font: 400 16px/1.5 var(--font-primary);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
   }
+
+  .hm-rfq-form select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='8' viewBox='0 0 14 8' fill='none'><path d='M1 1L7 7L13 1' stroke='%230F172A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-position: right 14px center;
+    background-repeat: no-repeat;
+    background-size: 14px;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+
   .hm-rfq-form textarea {
+    min-height: 96px;
     resize: vertical;
   }
+
+  .hm-rfq-form input:hover,
+  .hm-rfq-form select:hover,
+  .hm-rfq-form textarea:hover {
+    border-color: #b8c4d4;
+  }
+
   .hm-rfq-form input:focus-visible,
   .hm-rfq-form select:focus-visible,
   .hm-rfq-form textarea:focus-visible {
@@ -601,275 +812,538 @@ const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px rgba(20, 110, 245, 0.14);
   }
+
   .hm-rfq-full {
-    grid-column: 1/-1;
+    grid-column: 1 / -1;
   }
+
   .hm-file-label {
     padding: 18px;
-    border: 1px dashed #aeb8c5;
-    background: #f7f9fc;
+    border: 1.5px dashed rgba(20, 110, 245, 0.3);
+    border-radius: 10px;
+    background: rgba(20, 110, 245, 0.03);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease;
   }
+
+  .hm-file-label:hover {
+    border-color: var(--color-primary);
+    background: rgba(20, 110, 245, 0.06);
+  }
+
   .hm-file-label input {
+    min-height: auto;
+    padding: 8px 0 0;
     border: 0;
     background: transparent;
-    padding: 6px 0;
-    min-height: auto;
   }
+
   .hm-file-label span {
-    color: #6b7480;
+    color: #64748b;
     font-size: 12px;
     font-weight: 400;
+    line-height: 1.5;
   }
+
   .hm-rfq-submit {
     display: flex;
     align-items: center;
     gap: 20px;
   }
-  .hm-rfq-submit button {
-    min-width: 220px;
-    min-height: 54px;
-    border: 0;
-    background: var(--color-primary);
-    color: #fff;
-    font: 600 16px var(--font-title);
-    cursor: pointer;
+  .hm-rfq-turnstile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 18px;
+    margin-top: 18px;
   }
+  .hm-rfq-turnstile p {
+    max-width: 420px;
+    margin: 0;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .hm-rfq-submit button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 220px;
+    min-height: 52px;
+    padding: 12px 24px;
+    border: 0;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #1a78f7 0%, #146ef5 100%);
+    color: #fff;
+    font: 600 16px/1.2 var(--font-title);
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(20, 110, 245, 0.26);
+    transition:
+      box-shadow 0.2s ease,
+      transform 0.2s ease,
+      opacity 0.2s ease;
+  }
+
+  .hm-rfq-submit button:hover:not(:disabled) {
+    box-shadow: 0 10px 24px rgba(20, 110, 245, 0.34);
+    transform: translateY(-1px);
+  }
+
+  .hm-rfq-submit button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .hm-rfq-submit button svg {
+    transition: transform 0.2s ease;
+  }
+
+  .hm-rfq-submit button:hover:not(:disabled) svg {
+    transform: translateX(2px);
+  }
+
   .hm-rfq-submit button:focus-visible {
     outline: 3px solid rgba(20, 110, 245, 0.35);
     outline-offset: 3px;
   }
-  .hm-rfq-submit button:disabled {
-    opacity: 0.65;
-    cursor: wait;
-  }
+
   .hm-rfq-submit p {
     margin: 0;
-    color: #687280;
-    font-size: 12px;
-    line-height: 1.5;
+    max-width: 42ch;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.55;
   }
+
   .hp-field {
     position: absolute;
     left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
   }
-  .hm-rfq aside {
+
+  .hm-rfq__aside {
     display: grid;
     gap: 16px;
   }
+
   .hm-rfq__aside-card {
-    padding: 26px;
+    padding: 24px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
     background: #fff;
-    border: 1px solid var(--color-stroke);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
   }
+
   .hm-rfq__aside-card h3 {
-    margin-top: 0;
+    margin: 0 0 12px;
+    color: #0f172a;
+    font-size: 1.05rem;
+    text-transform: none;
   }
+
   .hm-rfq__aside-card ul {
-    padding-left: 20px;
+    margin: 0;
+    padding-left: 18px;
   }
+
   .hm-rfq__aside-card li,
   .hm-rfq__aside-card p {
+    margin: 0;
+    color: #475569;
     font-size: 14px;
-    line-height: 1.6;
-    color: #596575;
+    line-height: 1.65;
   }
+
+  .hm-rfq__aside-card li + li {
+    margin-top: 6px;
+  }
+
   .hm-rfq__aside-card a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--color-primary);
     font-weight: 600;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    cursor: pointer;
   }
+
+  .hm-rfq__aside-card a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .hm-rfq__aside-card a + p {
+    margin-top: 8px;
+  }
+
   .hm-rfq__aside-card--dark {
-    background: var(--color-title);
     border: 0;
+    background: linear-gradient(165deg, #0f172a 0%, #1e293b 100%);
     color: #fff;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.18);
   }
+
   .hm-rfq__aside-card--dark ol {
-    list-style: none;
+    margin: 12px 0 0;
     padding: 0;
-    margin: 0;
+    list-style: none;
   }
+
   .hm-rfq__aside-card--dark li {
     display: flex;
-    gap: 14px;
-    padding: 18px 0;
-    border-bottom: 1px solid #303743;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
+
   .hm-rfq__aside-card--dark li:last-child {
-    border: 0;
+    border-bottom: 0;
+    padding-bottom: 0;
   }
+
   .hm-rfq__aside-card--dark li > span {
-    color: #75aaff;
-    font: 600 12px var(--font-title);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    flex: none;
+    border-radius: 50%;
+    background: rgba(20, 110, 245, 0.85);
+    color: #fff;
+    font: 700 11px/1 var(--font-title);
+    letter-spacing: 0.02em;
   }
+
   .hm-rfq__aside-card--dark strong {
     color: #fff;
+    font-size: 14px;
   }
+
   .hm-rfq__aside-card--dark p {
-    color: #adb6c3;
-    margin: 5px 0 0;
+    margin: 4px 0 0;
+    color: #cbd5e1;
+    font-size: 13px;
+    line-height: 1.55;
   }
+
   .form-result {
-    grid-column: 1/-1;
+    grid-column: 1 / -1;
+    min-height: 20px;
+    font-size: 14px;
+    font-weight: 600;
   }
+
+  .form-result.is-visible.is-error {
+    padding: 12px 14px;
+    border: 1px solid rgba(185, 28, 28, 0.2);
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #991b1b;
+  }
+
+  .form-result.is-error a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .hm-rfq-guidance {
+    padding: 44px 20px 40px;
+    background: #fff;
+    margin-bottom: 30px;
+  }
+
+  .hm-rfq-guidance header {
+    max-width: 68ch;
+    margin-bottom: 28px;
+  }
+
+  .hm-rfq-guidance h2 {
+    margin: 0 0 12px;
+    color: #0f172a;
+    font-size: clamp(1.45rem, 2.4vw, 2rem);
+    line-height: 1.25;
+    text-transform: none;
+  }
+
+  .hm-rfq-guidance header > p:last-child {
+    margin: 0;
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .hm-rfq-guidance__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .hm-rfq-guidance article {
+    padding: 24px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+  }
+
+  .hm-rfq-guidance article strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #0f172a;
+    font-size: 1rem;
+  }
+
+  .hm-rfq-guidance article p {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .hm-rfq-guidance__boundary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 24px;
+    padding: 24px 28px;
+    border: 1px solid rgba(20, 110, 245, 0.14);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 12px;
+    background: #f8fafc;
+  }
+
+  .hm-rfq-guidance__boundary strong {
+    color: #0f172a;
+    font-size: 14px;
+  }
+
+  .hm-rfq-guidance__boundary p {
+    margin: 8px 0 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .hm-rfq-guidance__boundary a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .hm-rfq-guidance__boundary a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .hm-contact-details {
+    padding: 64px 0 80px;
+    background: #fff;
+  }
+
+  .hm-contact-details header {
+    max-width: 68ch;
+    margin-bottom: 28px;
+  }
+
+  .hm-contact-details header h2 {
+    margin: 0 0 12px;
+    color: #0f172a;
+    font-size: clamp(1.45rem, 2.4vw, 2rem);
+    line-height: 1.25;
+    text-transform: none;
+  }
+
+  .hm-contact-details header > p:last-child {
+    margin: 0;
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .hm-contact-details__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .hm-contact-details__grid article {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    padding: 26px 24px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .hm-contact-details__grid article:hover {
+    border-color: rgba(20, 110, 245, 0.28);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  }
+
+  .hm-contact-details__grid article > span {
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .hm-contact-details__grid h3 {
+    margin: 14px 0 12px;
+    color: #0f172a;
+    font-size: 1.15rem;
+    text-transform: none;
+  }
+
+  .hm-contact-details__grid a {
+    display: inline-flex;
+    align-items: center;
+    width: max-content;
+    max-width: 100%;
+    min-height: 40px;
+    margin-top: 4px;
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+  }
+
+  .hm-contact-details__grid a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .hm-contact-details__grid p {
+    margin: 8px 0 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 1050px) {
+    .hm-rfq > .container,
+    .hm-rfq-guidance > .container,
+    .hm-contact-details > .container {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
   @media (max-width: 991px) {
+    .hm-rfq,
+    .hm-rfq-guidance,
+    .hm-contact-details {
+      padding: 56px 0 72px;
+    }
     .hm-rfq__layout {
       grid-template-columns: 1fr;
+      gap: 20px;
     }
-    .hm-rfq aside {
+    .hm-rfq__aside {
       grid-template-columns: 1fr 1fr;
     }
     .hm-rfq__aside-card--dark {
-      grid-column: 1/-1;
+      grid-column: 1 / -1;
+    }
+    .hm-rfq-guidance__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .hm-contact-details__grid {
+      grid-template-columns: 1fr;
     }
   }
+
+  @media (max-width: 800px) {
+    .hm-rfq-guidance__boundary {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+  }
+
   @media (max-width: 600px) {
+    .hm-rfq > .container,
+    .hm-rfq-guidance > .container,
+    .hm-contact-details > .container {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .hm-rfq,
+    .hm-rfq-guidance,
+    .hm-contact-details {
+      padding: 48px 0 64px;
+    }
+    .hm-rfq__form-card {
+      padding: 22px;
+    }
     .hm-rfq-grid {
       grid-template-columns: 1fr;
     }
     .hm-rfq-full {
       grid-column: auto;
     }
-    .hm-rfq__form-card {
-      padding: 22px;
-    }
     .hm-rfq-submit {
       align-items: flex-start;
       flex-direction: column;
+      gap: 14px;
     }
     .hm-rfq-submit button {
       width: 100%;
     }
-    .hm-rfq aside {
+    .hm-rfq__aside {
       grid-template-columns: 1fr;
     }
-    .hm-rfq {
-      padding: 60px 0;
-    }
-  }
-  .hm-contact-details {
-    padding: 80px 0 100px;
-    background: #fff;
-  }
-  .hm-contact-details header {
-    max-width: 820px;
-    margin-bottom: 30px;
-  }
-  .hm-contact-details header h2 {
-    margin: 10px 0 12px;
-    font-size: 38px;
-    text-transform: none;
-  }
-  .hm-contact-details header > p:last-child {
-    color: #596575;
-    line-height: 1.7;
-  }
-  .hm-contact-details__grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    border-top: 1px solid var(--color-stroke);
-    border-left: 1px solid var(--color-stroke);
-  }
-  .hm-contact-details__grid article {
-    min-height: 250px;
-    padding: 30px;
-    border-right: 1px solid var(--color-stroke);
-    border-bottom: 1px solid var(--color-stroke);
-  }
-  .hm-contact-details__grid article > span {
-    color: var(--color-primary);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-  }
-  .hm-contact-details__grid h3 {
-    margin: 42px 0 14px;
-    font-size: 22px;
-    text-transform: none;
-  }
-  .hm-contact-details__grid a {
-    display: block;
-    width: max-content;
-    max-width: 100%;
-    margin-top: 8px;
-    color: var(--color-primary);
-    font-weight: 600;
-    overflow-wrap: anywhere;
-  }
-  .hm-contact-details__grid p {
-    color: #596575;
-    line-height: 1.65;
-  }
-  .hm-contact-details__grid a:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-  }
-  @media (max-width: 800px) {
-    .hm-contact-details__grid {
-      grid-template-columns: 1fr;
-    }
-    .hm-contact-details header h2 {
-      font-size: 31px;
-    }
-  }
-  .hm-rfq-guidance {
-    padding: 76px 0 90px;
-    background: #fff;
-  }
-  .hm-rfq-guidance header {
-    max-width: 850px;
-    margin-bottom: 26px;
-  }
-  .hm-rfq-guidance h2 {
-    margin: 8px 0 12px;
-    font-size: 36px;
-    text-transform: none;
-  }
-  .hm-rfq-guidance header > p:last-child,
-  .hm-rfq-guidance article p,
-  .hm-rfq-guidance__boundary p {
-    color: #596575;
-    line-height: 1.65;
-  }
-  .hm-rfq-guidance__grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
-    padding: 1px;
-    background: var(--color-stroke);
-  }
-  .hm-rfq-guidance article {
-    padding: 24px;
-    background: #fff;
-  }
-  .hm-rfq-guidance article p {
-    margin-bottom: 0;
-  }
-  .hm-rfq-guidance__boundary {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-    margin-top: 20px;
-    padding: 24px;
-    border-left: 3px solid var(--color-primary);
-    background: #f5f7fa;
-  }
-  .hm-rfq-guidance__boundary p {
-    margin: 7px 0 0;
-  }
-  .hm-rfq-guidance__boundary a {
-    color: var(--color-primary);
-    font-weight: 600;
-  }
-  @media (max-width: 800px) {
-    .hm-rfq-guidance__grid {
-      grid-template-columns: 1fr 1fr;
-    }
-    .hm-rfq-guidance__boundary {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media (max-width: 520px) {
     .hm-rfq-guidance__grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .hm-rfq > .container,
+    .hm-rfq-guidance > .container,
+    .hm-contact-details > .container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hm-rfq-form input,
+    .hm-rfq-form select,
+    .hm-rfq-form textarea,
+    .hm-file-label,
+    .hm-rfq-submit button,
+    .hm-rfq-submit button svg,
+    .hm-rfq-disclosure summary,
+    .hm-rfq-disclosure summary::after,
+    .hm-contact-details__grid article {
+      transition: none;
+    }
+    .hm-rfq-submit button:hover:not(:disabled) {
+      transform: none;
     }
   }
 </style>

@@ -4,12 +4,17 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/create-worker-entry.mjs",
+    "build": "node scripts/build-site.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "check:links": "node scripts/check-internal-links.mjs",
     "audit:seo": "node scripts/audit-seo.mjs",
     "audit:encoding": "node scripts/audit-encoding.mjs",
+    "audit:models": "node --disable-warning=ExperimentalWarning --experimental-strip-types scripts/audit-model-records.mjs",
+    "audit:content": "node --disable-warning=ExperimentalWarning --experimental-strip-types scripts/audit-content-readiness.mjs",
+    "audit:launch": "node scripts/audit-launch-readiness.mjs",
+    "test:rfq": "node --test scripts/test-rfq-worker.mjs",
+    "verify": "node scripts/verify-site.mjs",
     "optimize:images": "node scripts/optimize-images.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
@@ -17,13 +22,14 @@
   "dependencies": {
     "@fontsource/inter-tight": "^5.2.5",
     "@fontsource/urbanist": "^5.2.5",
-    "astro": "^5.7.10"
+    "astro": "^7.1.6"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.5",
-    "@astrojs/sitemap": "^3.6.1",
+    "@astrojs/check": "^0.9.10",
+    "@astrojs/sitemap": "^3.7.3",
     "exceljs": "^4.4.0",
     "prettier": "^3.6.2",
-    "prettier-plugin-astro": "^0.14.1"
+    "prettier-plugin-astro": "^0.14.1",
+    "wrangler": "^4.118.0"
   }
 }

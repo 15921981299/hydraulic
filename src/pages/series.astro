@@ -55,13 +55,22 @@ const referenceCount = hydraulicSeriesDirectory.reduce(
           interchangeable.
         </p>
         <div class="series-directory__metrics" aria-label="Directory summary">
-          <span
-            ><strong>{hydraulicSeriesDirectory.length}</strong> brand groups</span
-          >
-          <span><strong>{referenceCount}</strong> series references</span>
-          <span><strong>{seriesRecords.length}</strong> independent series pages</span>
-          <span><strong>{modelRecords.length}</strong> exact model records</span
-          >
+          <div class="series-metric">
+            <strong>{hydraulicSeriesDirectory.length}</strong>
+            <span>brand groups</span>
+          </div>
+          <div class="series-metric">
+            <strong>{referenceCount}</strong>
+            <span>series references</span>
+          </div>
+          <div class="series-metric">
+            <strong>{seriesRecords.length}</strong>
+            <span>independent series pages</span>
+          </div>
+          <div class="series-metric">
+            <strong>{modelRecords.length}</strong>
+            <span>exact model records</span>
+          </div>
         </div>
       </header>
 
@@ -80,13 +89,14 @@ const referenceCount = hydraulicSeriesDirectory.reduce(
               an explicit verification scope.</span
             >
           </div>
-          <a class="series-brand__hub" href="/models/">View all model records</a
+          <a class="series-brand__hub" href="/models/"
+            >View all model records →</a
           >
         </div>
         <div class="hub-grid series-directory__model-grid">
           {
             modelRecords.slice(0, 12).map((record) => (
-              <article class="hub-card">
+              <article class="hub-card series-model-card">
                 <div class="hub-card-body">
                   <p class="hub-card-meta">
                     {record.brand} · {record.productType}
@@ -136,11 +146,11 @@ const referenceCount = hydraulicSeriesDirectory.reduce(
                     <span>{group.description}</span>
                   </div>
                   <a class="series-brand__hub" href={group.brandHref}>
-                    Open brand review
+                    Open brand review →
                   </a>
                 </div>
 
-                <div class="resource-table-wrap">
+                <div class="resource-table-wrap series-table-wrap">
                   <table class="resource-table">
                     <thead>
                       <tr>
@@ -156,28 +166,34 @@ const referenceCount = hydraulicSeriesDirectory.reduce(
                         const reviewHref =
                           independentHref || reference.reviewHref;
                         return (
-                        <tr>
-                          <td>
-                            <strong>{reference.series}</strong>
-                          </td>
-                          <td>{reference.productType}</td>
-                          <td>{reference.note}</td>
-                          <td>
-                            {reviewHref ? (
-                              <a href={reviewHref}>
-                                {independentHref
-                                  ? "Independent series page"
-                                  : "Detailed review"}
-                              </a>
-                            ) : (
-                              <a
-                                href={`/request-a-quote/?brand=${encodeURIComponent(group.brand)}&model=${encodeURIComponent(reference.series)}&source=series-directory`}
+                          <tr>
+                            <td>
+                              <strong class="series-code"
+                                >{reference.series}</strong
                               >
-                                Send full code
-                              </a>
-                            )}
-                          </td>
-                        </tr>
+                            </td>
+                            <td>
+                              <span class="series-type"
+                                >{reference.productType}</span
+                              >
+                            </td>
+                            <td>{reference.note}</td>
+                            <td>
+                              {reviewHref ? (
+                                <a href={reviewHref}>
+                                  {independentHref
+                                    ? "Independent series page"
+                                    : "Detailed review"}
+                                </a>
+                              ) : (
+                                <a
+                                  href={`/request-a-quote/?brand=${encodeURIComponent(group.brand)}&model=${encodeURIComponent(reference.series)}&source=series-directory`}
+                                >
+                                  Send full code
+                                </a>
+                              )}
+                            </td>
+                          </tr>
                         );
                       })}
                     </tbody>
@@ -189,7 +205,7 @@ const referenceCount = hydraulicSeriesDirectory.reduce(
         }
       </div>
 
-      <p class="resource-note">
+      <p class="resource-note series-directory__note">
         A series reference is useful for navigation, but compatibility depends
         on the complete code, application, operating conditions and documented
         differences.
@@ -207,142 +223,489 @@ const referenceCount = hydraulicSeriesDirectory.reduce(
 </BaseLayout>
 
 <style>
+  /* Spacing scale: 8 / 16 / 24 / 32 / 40 / 48 */
   .series-directory {
-    padding: 80px 0 96px;
-    background: #fff;
+    padding: 64px 0 80px;
+    background:
+      radial-gradient(
+        900px 280px at 50% -8%,
+        rgba(20, 110, 245, 0.07),
+        transparent 70%
+      ),
+      linear-gradient(180deg, #f8fafc 0%, #fff 28%, #fff 100%);
   }
+
+  /* Align with navbar / breadcrumb horizontal inset (global .container is 0). */
+  .series-directory > .container {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+  }
+
   .series-directory__intro {
-    max-width: 980px;
-    margin-bottom: 32px;
+    max-width: 880px;
+    margin-bottom: 40px;
   }
+
   .series-directory__kicker,
   .series-brand__header p {
-    margin: 0;
+    margin: 0 0 8px;
     color: var(--color-primary);
+    font-family: var(--font-title);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
+
   .series-directory__intro h2 {
-    margin: 12px 0 18px;
-    max-width: 920px;
-    font-size: 42px;
-    line-height: 1.12;
+    margin: 0 0 16px;
+    max-width: 22ch;
+    color: #0f172a;
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+    line-height: 1.18;
+    letter-spacing: -0.02em;
     text-transform: none;
   }
+
   .series-directory__intro > p:not(.series-directory__kicker) {
-    max-width: 850px;
-    color: #536071;
-    font-size: 17px;
-    line-height: 1.7;
+    max-width: 68ch;
+    margin: 0;
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.75;
   }
+
   .series-directory__metrics {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .series-metric {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px 24px;
-    margin-top: 24px;
-    padding: 16px 18px;
-    border: 1px solid var(--color-stroke);
-    background: #f7f9fc;
-    color: #536071;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 96px;
+    padding: 20px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
   }
-  .series-directory__metrics strong {
-    color: var(--color-title);
+
+  .series-metric:hover {
+    border-color: rgba(20, 110, 245, 0.28);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
   }
+
+  .series-metric strong {
+    color: #0f172a;
+    font-family: var(--font-title);
+    font-size: 1.55rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+
+  .series-metric span {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
   .series-directory__models {
-    margin: 34px 0 18px;
-    padding: 28px;
-    border: 1px solid var(--color-stroke);
-    background: #f7f9fc;
+    margin: 0 0 40px;
+    padding: 32px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 14px;
+    background:
+      radial-gradient(
+        480px 160px at 0% 0%,
+        rgba(20, 110, 245, 0.06),
+        transparent 70%
+      ),
+      linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.04);
   }
+
+  .series-directory__models .series-brand__header {
+    margin-bottom: 24px;
+  }
+
   .series-directory__model-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 0;
   }
+
+  .series-model-card {
+    gap: 0;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .series-model-card:hover {
+    border-color: rgba(20, 110, 245, 0.32);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    transform: translateY(-2px);
+  }
+
+  .series-model-card .hub-card-body {
+    gap: 8px;
+  }
+
+  .series-model-card .hub-card-meta {
+    margin: 0 0 2px;
+    color: var(--color-primary);
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .series-model-card .hub-card-title {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  .series-model-card .hub-card-summary {
+    margin: 0 0 4px;
+    color: #475569;
+  }
+
+  .series-model-card .hub-card-link {
+    margin-top: 8px;
+  }
+
   .series-directory__jump {
     position: sticky;
     top: 72px;
-    z-index: 15;
-    padding: 12px 0;
-    background: rgba(255, 255, 255, 0.96);
+    z-index: 20;
+    gap: 10px;
+    margin: 0 0 32px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
   }
+
+  .series-directory__jump .resource-nav-link {
+    min-height: 40px;
+    padding: 8px 16px;
+    border-color: rgba(15, 23, 42, 0.08);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      background-color 0.2s ease,
+      color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .series-directory__jump .resource-nav-link:hover {
+    border-color: rgba(20, 110, 245, 0.35);
+    background: rgba(20, 110, 245, 0.06);
+    color: var(--color-primary);
+    box-shadow: 0 4px 12px rgba(20, 110, 245, 0.08);
+  }
+
+  .series-directory__groups {
+    display: grid;
+    gap: 24px;
+  }
+
   .series-brand {
-    scroll-margin-top: 150px;
-    margin-top: 44px;
+    scroll-margin-top: 140px;
+    margin-top: 0;
+    padding: 28px 32px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.03);
   }
+
   .series-brand__header {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     gap: 24px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
+
   .series-brand__header h2 {
-    margin: 7px 0 5px;
-    font-size: 28px;
+    margin: 0 0 8px;
+    color: #0f172a;
+    font-size: clamp(1.35rem, 2vw, 1.7rem);
+    line-height: 1.25;
     text-transform: none;
   }
+
   .series-brand__header h2 a {
-    color: var(--color-title);
+    color: inherit;
     text-decoration: none;
+    transition: color 0.2s ease;
   }
+
   .series-brand__header h2 a:hover {
     color: var(--color-primary);
   }
+
   .series-brand__header span {
-    color: #536071;
-    line-height: 1.6;
+    display: block;
+    max-width: 62ch;
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.65;
   }
+
   .series-brand__hub {
     flex-shrink: 0;
+    padding: 4px 0;
+    color: var(--color-primary);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+  }
+
+  .series-brand__hub:hover {
+    border-color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .series-table-wrap {
+    margin-bottom: 0;
+    border-color: #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .series-brand .resource-table thead tr {
+    background: #f8fafc;
+  }
+
+  .series-brand .resource-table th,
+  .series-brand .resource-table td {
+    padding: 14px 16px;
+  }
+
+  .series-brand .resource-table th {
+    color: #64748b;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  .series-brand .resource-table td {
+    color: #475569;
+  }
+
+  .series-code {
+    color: #0f172a;
+    font-family: var(--font-title);
+    font-size: 14px;
+    letter-spacing: 0.01em;
+  }
+
+  .series-type {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 4px 12px;
+    border: 1px solid rgba(20, 110, 245, 0.14);
+    border-radius: 999px;
+    background: rgba(20, 110, 245, 0.05);
+    color: #334155;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .series-brand .resource-table a {
     color: var(--color-primary);
     font-weight: 600;
     text-decoration: none;
+    cursor: pointer;
+    transition: color 0.2s ease;
   }
-  .series-brand__hub:hover,
-  .resource-table a:hover {
+
+  .series-brand .resource-table a:hover {
     text-decoration: underline;
+    text-underline-offset: 3px;
   }
-  .resource-table a {
-    color: var(--color-primary);
-    font-weight: 600;
-    text-decoration: none;
+
+  .series-directory__note {
+    margin: 40px 0 32px;
+    padding: 18px 20px;
+    border-radius: 12px;
+    background: #f8fafc;
   }
+
   .series-brand__hub:focus-visible,
-  .resource-table a:focus-visible {
+  .series-brand .resource-table a:focus-visible,
+  .series-directory__jump .resource-nav-link:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
-    border-radius: 3px;
+    border-radius: 4px;
   }
+
+  .series-directory__jump .resource-nav-link:focus-visible {
+    border-radius: 999px;
+  }
+
   @media (max-width: 991px) {
-    .series-directory__model-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  @media (max-width: 768px) {
     .series-directory {
       padding: 56px 0 72px;
     }
-    .series-directory__intro h2 {
-      font-size: 32px;
+    .series-directory > .container {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+    .series-directory__intro {
+      margin-bottom: 32px;
+    }
+    .series-directory__metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px;
     }
     .series-directory__models {
+      margin-bottom: 32px;
+      padding: 24px;
+    }
+    .series-directory__model-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .series-directory__jump {
+      margin-bottom: 24px;
+    }
+    .series-directory__groups {
+      gap: 20px;
+    }
+    .series-brand {
+      padding: 24px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .series-directory {
+      padding: 48px 0 64px;
+    }
+    .series-directory > .container {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .series-directory__intro {
+      margin-bottom: 28px;
+    }
+    .series-directory__intro h2 {
+      max-width: none;
+      margin-bottom: 12px;
+    }
+    .series-directory__metrics {
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .series-metric {
+      min-height: 84px;
+      padding: 16px;
+      gap: 6px;
+    }
+    .series-directory__models {
+      margin-bottom: 28px;
       padding: 20px;
+    }
+    .series-directory__models .series-brand__header {
+      margin-bottom: 16px;
     }
     .series-directory__model-grid {
       grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    .series-model-card {
+      padding: 18px;
     }
     .series-directory__jump {
       top: 60px;
+      gap: 8px;
+      margin-bottom: 20px;
+      padding: 12px 0 14px;
       flex-wrap: nowrap;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .series-directory__jump::-webkit-scrollbar {
+      display: none;
+    }
+    .series-directory__jump .resource-nav-link {
+      flex-shrink: 0;
+      min-height: 44px;
+      padding: 10px 14px;
+    }
+    .series-directory__groups {
+      gap: 16px;
+    }
+    .series-brand {
+      padding: 20px;
+      scroll-margin-top: 120px;
     }
     .series-brand__header {
       align-items: flex-start;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .series-brand__header h2 {
+      margin-bottom: 6px;
+    }
+    .series-type {
+      white-space: normal;
+    }
+    .series-directory__note {
+      margin: 28px 0 24px;
+      padding: 16px;
     }
     .resource-table {
       min-width: 720px;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .series-directory > .container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .series-metric,
+    .series-model-card,
+    .series-directory__jump .resource-nav-link,
+    .series-brand__hub,
+    .series-brand .resource-table a {
+      transition: none;
+    }
+    .series-model-card:hover {
+      transform: none;
     }
   }
 </style>

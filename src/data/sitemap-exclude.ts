@@ -12,6 +12,11 @@ const STATIC_EXCLUDES = new Set([
   "/terms/payment/",
   "/terms/samples/",
   "/terms/shipping/",
+  "/downloads/model-identification-checklist/",
+  "/downloads/pre-shipment-checklist/",
+  "/privacy/",
+  "/warranty/",
+  "/resources/oem-vs-aftermarket-hydraulic-components/",
 ]);
 
 const EXCLUDED_PREFIXES = [
@@ -31,5 +36,5 @@ export function isSitemapExcluded(pathname: string): boolean {
 export const sitemapExcludeStats = {
   static: STATIC_EXCLUDES.size,
   excludedPrefixes: EXCLUDED_PREFIXES.length,
-  total: STATIC_EXCLUDES.size,
+  total: STATIC_EXCLUDES.size + EXCLUDED_PREFIXES.length,
 };

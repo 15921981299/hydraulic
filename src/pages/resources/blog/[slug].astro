@@ -1,0 +1,229 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../../components/BreadcrumbHero.astro";
+import DetailPageShell from "../../../components/DetailPageShell.astro";
+import DetailRfqStrip from "../../../components/DetailRfqStrip.astro";
+import HydraulicProductSidebar from "../../../components/HydraulicProductSidebar.astro";
+import {
+  blogPosts,
+  blogCategories,
+  getRelatedPosts,
+} from "../../../data/blog-posts";
+import {
+  articleSchema,
+  breadcrumbSchema,
+  site,
+} from "../../../data/site";
+import "../../../styles/resource-page.css";
+
+export function getStaticPaths() {
+  return blogPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const reviewer = site.technicalReviewer;
+const hasNamedReviewer = Boolean(reviewer.name && reviewer.jobTitle);
+const pageUrl = `${site.url}/resources/blog/${post.slug}/`;
+const quoteHref = `/request-a-quote/?source=blog-${post.slug}`;
+const category = blogCategories.find((c) => c.slug === post.category);
+const relatedPosts = getRelatedPosts(post);
+---
+
+<BaseLayout
+  title={post.seoTitle}
+  description={post.description}
+  currentPath="/resources/blog"
+  image={post.image}
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Resources", url: `${site.url}/resources/` },
+      { name: "Blog", url: `${site.url}/resources/blog/` },
+      { name: post.title, url: pageUrl },
+    ]),
+    articleSchema({
+      title: post.title,
+      description: post.description,
+      url: pageUrl,
+      image: `${site.url}${post.image}`,
+      datePublished: post.published,
+      dateModified: post.modified,
+      authorName: hasNamedReviewer
+        ? reviewer.name
+        : "Hydraulic Match Editorial Review",
+      authorUrl: `${site.url}/authors/technical-review-team/`,
+      authorJobTitle: hasNamedReviewer ? reviewer.jobTitle : undefined,
+      authorSameAs:
+        hasNamedReviewer && reviewer.linkedin ? [reviewer.linkedin] : undefined,
+      authorType: hasNamedReviewer ? "Person" : "Organization",
+    }),
+  ]}
+  ogType="article"
+  articlePublishedTime={post.published}
+  noindex={post.excludeFromIndex ?? false}
+>
+  <BreadcrumbHero
+    title={post.title}
+    trail={[
+      { label: "Home", href: "/" },
+      { label: "Resources", href: "/resources/" },
+      { label: "Blog", href: "/resources/blog/" },
+      { label: post.title },
+    ]}
+    variant="3"
+  />
+
+  <DetailPageShell intro={post.intro}>
+    <img
+      slot="hero"
+      src={post.image}
+      alt={`${post.title} — hydraulic technical article illustration`}
+      width="1536"
+      height="1024"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    />
+
+    <div class="resource-meta">
+      <span><strong>Category</strong> {category?.label ?? post.category}</span>
+      <span><strong>Published</strong> {post.published}</span>
+      {post.modified && post.modified !== post.published && (
+        <span><strong>Updated</strong> {post.modified}</span>
+      )}
+      {post.readingTime && (
+        <span><strong>Reading time</strong> {post.readingTime}</span>
+      )}
+      <span>
+        <strong>Reviewed by</strong>{" "}
+        <a href="/authors/technical-review-team/">
+          {hasNamedReviewer
+            ? `${reviewer.name}, ${reviewer.jobTitle}`
+            : post.author}
+        </a>
+      </span>
+    </div>
+
+    {post.tags.length > 0 && (
+      <div class="blog-tags">
+        {post.tags.map((tag) => (
+          <span class="blog-tag">{tag}</span>
+        ))}
+      </div>
+    )}
+
+    <DetailRfqStrip
+      quoteHref={quoteHref}
+      title="Send a hydraulic component for review"
+      text="Include the complete model code, quantity, destination and available photos or drawings."
+      modalContext={post.title}
+      modalSource={`blog-${post.slug}`}
+    />
+
+    {
+      post.sections.map((section) => (
+        <section>
+          <h2>{section.title}</h2>
+          {section.intro && <p>{section.intro}</p>}
+          {section.items && (
+            <ul class="resource-list">
+              {section.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          )}
+          {section.table && (
+            <div class="resource-table-wrap">
+              <table class="resource-table">
+                <thead>
+                  <tr>
+                    {section.table.headers.map((header) => (
+                      <th scope="col">{header}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {section.table.rows.map((row) => (
+                    <tr>
+                      {row.map((cell) => (
+                        <td>{cell}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {section.note && <p class="resource-note">{section.note}</p>}
+        </section>
+      ))
+    }
+
+    {
+      relatedPosts.length > 0 && (
+        <section>
+          <h2>Related Articles</h2>
+          <div class="hub-grid">
+            {relatedPosts.map((related) => (
+              <a
+                class="hub-card"
+                href={`/resources/blog/${related.slug}/`}
+              >
+                <div class="hub-card-body">
+                  <p class="hub-card-meta">{related.category}</p>
+                  <h3 class="hub-card-title">{related.title}</h3>
+                  <p class="hub-card-summary">{related.description}</p>
+                  <span class="hub-card-link">Read article →</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <p class="resource-note">
+      Manufacturer names, trademarks, and model numbers are used for
+      identification and cross-reference purposes only. Compatibility must be
+      confirmed for each application before purchase and installation.
+    </p>
+
+    <p class="resource-related">
+      <a href="/resources/blog/">All articles</a><span aria-hidden="true">·</span>
+      <a href="/resources/">Technical guides</a><span aria-hidden="true">·</span>
+      <a href="/matching-process/">Matching process</a><span aria-hidden="true">·</span>
+      <a href="/request-a-quote/">Request a match</a>
+    </p>
+
+    <HydraulicProductSidebar
+      slot="sidebar"
+      activeSlug=""
+      quoteHref={quoteHref}
+    />
+  </DetailPageShell>
+</BaseLayout>
+
+<style>
+  .blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 18px 0 8px;
+  }
+  .blog-tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 4px 12px;
+    border: 1px solid rgba(20, 110, 245, 0.2);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+</style>

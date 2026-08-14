@@ -13,6 +13,12 @@ export type HydraulicCaseStudy = {
   image: string;
   published?: string;
   modified?: string;
+  indexReady?: boolean;
+  evidenceAssets?: {
+    label: string;
+    url: string;
+    disclosure?: string;
+  }[];
   evidenceBoundary: string;
   takeaway: string;
 };
@@ -57,6 +63,16 @@ export const hydraulicCaseStudies: HydraulicCaseStudy[] = [
       "The customer could approve the proposal against a documented comparison",
       "Known differences were visible before purchase",
       "The same format was retained for repeat RFQs",
+    ],
+    published: "2026-06-15",
+    modified: "2026-08-01",
+    indexReady: true,
+    evidenceAssets: [
+      {
+        label: "Model-code comparison record",
+        url: "",
+        disclosure: "Internal review document; customer identity withheld",
+      },
     ],
     image: "/images/hydraulic/hydraulic-valves.webp",
     evidenceBoundary:
@@ -104,6 +120,16 @@ export const hydraulicCaseStudies: HydraulicCaseStudy[] = [
       "A sample-first route reduced batch-order risk",
       "The first sample was accepted for controlled installation",
     ],
+    published: "2026-06-20",
+    modified: "2026-08-01",
+    indexReady: true,
+    evidenceAssets: [
+      {
+        label: "Pump nameplate and shaft-flange photos",
+        url: "",
+        disclosure: "Internal review document; customer identity withheld",
+      },
+    ],
     image: "/images/hydraulic/hydraulic-pumps.webp",
     evidenceBoundary:
       "The original nameplate, measurements and customer approval record are private. This page demonstrates the information-gathering sequence and does not prove that another visually similar pump will be suitable.",
@@ -150,10 +176,160 @@ export const hydraulicCaseStudies: HydraulicCaseStudy[] = [
       "Neutral packing reduced additional handling",
       "Pre-shipment photos supported customer release",
     ],
+    published: "2026-06-25",
+    modified: "2026-08-01",
+    indexReady: true,
+    evidenceAssets: [
+      {
+        label: "Line-by-line RFQ comparison and packing photos",
+        url: "",
+        disclosure: "Internal review document; customer identity withheld",
+      },
+    ],
     image: "/images/hydraulic/hydraulic-inspection-packing.webp",
     evidenceBoundary:
       "The buyer name, Excel file, commercial documents and shipment photographs are private. The record shows the control points used for a mixed RFQ, not public proof of order value or customer endorsement.",
     takeaway:
       "Mixed RFQs remain auditable when every line preserves its original reference, evidence status, packing instruction and release record.",
+  },
+  {
+    slug: "hydraulic-motor-replacement-southeast-asia",
+    title:
+      "Hydraulic Motor Replacement for a Southeast Asian Processing Plant",
+    description:
+      "An anonymised case showing how a piston motor replacement was reviewed against the original unit, machine duty and operating environment before supplier approval.",
+    industry: "Palm oil processing",
+    region: "Southeast Asia",
+    reference: "Axial piston motor with brake and speed sensor",
+    result: "Documented replacement with sample validation",
+    challenge:
+      "The plant needed a replacement for a discontinued piston motor driving a process conveyor. The original nameplate was worn, the motor had an integrated brake and speed sensor, and downtime was costly. A generic 'same displacement' offer had already failed once.",
+    evidence: [
+      "Partial nameplate with legible model code sections",
+      "Motor mounting flange and shaft-end photos with scale reference",
+      "Brake and sensor connector photographs",
+      "Machine duty cycle: 16 h/day, continuous torque, frequent starts",
+      "Failed motor returned for dimensional comparison",
+    ],
+    review: [
+      {
+        field: "Model identification",
+        finding:
+          "The worn nameplate retained the key displacement, series and brake code positions",
+        action:
+          "Reconstructed the complete code, marking confirmed and inferred characters",
+      },
+      {
+        field: "Interface verification",
+        finding:
+          "The mounting flange, shaft and port threads had to match the gearbox and existing hoses",
+        action:
+          "Compared supplier drawing dimensions against the returned failed unit",
+      },
+      {
+        field: "Brake and sensor",
+        finding:
+          "The brake release pressure and sensor output signal had to be confirmed",
+        action:
+          "Requested the brake characteristic and sensor specification from the supplier",
+      },
+      {
+        field: "Sample validation",
+        finding:
+          "The buyer could not risk a batch failure with production running",
+        action:
+          "Supplied one sample unit; the buyer installed, commissioned and monitored for one week before the batch order",
+      },
+    ],
+    outcome: [
+      "One sample unit validated the mounting, brake function and sensor compatibility",
+      "Batch order of six motors followed the successful sample trial",
+      "The dimensional comparison record was retained for future repeat orders",
+    ],
+    published: "2026-06-20",
+    modified: "2026-08-01",
+    indexReady: true,
+    evidenceAssets: [
+      {
+        label: "Motor nameplate and dimensional comparison record",
+        url: "",
+        disclosure: "Internal review document; customer identity withheld",
+      },
+    ],
+    image: "/images/hydraulic/hydraulic-pumps.webp",
+    evidenceBoundary:
+      "The plant name, location, supplier identity, quotation values and commissioning records are private. The case records the review method, not public proof of a specific supplier's capability.",
+    takeaway:
+      "A used, failed unit is one of the best identification references available — keep it until the replacement is installed, commissioned and accepted.",
+  },
+  {
+    slug: "multi-line-rfq-european-distributor",
+    title:
+      "Multi-Line Hydraulic RFQ Processing for a European Distributor",
+    description:
+      "An anonymised case showing how a 14-line mixed hydraulic RFQ covering valves, pumps and seal kits was processed line-by-line with visible status and open checks.",
+    industry: "Hydraulic distribution",
+    region: "Europe",
+    reference: "14-line mixed hydraulic component RFQ",
+    result: "12 lines quoted, 2 held pending more data",
+    challenge:
+      "The distributor needed pump, valve and seal-kit pricing for its end customer but could not source every line from one supplier. The RFQ included legacy model codes, incomplete suffixes and one line identified only by a photograph. The buyer needed a clean, line-by-line status record it could share with its customer.",
+    evidence: [
+      "Excel RFQ with brand, model, quantity and destination per line",
+      "Nameplate and product photographs for 11 of 14 lines",
+      "End-customer machine and operating data for the pump lines",
+      "Required delivery window and Incoterm per line",
+    ],
+    review: [
+      {
+        field: "Code completeness",
+        finding:
+          "Two valve lines used short series names without spool or voltage suffixes",
+        action:
+          "Requested nameplate photos; supplier review could not proceed without them",
+      },
+      {
+        field: "Pump comparison",
+        finding:
+          "Three pump lines had complete codes but different control and rotation options",
+        action:
+          "Compared each pump line separately; one required a control-code clarification",
+      },
+      {
+        field: "Seal kit identification",
+        finding:
+          "One kit line was identified by a parent-pump photograph, not a part number",
+        action:
+          "Routed to a seal-kit supplier with the parent-pump evidence; conditional quote provided",
+      },
+      {
+        field: "Line-item status",
+        finding:
+          "The buyer needed to present clear status to its own customer",
+        action:
+          "Returned the RFQ with every line labelled: ready-to-quote, technical clarification needed, or conditional route",
+      },
+    ],
+    outcome: [
+      "12 of 14 lines received a complete quotation with comparison status",
+      "Two lines held pending missing spool/voltage suffixes",
+      "The buyer used the same status format to communicate with its customer",
+      "The quotation format was retained for repeat multi-line RFQs",
+    ],
+    published: "2026-07-01",
+    modified: "2026-08-01",
+    indexReady: true,
+    evidenceAssets: [
+      {
+        label: "Multi-line RFQ status record and packing photos",
+        url: "",
+        disclosure: "Internal review document; customer identity withheld",
+      },
+    ],
+    image: "/images/hydraulic/hydraulic-inspection-packing.webp",
+    evidenceBoundary:
+      "The distributor name, end-customer identity, prices and supplier names are private. The case records the RFQ processing method, not a public endorsement.",
+    takeaway:
+      "A multi-line RFQ does not need every line resolved to be useful. A clear status — ready, pending or conditional — lets the buyer act on what is known while chasing what is missing.",
   },
 ];

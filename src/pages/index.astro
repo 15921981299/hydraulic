@@ -10,7 +10,12 @@ const productCategories = [
     href: "/products/hydraulic-valves/",
     title: "Hydraulic Valves",
     summary:
-      "Directional, pressure, flow, modular, check and selected proportional valve sourcing.",
+      "Directional, pressure, flow, modular, check and selected proportional or servo valve sourcing.",
+    scope:
+      "Directional · pressure · flow · modular · check · proportional",
+    review:
+      "Function, spool, size, pressure, flow, voltage, connector, mounting and seals",
+    linkLabel: "Browse hydraulic valve categories",
     image: "/images/hydraulic/hydraulic-valves.webp",
     imagePosition: "center",
   },
@@ -19,6 +24,10 @@ const productCategories = [
     title: "Hydraulic Pumps",
     summary:
       "Axial piston, vane and gear pumps reviewed by complete model code and application.",
+    scope: "Axial piston · vane · gear pumps",
+    review:
+      "Displacement, control, pressure, rotation, shaft, flange, ports and duty",
+    linkLabel: "Browse hydraulic pump categories",
     image: "/images/hydraulic/hydraulic-pumps.webp",
     imagePosition: "center",
   },
@@ -27,6 +36,10 @@ const productCategories = [
     title: "Hydraulic Cylinders",
     summary:
       "Standard and custom cylinders developed from drawings, samples and operating data.",
+    scope: "Standard industrial · custom · replacement cylinders",
+    review:
+      "Bore, rod, stroke, mounting, ports, pressure, load, speed and environment",
+    linkLabel: "Browse hydraulic cylinder options",
     image: "/images/hydraulic/hydraulic-cylinders.webp",
     imagePosition: "center",
   },
@@ -35,6 +48,10 @@ const productCategories = [
     title: "Hydraulic Motors",
     summary:
       "Orbital, piston, radial piston, swing and travel motors reviewed with machine and interface data.",
+    scope: "Orbital · axial piston · radial piston · swing and travel",
+    review:
+      "Displacement, torque, speed, shaft, flange, ports, brake and machine duty",
+    linkLabel: "Browse hydraulic motor categories",
     image: "/images/hydraulic/hydraulic-pumps.webp",
     imagePosition: "center",
   },
@@ -43,6 +60,10 @@ const productCategories = [
     title: "Repair Kits & Service Parts",
     summary:
       "Seal kits, rotating groups, cartridges and service parts identified from the complete parent-unit code.",
+    scope: "Seal kits · rotating groups · cartridges · valve and motor parts",
+    review:
+      "Parent-unit code, part number, revision, dimensions, material and kit scope",
+    linkLabel: "Browse hydraulic repair parts",
     image: "/images/hydraulic/hydraulic-inspection-packing.webp",
     imagePosition: "center",
   },
@@ -51,46 +72,66 @@ const productCategories = [
 const workflowSteps = [
   {
     step: "01",
-    title: "Send the Model or Nameplate",
+    stage: "IDENTIFICATION INPUT",
+    title: "Submit the Original Hydraulic Reference",
     summary:
-      "Share the original brand, complete model code, order number, quantity, destination, and available photos or drawings.",
+      "Send the original brand, complete model or part number, quantity and destination, supported by a nameplate, product photos, drawing or datasheet when available.",
+    output:
+      "Input: model code · nameplate · photos · quantity · destination",
   },
   {
     step: "02",
-    title: "We Review Key Parameters",
+    stage: "TECHNICAL REVIEW",
+    title: "Identify the Configuration and Compare Parameters",
     summary:
-      "We compare function, pressure, flow, voltage, mounting, ports, shaft, rotation and application conditions as applicable.",
+      "The review separates the product family and configuration, then compares the hydraulic, electrical, mechanical and application details relevant to that component.",
+    output:
+      "Review: function · ratings · controls · interfaces · application",
   },
   {
     step: "03",
-    title: "Receive an Option and Quote",
+    stage: "QUOTATION OUTPUT",
+    title: "Receive a Documented Sourcing Option and Quote",
     summary:
-      "The quotation identifies the sourcing route, known differences, open confirmations, MOQ, lead time and commercial terms.",
+      "The quotation identifies the proposed model and supply route, compatibility status, known differences, open checks, condition, MOQ, lead-time basis and commercial terms.",
+    output:
+      "Output: proposed model · status · differences · price and terms",
   },
   {
     step: "04",
-    title: "Confirm, Sample and Order",
+    stage: "APPROVAL & ORDER",
+    title: "Approve Differences, Sample When Needed, Then Order",
     summary:
-      "For higher-risk items, a sample or first-article review is recommended before batch or repeat purchasing.",
+      "The buyer confirms open points and required inspection evidence. Higher-risk or changed models should begin with a sample or first-article review before batch purchasing.",
+    output:
+      "Decision: approval · inspection · sample/first article · order",
   },
 ];
 
 const quoteStandards = [
   {
-    title: "Model-code review",
-    body: "The complete reference, order number and nameplate are checked before a proposed option is treated as ready for quotation.",
+    category: "IDENTIFICATION",
+    title: "Requested reference stays traceable",
+    body: "The original brand, complete model or part number, nameplate and supporting photos remain attached to the line item being reviewed.",
+    output: "Requested reference · evidence reviewed · missing data",
   },
   {
-    title: "Parameter comparison",
-    body: "The relevant hydraulic, electrical and mechanical parameters are compared rather than assuming interchangeability from a series name.",
+    category: "TECHNICAL COMPARISON",
+    title: "Compatibility status is explicit",
+    body: "Hydraulic, electrical and mechanical parameters are compared before an option is labelled confirmed, conditional or still open.",
+    output: "Confirmed · conditional · open check",
   },
   {
-    title: "Known differences stated",
-    body: "Dimensions, connectors, ports, control behavior or application limitations that still require review are shown clearly.",
+    category: "DIFFERENCES & APPROVAL",
+    title: "Known differences remain visible",
+    body: "Changes in dimensions, connectors, ports, control behavior, material condition or application limits are not hidden inside a generic equivalent claim.",
+    output: "Difference · consequence · customer confirmation",
   },
   {
-    title: "Commercial scope labelled",
-    body: "MOQ, lead time, inspection, packing, warranty, Incoterm and customer confirmation points are recorded by line item.",
+    category: "COMMERCIAL SCOPE",
+    title: "Supply and inspection terms are separated",
+    body: "The quotation records the proposed source and condition together with MOQ, lead-time basis, inspection scope, packing, warranty and Incoterm.",
+    output: "Source · condition · MOQ · lead time · QC · Incoterm",
   },
 ];
 
@@ -99,38 +140,140 @@ const brandReferences = [
     href: `/brands/${brand.slug}/`,
     title: brand.name,
     summary: brand.summary,
+    meta: `${brand.seriesReferences.length} series-level entries`,
+    series: brand.seriesReferences
+      .slice(0, 3)
+      .map((item) => item.series)
+      .join(" · "),
+    linkLabel: `Review ${brand.name} references`,
+    isDirectory: false,
   })),
   {
     href: "/brands/",
-    title: `All ${brandCoverageStats.brands} Brand Groups`,
-    summary: `Browse ${brandCoverageStats.seriesReferences} organized series-level entries before submitting the complete code.`,
+    title: "Complete Hydraulic Brand Directory",
+    summary: `Browse all ${brandCoverageStats.brands} manufacturer reference groups and ${brandCoverageStats.seriesReferences} organized series-level entries.`,
+    meta: "FULL REFERENCE INDEX",
+    series: "Brand groups · series directory · exact model records",
+    linkLabel: "Open the complete brand directory",
+    isDirectory: true,
   },
 ];
 
 const applications = [
-  { name: "Industrial Machinery", href: "/industries/industrial-machinery/" },
   {
-    name: "Construction Equipment",
-    href: "/industries/construction-equipment/",
+    name: "Industrial Machinery & Factory MRO",
+    href: "/industries/industrial-machinery/",
+    summary:
+      "Hydraulic valves, pumps, cylinders and service parts for production equipment, power units and maintenance replacement work.",
+    focus: "Legacy model codes · duty cycle · installed interfaces",
+    linkLabel: "Explore industrial machinery hydraulics",
   },
-  { name: "Metal Forming", href: "/industries/metal-forming/" },
-  { name: "Plastics Machinery", href: "/industries/plastics-machinery/" },
+  {
+    name: "Construction & Mobile Equipment",
+    href: "/industries/construction-equipment/",
+    summary:
+      "Main pumps, travel and swing motors, control valves and cylinders reviewed against the machine and operating environment.",
+    focus: "Machine model · controls · shaft, ports and rotation",
+    linkLabel: "Explore construction equipment hydraulics",
+  },
+  {
+    name: "Hydraulic Presses & Metal Forming",
+    href: "/industries/metal-forming/",
+    summary:
+      "Component review for press and forming functions where force, pressure holding, sequencing and cycle behavior matter.",
+    focus: "Pressure-flow cycle · valve logic · cylinder geometry",
+    linkLabel: "Explore press and metal-forming hydraulics",
+  },
+  {
+    name: "Injection Molding & Plastics Machinery",
+    href: "/industries/plastics-machinery/",
+    summary:
+      "Hydraulic pumps, proportional valves and related components compared for repeatable pressure, flow and response.",
+    focus: "Control signal · feedback · temperature · cycle baseline",
+    linkLabel: "Explore plastics machinery hydraulics",
+  },
   {
     name: "Mining & Material Handling",
     href: "/request-a-quote/?source=mining-material-handling",
+    summary:
+      "An inquiry route for pumps, motors, valves and cylinders used in selected high-load mobile and material-handling equipment.",
+    focus: "Load and duty · contamination · machine evidence",
+    linkLabel: "Submit an application inquiry",
   },
-  { name: "MRO & Repair", href: "/distributor-support/" },
+  {
+    name: "Hydraulic Repair, MRO & Distribution",
+    href: "/distributor-support/",
+    summary:
+      "Structured support for obsolete references, repair parts, mixed-model RFQ lists and repeat replacement purchasing.",
+    focus: "Complete codes · condition · differences · open checks",
+    linkLabel: "See distributor and MRO support",
+  },
+];
+
+const orderEvidenceScopes = [
+  {
+    category: "IDENTITY & QUANTITY",
+    title: "Product identity and order count",
+    body: "Photos can record the product, nameplate, model or part number, visible markings, condition and packed quantity against the quoted line item.",
+    examples: "Nameplate · model marking · item count · package label",
+  },
+  {
+    category: "DIMENSIONS & INTERFACES",
+    title: "Critical fit and connection checks",
+    body: "Agreed dimensions and interfaces can be recorded where they affect installation, including mounting, ports, shaft, connector or overall envelope.",
+    examples: "Mounting · ports · shaft · connector · key dimensions",
+  },
+  {
+    category: "FUNCTION & TEST RECORDS",
+    title: "Available inspection or test results",
+    body: "Pressure, leakage, electrical or other functional records must be defined by product and supplier capability; they are included only when stated in the quotation.",
+    examples: "Test item · method · acceptance limit · recorded result",
+  },
+  {
+    category: "PACKING & SHIPMENT",
+    title: "Protection, labels and packing evidence",
+    body: "Pre-shipment photos can document protective caps, inner packaging, labels, carton or crate condition and the final packed quantity.",
+    examples: "Protection · labels · cartons/crates · packing count",
+  },
 ];
 
 const technicalChecks = [
-  "Complete model code and order number",
-  "Pressure, flow or displacement",
-  "Spool function or control type",
-  "Voltage, connector and coil",
-  "Mounting interface and port details",
-  "Rotation, flange and shaft",
-  "Fluid, seals and temperature",
-  "Machine, duty cycle and environment",
+  {
+    category: "IDENTIFICATION",
+    title: "Exact model and material number",
+    body: "We compare the complete code, design series, order number and nameplate—not only the brand or family name.",
+    examples: "Model suffix · material number · design revision",
+  },
+  {
+    category: "HYDRAULIC PERFORMANCE",
+    title: "Pressure, flow and displacement",
+    body: "Working and peak pressure, required flow, pump or motor displacement and operating speed are reviewed together.",
+    examples: "bar · L/min · cm³/rev · rpm",
+  },
+  {
+    category: "FUNCTION & CONTROL",
+    title: "Spool, control and circuit behavior",
+    body: "Valve spool function, pump control type, compensator settings and the required de-energized or standby behavior must align.",
+    examples: "Spool symbol · DR/DFR control · settings",
+  },
+  {
+    category: "ELECTRICAL",
+    title: "Voltage, connector and actuation",
+    body: "For solenoid and proportional products, we check voltage, current type, connector, coil arrangement and control electronics.",
+    examples: "12/24 VDC · 110/230 VAC · DIN connector",
+  },
+  {
+    category: "MECHANICAL INTERFACE",
+    title: "Mounting, ports, shaft and rotation",
+    body: "Bolt pattern, flange, shaft, port location, envelope dimensions and rotation are compared against the installed unit.",
+    examples: "ISO/CETOP · SAE · clockwise/counter-clockwise",
+  },
+  {
+    category: "APPLICATION CONDITIONS",
+    title: "Fluid, seals, temperature and duty",
+    body: "Fluid type, seal material, ambient and oil temperature, contamination risk, duty cycle and machine environment affect approval.",
+    examples: "NBR/FKM · viscosity · continuous/intermittent duty",
+  },
 ];
 
 const guides = [
@@ -178,26 +321,47 @@ const guides = [
 
 const faqs = [
   {
-    question: "Can a replacement be confirmed from the series name alone?",
+    question:
+      "Can a hydraulic pump or valve replacement be confirmed from the series name alone?",
     answer:
-      "Usually not. The complete model code, technical parameters and application conditions must be reviewed.",
+      "Usually not. Products in the same series can differ by displacement, control, rotation, spool function, voltage, shaft, mounting flange, ports, seals and design revision. The complete model code and application must be reviewed.",
+    href: "/resources/why-the-same-hydraulic-series-may-not-be-interchangeable/",
+    linkLabel: "Why the same series may not interchange",
   },
   {
-    question: "What if the complete model code is unavailable?",
+    question: "What information is needed for a hydraulic cross-reference?",
     answer:
-      "Upload the full nameplate and product photos. A drawing, old quotation or datasheet can also help identify the missing information.",
+      "Start with the original brand, complete model or part number, quantity and destination. Add a clear nameplate photo, product and interface photos, machine model, pressure, flow or displacement, voltage and any available drawing or datasheet.",
+    href: "/downloads/model-identification-checklist/",
+    linkLabel: "Use the model identification checklist",
   },
   {
-    question: "Are referenced manufacturer names an authorization claim?",
+    question: "Can you review an obsolete or discontinued hydraulic model?",
     answer:
-      "No. Names and model numbers are used only for identification and cross-reference. Hydraulic Match is independent from the referenced manufacturers.",
+      "Yes, when enough identification evidence is available. The review may consider an original source, remanufactured unit, documented aftermarket candidate, repair route or service part. The quotation states which route is proposed and what remains conditional.",
+    href: "/resources/obsolete-hard-to-find-hydraulic-part-sourcing/",
+    linkLabel: "See the obsolete-part sourcing process",
+  },
+  {
+    question: "Is an aftermarket hydraulic replacement always a direct fit?",
+    answer:
+      "No. “Aftermarket” describes the supply route, not automatic interchangeability. Function, ratings, interfaces, material condition and application limits must be compared for the exact offered model before direct-fit wording is used.",
+    href: "/resources/original-vs-aftermarket-hydraulic-sourcing-routes/",
+    linkLabel: "Compare original and aftermarket routes",
+  },
+  {
+    question: "What will a replacement quotation show?",
+    answer:
+      "A useful quotation identifies the requested reference, proposed model and source, compatibility status, known differences, open confirmation points, condition, MOQ, lead-time basis, inspection scope, packing, warranty and Incoterm.",
+    href: "/matching-process/",
+    linkLabel: "Review the matching and quotation process",
   },
 ];
 ---
 
 <BaseLayout
-  title="Chinese Hydraulic Valves, Pumps & Cylinders | Hydraulic Match"
-  description="Send a hydraulic model code, nameplate photo or drawing. Hydraulic Match reviews key parameters and sources suitable Chinese valve, pump and cylinder options."
+  title="Hydraulic Component Sourcing from China | Hydraulic Match"
+  description="Source Chinese hydraulic valves, pumps, cylinders and motors with model-code verification. Hydraulic Match reviews technical parameters, supplier evidence and export documentation for global buyers."
   currentPath="/"
   jsonLd={[
     itemListSchema(
@@ -265,9 +429,39 @@ const faqs = [
                 >
               </div>
               <ul class="hero-trust-row" aria-label="Key service points">
-                <li>Model-code review</li>
-                <li>Small-batch RFQs welcome</li>
-                <li>Export support from China</li>
+                <li>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+                    ><path
+                      d="M5 12.5 9.5 17 19 7.5"
+                      stroke="currentColor"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path></svg
+                  >
+                  Model-code review
+                </li>
+                <li>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+                    ><path
+                      d="M5 12.5 9.5 17 19 7.5"
+                      stroke="currentColor"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path></svg
+                  >
+                  Small-batch RFQs welcome
+                </li>
+                <li>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+                    ><path
+                      d="M5 12.5 9.5 17 19 7.5"
+                      stroke="currentColor"
+                      stroke-width="2.2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"></path></svg
+                  >
+                  Export support from China
+                </li>
               </ul>
             </div>
           </div>
@@ -289,113 +483,133 @@ const faqs = [
     </div>
   </section>
 
-  <section class="service-section">
-    <div class="section-gap bottom">
-      <div class="container">
-        <div class="service-wrapper">
-          <SectionHeading
-            title="Hydraulic Product Categories"
-            subtitle="What We Source"
-          />
-          <div class="service-bottom-block fade-in">
-            <p class="service-bottom-text service-bottom-hint">
-              Not sure which category fits? <a
-                href="/request-a-quote/"
-                class="service-bottom-link"
-                >Send the nameplate or product photo</a
-              > and we will identify the information needed.
-            </p>
-          </div>
-          <div class="service-card-sticky-block fade-in">
-            {
-              productCategories.map((item) => (
-                <div class="service-card-item-block">
-                  <a href={item.href} class="service-card-image-block">
-                    <img
-                      src={item.image}
-                      alt={`${item.title} reference products for sourcing review`}
-                      class="service-card-image hm-service-image"
-                      style={`object-position:${item.imagePosition}`}
-                      width="1536"
-                      height="1024"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    <div class="service-card-image-overlay">
-                      <div class="service-card-icon-block">
-                        <span
-                          class="service-hover-icon hm-arrow"
-                          aria-hidden="true"
-                        >
-                          ↗
-                        </span>
-                      </div>
-                    </div>
-                  </a>
-                  <div class="service-card-content-block">
-                    <div class="service-card-text-block">
-                      <a href={item.href} class="service-title-link-block">
-                        <h3 class="service-card-title">{item.title}</h3>
-                      </a>
-                      <p class="service-card-summary">{item.summary}</p>
-                    </div>
-                  </div>
-                </div>
-              ))
-            }
+  <section
+    class="hm-products-section section-gap bottom"
+    aria-labelledby="home-categories-heading"
+  >
+    <div class="container">
+      <div class="hm-products-heading">
+        <div>
+          <p class="hm-kicker">PRODUCT DIRECTORY</p>
+          <h2 id="home-categories-heading">
+            Hydraulic Product Categories for Replacement and Sourcing
+          </h2>
+        </div>
+        <div class="hm-products-intro">
+          <p>
+            Browse hydraulic valves, pumps, cylinders, motors and repair parts
+            by product family. Each directory explains the configurations,
+            parameters and evidence required before a sourcing option can be
+            compared responsibly.
+          </p>
+          <div>
+            <a href="/products/">View the complete product directory</a>
+            <a href="/request-a-quote/?source=homepage-products">
+              Send an unidentified nameplate or photo
+            </a>
           </div>
         </div>
       </div>
+
+      <div class="hm-product-grid fade-in">
+        {
+          productCategories.map((item, index) => (
+            <a href={item.href} class="hm-product-card">
+              <div class="hm-product-image">
+                <img
+                  src={item.image}
+                  alt={`${item.title} reference products for technical identification and sourcing review`}
+                  style={`object-position:${item.imagePosition}`}
+                  width="1536"
+                  height="1024"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span>{String(index + 1).padStart(2, "0")}</span>
+              </div>
+              <div class="hm-product-content">
+                <h3>{item.title}</h3>
+                <p>{item.summary}</p>
+                <div class="hm-product-detail">
+                  <strong>Product scope</strong>
+                  <span>{item.scope}</span>
+                </div>
+                <div class="hm-product-detail">
+                  <strong>Key review fields</strong>
+                  <span>{item.review}</span>
+                </div>
+                <footer>
+                  <span>{item.linkLabel}</span>
+                  <span aria-hidden="true">→</span>
+                </footer>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+
+      <p class="hm-products-note">
+        Not sure which product family applies? Submit the complete nameplate and
+        clear product, connector, port or shaft-side photos. Category routing is
+        an identification step and does not by itself confirm compatibility.
+      </p>
     </div>
   </section>
 
-  <section class="booking-steps-section">
-    <div class="section-gap bottom">
-      <div class="container">
-        <div class="booking-steps-wrapper">
-          <SectionHeading
-            title="How It Works"
-            subtitle="From Model Code to Order"
-          />
-          <div class="booking-steps-content-block fade-in">
-            <div class="booking-steps-sticky-block">
-              {
-                workflowSteps.map((item, index) => (
-                  <div
-                    class:list={["booking-step-card-block", `is-${index + 1}`]}
-                  >
-                    <div class="booking-step-image-block">
-                      <img
-                        src={
-                          index === 0
-                            ? "/images/hydraulic/hydraulic-match-hero.webp"
-                            : index === 1
-                              ? "/images/hydraulic/hydraulic-inspection-packing.webp"
-                              : index === 2
-                                ? "/images/hydraulic/hydraulic-valves.webp"
-                                : "/images/hydraulic/hydraulic-cylinders.webp"
-                        }
-                        alt=""
-                        aria-hidden="true"
-                        class="booking-step-image hm-step-image"
-                        width="1536"
-                        height="1024"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </div>
-                    <div class="booking-step-card-text-block">
-                      <span class="booking-step-number" aria-hidden="true">
-                        {item.step}
-                      </span>
-                      <h3 class="booking-step-title">{item.title}</h3>
-                      <p class="booking-step-summary">{item.summary}</p>
-                    </div>
-                  </div>
-                ))
-              }
-            </div>
-          </div>
+  <section
+    class="hm-workflow-section section-gap bottom"
+    aria-labelledby="home-workflow-heading"
+  >
+    <div class="container">
+      <div class="hm-workflow-heading">
+        <div>
+          <p class="hm-kicker">FROM MODEL CODE TO ORDER</p>
+          <h2 id="home-workflow-heading">
+            How Hydraulic Component Matching and Quotation Works
+          </h2>
+        </div>
+        <div class="hm-workflow-intro">
+          <p>
+            The workflow is designed for distributors, hydraulic repair
+            companies, factory MRO teams and equipment manufacturers that need
+            differences and open checks documented before purchase.
+          </p>
+          <a href="/matching-process/">
+            See the detailed matching and quotation process
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+      <ol class="hm-workflow-grid fade-in">
+        {
+          workflowSteps.map((item) => (
+            <li class="hm-workflow-card">
+              <header>
+                <span aria-hidden="true">{item.step}</span>
+                <small>{item.stage}</small>
+              </header>
+              <h3>{item.title}</h3>
+              <p>{item.summary}</p>
+              <footer>{item.output}</footer>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="hm-workflow-actions">
+        <p>
+          A series name or visual similarity is not enough for a direct-fit
+          decision. The exact configuration and application remain part of the
+          review.
+        </p>
+        <div>
+          <a href="/request-a-quote/?source=homepage-workflow">
+            Start a hydraulic matching request
+          </a>
+          <a href="/downloads/model-identification-checklist/">
+            Download the identification checklist
+          </a>
         </div>
       </div>
     </div>
@@ -406,77 +620,188 @@ const faqs = [
     aria-labelledby="quote-standard-heading"
   >
     <div class="container">
-      <SectionHeading
-        title="Technical Review & Quotation Standard"
-        subtitle="How We Reduce Replacement Risk"
-      />
-      <div class="quote-standard-grid fade-in">
-        {
-          quoteStandards.map((item, index) => (
-            <article class="quote-standard-card">
-              <span class="quote-standard-number" aria-hidden="true">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <h3>{item.title}</h3>
-              <p>{item.body}</p>
-            </article>
-          ))
-        }
+      <div class="hm-standard-heading">
+        <div>
+          <p class="hm-kicker">BEFORE PURCHASE APPROVAL</p>
+          <h2 id="quote-standard-heading">
+            Hydraulic Replacement Technical Review &amp; Quotation Standards
+          </h2>
+        </div>
+        <div class="hm-standard-intro">
+          <p>
+            A useful hydraulic replacement quotation should show what was
+            requested, what is being offered, what has been compared and what
+            still requires customer confirmation—not only a price and lead time.
+          </p>
+          <div>
+            <a href="/matching-process/">Review the complete matching process</a>
+            <a href="/downloads/model-identification-checklist/">
+              Prepare identification evidence
+            </a>
+          </div>
+        </div>
       </div>
+
+      <div class="hm-standard-layout">
+        <aside class="hm-quote-output" aria-label="Minimum quotation record">
+          <p class="hm-kicker">MINIMUM QUOTATION RECORD</p>
+          <h3>Five answers a buyer should be able to find.</h3>
+          <ol>
+            <li><span>01</span><strong>What was requested?</strong></li>
+            <li><span>02</span><strong>What model and supply route are proposed?</strong></li>
+            <li><span>03</span><strong>What is confirmed, conditional or open?</strong></li>
+            <li><span>04</span><strong>What differences need approval?</strong></li>
+            <li><span>05</span><strong>What commercial and inspection terms apply?</strong></li>
+          </ol>
+          <a href="/request-a-quote/?source=homepage-standard">
+            Submit a model for review <span aria-hidden="true">→</span>
+          </a>
+        </aside>
+
+        <div class="quote-standard-grid fade-in">
+          {
+            quoteStandards.map((item, index) => (
+              <article class="quote-standard-card">
+                <header>
+                  <span class="quote-standard-number" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <small>{item.category}</small>
+                </header>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+                <footer>{item.output}</footer>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+
       <p class="quote-standard-note">
-        Hydraulic Match is an independent sourcing service. Manufacturer names
-        and model numbers identify the customer's original reference; they do
-        not imply affiliation or authorization.
+        The review records available evidence and open confirmation points. It
+        does not replace machine-level engineering approval, commissioning or
+        safety validation by the equipment owner and qualified personnel.
       </p>
     </div>
   </section>
 
-  <section class="pricing-section">
-    <div class="section-gap bottom">
-      <div class="container">
-        <SectionHeading
-          title="Reference Brands We Review"
-          subtitle="Brand Coverage"
-        />
-        <div class="materials-grid fade-in">
-          {
-            brandReferences.map((item) => (
-              <a href={item.href} class="material-card material-card--link">
-                <h3 class="material-name">{item.title}</h3>
-                <p class="material-grades">{item.summary}</p>
-              </a>
-            ))
-          }
+  <section
+    class="hm-brands-section section-gap bottom"
+    aria-labelledby="home-brands-heading"
+  >
+    <div class="container">
+      <div class="hm-brands-heading">
+        <div>
+          <p class="hm-kicker">HYDRAULIC REFERENCE DIRECTORY</p>
+          <h2 id="home-brands-heading">
+            Hydraulic Brand, Series &amp; Exact Model References We Review
+          </h2>
         </div>
-        <p class="materials-note">
-          Brand names are used for identification only. Directory inclusion
-          means the reference can enter technical review; stock, authorization
-          and compatibility are confirmed per inquiry.
-        </p>
+        <div class="hm-brands-intro">
+          <p>
+            Start with one of {brandCoverageStats.brands} manufacturer reference
+            groups, narrow the request through {brandCoverageStats.seriesReferences}
+            series-level entries, then use the complete model or material number
+            for technical review.
+          </p>
+          <ol aria-label="Reference directory path">
+            <li><span>01</span> Brand</li>
+            <li><span>02</span> Series</li>
+            <li><span>03</span> Exact model</li>
+          </ol>
+        </div>
       </div>
+
+      <div class="hm-brand-grid fade-in">
+        {
+          brandReferences.map((item) => (
+            <a
+              href={item.href}
+              class:list={[
+                "hm-brand-card",
+                item.isDirectory && "hm-brand-card--directory",
+              ]}
+            >
+              <header>
+                <small>{item.meta}</small>
+                <span aria-hidden="true">→</span>
+              </header>
+              <h3>{item.title}</h3>
+              <p>{item.summary}</p>
+              <div>
+                <strong>Reference examples</strong>
+                <span>{item.series}</span>
+              </div>
+              <footer>{item.linkLabel}</footer>
+            </a>
+          ))
+        }
+      </div>
+
+      <p class="materials-note">
+        Manufacturer and model names are used only to identify the customer's
+        original reference. Directory inclusion does not claim affiliation,
+        authorization, inventory or interchangeability; the exact supply route
+        and compatibility status are stated per inquiry.
+      </p>
     </div>
   </section>
 
-  <section class="map-section">
-    <div class="section-gap map map-section--flush">
-      <div class="container">
-        <SectionHeading title="Applications We Serve" subtitle="Your Sector" />
-        <div class="industries-grid fade-in">
-          {
-            applications.map((application, index) => (
-              <a href={application.href} class="industry-card">
-                <div
-                  class="industry-icon hm-industry-number"
-                  aria-hidden="true"
-                >
-                  {String(index + 1).padStart(2, "0")}
-                </div>
-                <div class="industry-name">{application.name}</div>
-              </a>
-            ))
-          }
+  <section
+    class="hm-applications-section section-gap bottom"
+    aria-labelledby="home-applications-heading"
+  >
+    <div class="container">
+      <div class="hm-applications-heading">
+        <div>
+          <p class="hm-kicker">HYDRAULIC APPLICATIONS</p>
+          <h2 id="home-applications-heading">
+            Hydraulic Component Sourcing by Machine Application
+          </h2>
+        </div>
+        <div class="hm-applications-intro">
+          <p>
+            The same hydraulic model family can behave differently across
+            industrial machinery, mobile equipment and production systems. We
+            review the component reference together with machine function,
+            operating conditions and installed interfaces.
+          </p>
+          <a href="/industries/">
+            View all industry application guidance <span aria-hidden="true">→</span>
+          </a>
         </div>
       </div>
+
+      <div class="industries-grid fade-in">
+        {
+          applications.map((application, index) => (
+            <a href={application.href} class="industry-card">
+              <header>
+                <span class="hm-industry-number" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <small>APPLICATION</small>
+              </header>
+              <h3 class="industry-name">{application.name}</h3>
+              <p class="industry-summary">{application.summary}</p>
+              <div class="industry-focus">
+                <strong>Common review focus</strong>
+                <span>{application.focus}</span>
+              </div>
+              <footer>
+                <span>{application.linkLabel}</span>
+                <span aria-hidden="true">→</span>
+              </footer>
+            </a>
+          ))
+        }
+      </div>
+
+      <p class="hm-applications-note">
+        Application coverage describes the review context, not automatic
+        interchangeability. Final suitability depends on the exact model,
+        technical evidence and customer approval.
+      </p>
     </div>
   </section>
 
@@ -484,41 +809,83 @@ const faqs = [
     class="hm-evidence-section section-gap bottom"
     aria-labelledby="evidence-heading"
   >
-    <div class="container hm-evidence-grid">
-      <div class="hm-evidence-image">
-        <img
-          src="/images/hydraulic/hydraulic-inspection-packing.webp"
-          alt="Representative illustration of a hydraulic valve dimension check and packing preparation"
-          width="1536"
-          height="1024"
-          loading="lazy"
-          decoding="async"
-        />
-        <p>
-          Representative process illustration. It is not evidence of an
-          inspection for a specific order.
-        </p>
+    <div class="container">
+      <div class="hm-evidence-heading">
+        <div>
+          <p class="hm-kicker">AGREE THE SCOPE BEFORE PURCHASE</p>
+          <h2 id="evidence-heading">
+            Hydraulic Inspection Evidence and Order Documentation
+          </h2>
+        </div>
+        <div>
+          <p>
+            Ask for evidence that helps release, receive or install the actual
+            order. The required scope depends on the product, replacement risk,
+            supplier capability and terms recorded in the quotation.
+          </p>
+          <a href="/downloads/pre-shipment-checklist/">
+            Use the pre-shipment inspection checklist
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
       </div>
-      <div class="hm-evidence-copy">
-        <p class="hm-kicker">VERIFIABLE BY ORDER</p>
-        <h2 id="evidence-heading">
-          Ask for the evidence your order actually needs.
-        </h2>
+
+      <div class="hm-evidence-layout">
+        <div class="hm-evidence-visual">
+          <div class="hm-evidence-image">
+            <img
+              src="/images/hydraulic/hydraulic-inspection-packing.webp"
+              alt="Representative hydraulic component dimension check and protective packing preparation"
+              width="1536"
+              height="1024"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <p>
+            Representative process illustration—not inspection evidence for a
+            specific customer order.
+          </p>
+          <aside>
+            <strong>Evidence is useful only when it is tied to:</strong>
+            <ul>
+              <li>the requested and quoted model</li>
+              <li>the agreed inspection or document scope</li>
+              <li>the relevant shipment, batch or packed item</li>
+            </ul>
+          </aside>
+        </div>
+
+        <div class="hm-evidence-options">
+          {
+            orderEvidenceScopes.map((item, index) => (
+              <article>
+                <header>
+                  <span aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <small>{item.category}</small>
+                </header>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+                <footer>{item.examples}</footer>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="hm-evidence-actions">
         <p>
-          Inspection scope depends on the product, supplier capability and
-          agreed quotation. We can record model and quantity checks, critical
-          dimensions, markings, connector or shaft details, packing photos and
-          available test records.
+          Test reports, material documents, certificates or third-party
+          inspection are not assumed. Request them before purchase so
+          availability, method, acceptance criteria, cost and lead-time impact
+          can be confirmed.
         </p>
-        <ul>
-          <li>Requirements confirmed before purchase</li>
-          <li>Photos and records linked to the quoted item</li>
-          <li>Unconfirmed points stated instead of assumed</li>
-        </ul>
-        <div class="hm-evidence-links">
-          <a href="/trust/">Trust center</a><a href="/quality/"
-            >Quality &amp; verification</a
-          ><a href="/distributor-support/">Distributor support</a>
+        <div>
+          <a href="/quality/">Quality and verification scope</a>
+          <a href="/inspection-process/">Inspection process</a>
+          <a href="/trust/">Trust and evidence boundaries</a>
         </div>
       </div>
     </div>
@@ -530,44 +897,100 @@ const faqs = [
   >
     <div class="container">
       <SectionHeading
-        title="Hydraulic Matching Questions"
-        subtitle="Before You Request a Quote"
+        id="faq-heading"
+        title="Hydraulic Replacement & Cross-Reference FAQs"
+        subtitle="Questions Buyers Ask Before Quotation"
       />
-      <div class="hm-faq-list" id="faq-heading">
-        {
-          faqs.map((faq) => (
-            <details>
-              <summary>{faq.question}</summary>
-              <p>{faq.answer}</p>
-            </details>
-          ))
-        }
+      <div class="hm-faq-layout fade-in">
+        <aside class="hm-faq-guide">
+          <p class="hm-kicker">START WITH THE ORIGINAL REFERENCE</p>
+          <h3>A faster review begins with evidence, not a guessed equivalent.</h3>
+          <p>
+            These questions cover the information distributors, repair companies
+            and MRO teams most often need before a hydraulic replacement can be
+            compared responsibly.
+          </p>
+          <ol>
+            <li><strong>Identify</strong><span>Model, nameplate and application</span></li>
+            <li><strong>Compare</strong><span>Hydraulic, mechanical and electrical data</span></li>
+            <li><strong>Decide</strong><span>Confirmed, conditional or still open</span></li>
+          </ol>
+          <a href="/request-a-quote/?source=homepage-faq">
+            Send a model for review
+            <span aria-hidden="true">→</span>
+          </a>
+        </aside>
+        <div class="hm-faq-list">
+          {
+            faqs.map((faq, index) => (
+              <details open={index === 0}>
+                <summary>
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  {faq.question}
+                </summary>
+                <div class="hm-faq-answer">
+                  <p>{faq.answer}</p>
+                  <a href={faq.href}>{faq.linkLabel} →</a>
+                </div>
+              </details>
+            ))
+          }
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="hm-technical-section section-gap bottom">
-    <div class="container">
-      <SectionHeading
-        title="Technical Details We Compare"
-        subtitle="More Than a Part Number Search"
-      />
+  <section
+    class="hm-technical-section section-gap bottom"
+    aria-labelledby="home-technical-heading"
+  >
+    <div class="container hm-technical-wrapper">
+      <div class="hm-technical-heading">
+        <div>
+          <p class="hm-kicker">REPLACEMENT COMPARISON SCOPE</p>
+          <h2 id="home-technical-heading">
+            Hydraulic Replacement Parameters We Compare
+          </h2>
+          <p>
+            A model match is a comparison between the original unit, the proposed
+            option and the actual machine conditions. The applicable fields
+            depend on whether the inquiry is for a pump, valve, motor, cylinder
+            or service part.
+          </p>
+        </div>
+        <div class="hm-technical-status" aria-label="Comparison status labels">
+          <span><i class="status-confirmed"></i>Confirmed</span>
+          <span><i class="status-conditional"></i>Conditional</span>
+          <span><i class="status-open"></i>Open check</span>
+        </div>
+      </div>
       <div class="hm-technical-grid fade-in">
         {
           technicalChecks.map((item, index) => (
-            <div>
-              <>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <strong>{item}</strong>
-              </>
-            </div>
+            <article>
+              <header>
+                <span aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <small>{item.category}</small>
+              </header>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+              <footer>{item.examples}</footer>
+            </article>
           ))
         }
       </div>
-      <p class="materials-note">
-        The applicable checks depend on whether the request is a valve, pump,
-        pump part or cylinder.
-      </p>
+      <div class="hm-technical-actions">
+        <p>
+          The quotation should show which fields match, which differ and which
+          still require buyer or supplier confirmation.
+        </p>
+        <div>
+          <a href="/models/">Browse exact model records</a>
+          <a href="/matching-process/">See the complete matching process →</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -598,23 +1021,34 @@ const faqs = [
             </div>
           </a>
           <a href="/matching-process/" class="home-rfq-hub-secondary"
-            >See matching process →</a
+            >See matching process</a
           >
         </div>
         <div class="home-rfq-hub-catalog">
-          <div class="home-rfq-hub-catalog-label">Technical Guides</div>
+          <p class="home-rfq-hub-catalog-label">Technical Guides</p>
           <div class="home-rfq-hub-catalog-grid" role="list">
             {
               guides.map((guide) => (
                 <a href={guide.href} class="catalog-hub-card" role="listitem">
                   <div class="catalog-hub-card-body">
-                    <>
-                      <h3 class="catalog-hub-card-title">{guide.title}</h3>
-                      <p class="catalog-hub-card-subtitle">{guide.subtitle}</p>
-                    </>
+                    <h3 class="catalog-hub-card-title">{guide.title}</h3>
+                    <p class="catalog-hub-card-subtitle">{guide.subtitle}</p>
                   </div>
                   <span class="catalog-hub-card-arrow" aria-hidden="true">
-                    →
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M5 12h14m0 0-5-5m5 5-5 5"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
                   </span>
                 </a>
               ))
@@ -627,6 +1061,42 @@ const faqs = [
 </BaseLayout>
 
 <style>
+  .hero-section > .container,
+  .hm-products-section > .container,
+  .hm-workflow-section > .container,
+  .quote-standard-section > .container,
+  .hm-brands-section > .container,
+  .hm-applications-section > .container,
+  .hm-evidence-section > .container,
+  .hm-faq-section > .container,
+  .hm-technical-section > .container,
+  .home-rfq-hub > .container {
+    width: 100%;
+    max-width: 1880px;
+    padding-right: clamp(20px, 3vw, 40px);
+    padding-left: clamp(20px, 3vw, 40px);
+  }
+  .hm-products-section.section-gap.bottom,
+  .hm-workflow-section.section-gap.bottom,
+  .quote-standard-section.section-gap.bottom,
+  .hm-brands-section.section-gap.bottom,
+  .hm-applications-section.section-gap.bottom,
+  .hm-evidence-section.section-gap.bottom,
+  .hm-faq-section.section-gap.bottom,
+  .hm-technical-section.section-gap.bottom,
+  .home-rfq-hub.section-gap.bottom {
+    padding-top: clamp(72px, 7vw, 104px);
+    padding-bottom: clamp(72px, 7vw, 104px);
+  }
+  .hm-applications-section {
+    background-color: #fff;
+  }
+  .hm-faq-section {
+    background: #fff;
+  }
+  .home-rfq-hub {
+    background: #f5f7fa;
+  }
   .hm-badge-icon {
     display: grid;
     place-items: center;
@@ -677,161 +1147,889 @@ const faqs = [
     font-size: 13px;
     color: #475569;
   }
-  .hero-trust-row li::before {
-    content: "";
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--color-primary);
-    margin-right: 8px;
-    vertical-align: middle;
+  .hero-trust-row li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
-  .hm-service-image {
-    object-fit: cover;
+  .hero-trust-row li svg {
+    color: var(--color-primary);
+    flex: none;
   }
-  .hm-arrow {
+  .hm-products-section {
+    background: #f5f7fa;
+    margin-top: 20px!important;
+  }
+  .hm-products-heading,
+  .hm-workflow-heading {
     display: grid;
-    place-items: center;
+    grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+    gap: 56px;
+    align-items: end;
+    margin-bottom: 32px;
+  }
+  .hm-products-heading h2,
+  .hm-workflow-heading h2 {
+    max-width: 790px;
+    margin: 8px 0 0;
+    color: #0f2742;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1.08;
+    text-transform: none;
+  }
+  .hm-products-intro > p,
+  .hm-workflow-intro > p {
+    margin: 0 0 14px;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.72;
+  }
+  .hm-products-intro > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+  .hm-products-intro a,
+  .hm-workflow-intro a {
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .hm-product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .hm-product-card {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #d7dee8;
+    border-radius: 6px;
+    background: #fff;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+  .hm-product-card:hover {
+    border-color: rgba(20, 110, 245, 0.55);
+    box-shadow: 0 14px 30px rgba(15, 39, 66, 0.09);
+  }
+  .hm-product-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    background: #dfe6ee;
+  }
+  .hm-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 180ms ease;
+  }
+  .hm-product-card:hover .hm-product-image img {
+    opacity: 0.92;
+  }
+  .hm-product-image > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    border-radius: 50%;
+    background: rgba(15, 39, 66, 0.9);
+    color: #fff;
+    font: 800 11px var(--font-title);
+  }
+  .hm-product-content {
+    display: flex;
+    padding: 24px;
+    flex: 1;
+    flex-direction: column;
+  }
+  .hm-product-content h3 {
+    margin: 0 0 10px;
+    color: #0f172a;
+    font-size: 21px;
+    line-height: 1.3;
+    text-transform: none;
+  }
+  .hm-product-content > p {
+    margin: 0 0 19px;
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .hm-product-detail {
+    display: grid;
+    gap: 5px;
+    padding: 13px 0;
+    border-top: 1px solid #e2e8f0;
+  }
+  .hm-product-detail strong {
+    color: #0f2742;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .hm-product-detail span {
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.55;
+  }
+  .hm-product-content footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 18px;
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .hm-product-content footer span:last-child {
+    font-size: 18px;
+    line-height: 1;
+  }
+  .hm-products-note {
+    max-width: 900px;
+    margin: 22px 0 0;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.65;
+  }
+  .hm-workflow-section {
+    background: #0f2742;
+  }
+  .hm-workflow-heading h2 {
+    color: #fff;
+  }
+  .hm-workflow-heading .hm-kicker {
+    color: #79aef7;
+  }
+  .hm-workflow-intro > p {
+    color: #c5d2e1;
+  }
+  .hm-workflow-intro a {
+    color: #fff;
+  }
+  .hm-workflow-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .hm-workflow-card {
+    display: flex;
+    min-height: 330px;
+    padding: 24px;
+    flex-direction: column;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 6px;
+    background: #132f50;
+  }
+  .hm-workflow-card header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 34px;
+  }
+  .hm-workflow-card header > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #146ef5;
+    color: #fff;
+    font: 800 11px var(--font-title);
+  }
+  .hm-workflow-card header small {
+    color: #9eb2c8;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-align: right;
+  }
+  .hm-workflow-card h3 {
+    margin: 0 0 12px;
+    color: #fff;
+    font-size: 19px;
+    line-height: 1.35;
+    text-transform: none;
+  }
+  .hm-workflow-card > p {
+    margin: 0;
+    color: #c5d2e1;
+    font-size: 13px;
+    line-height: 1.68;
+  }
+  .hm-workflow-card footer {
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    color: #9eb2c8;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.55;
+  }
+  .hm-workflow-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+  }
+  .hm-workflow-actions p {
+    max-width: 650px;
+    margin: 0;
+    color: #c5d2e1;
+    font-size: 12px;
+    line-height: 1.65;
+  }
+  .hm-workflow-actions > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px 20px;
+  }
+  .hm-workflow-actions a {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .hm-product-card:focus-visible,
+  .hm-products-intro a:focus-visible,
+  .hm-workflow-intro a:focus-visible,
+  .hm-workflow-actions a:focus-visible {
+    outline: 3px solid #79aef7;
+    outline-offset: 3px;
+  }
+  .quote-standard-section {
+    background: #fff;
+  }
+  .hm-standard-heading,
+  .hm-brands-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+    gap: 56px;
+    align-items: end;
+    margin-bottom: 32px;
+  }
+  .hm-standard-heading h2,
+  .hm-brands-heading h2 {
+    max-width: 790px;
+    margin: 8px 0 0;
+    color: #0f2742;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1.08;
+    text-transform: none;
+  }
+  .hm-standard-intro p,
+  .hm-brands-intro > p {
+    margin: 0 0 14px;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.72;
+  }
+  .hm-standard-intro > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+  }
+  .hm-standard-intro a {
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .hm-standard-layout {
+    display: grid;
+    grid-template-columns: minmax(290px, 0.72fr) minmax(0, 1.28fr);
+    gap: 18px;
+    align-items: stretch;
+  }
+  .hm-quote-output {
+    display: flex;
+    padding: 30px;
+    flex-direction: column;
+    border-radius: 7px;
+    background: #0f2742;
+    color: #fff;
+  }
+  .hm-quote-output .hm-kicker {
+    color: #79aef7;
+  }
+  .hm-quote-output h3 {
+    margin: 10px 0 22px;
     color: #fff;
     font-size: 24px;
+    line-height: 1.25;
+    text-transform: none;
   }
-  .hm-step-image {
-    object-fit: cover;
+  .hm-quote-output ol {
+    display: grid;
+    gap: 1px;
+    margin: 0 0 24px;
+    padding: 1px;
+    list-style: none;
+    background: rgba(255, 255, 255, 0.14);
+  }
+  .hm-quote-output li {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+    padding: 12px 13px;
+    background: #132f50;
+  }
+  .hm-quote-output li span {
+    color: #79aef7;
+    font-size: 10px;
+    font-weight: 800;
+  }
+  .hm-quote-output li strong {
+    color: #dce6f1;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .hm-quote-output > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-top: auto;
+    padding-top: 8px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
   }
   .quote-standard-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
   }
   .quote-standard-card {
-    padding: 26px 24px;
-    border: 1px solid var(--color-stroke);
+    display: flex;
+    min-height: 275px;
+    padding: 24px;
+    flex-direction: column;
+    border: 1px solid #d7dee8;
+    border-radius: 6px;
     background: #fff;
   }
+  .quote-standard-card header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
   .quote-standard-number {
-    font: 600 12px var(--font-title);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(20, 110, 245, 0.1);
     color: var(--color-primary);
+    font: 800 11px var(--font-title);
+  }
+  .quote-standard-card header small {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-align: right;
   }
   .quote-standard-card h3 {
-    font-size: 20px;
-    margin: 46px 0 12px;
+    margin: 0 0 11px;
+    color: #0f172a;
+    font-size: 19px;
+    line-height: 1.3;
+    text-transform: none;
   }
-  .quote-standard-card p {
-    font-size: 15px;
-    line-height: 1.6;
-    color: #536071;
+  .quote-standard-card > p {
     margin: 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.68;
+  }
+  .quote-standard-card footer {
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid #e2e8f0;
+    color: #52657a;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.5;
   }
   .quote-standard-note,
   .materials-note {
-    margin: 24px 0 0;
-    font-size: 14px;
-    line-height: 1.6;
+    max-width: 940px;
+    margin: 22px 0 0;
     color: #64748b;
+    font-size: 12px;
+    line-height: 1.65;
   }
-  .materials-grid {
+  .hm-brands-section {
+    background: #f5f7fa;
+  }
+  .hm-brands-intro ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .hm-brands-intro li {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 11px;
+    border: 1px solid #d7dee8;
+    border-radius: 4px;
+    background: #fff;
+    color: #0f2742;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .hm-brands-intro li span {
+    color: var(--color-primary);
+    font-size: 9px;
+    font-weight: 800;
+  }
+  .hm-brand-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
   }
-  .material-card {
-    padding: 28px;
-    border: 1px solid var(--color-stroke);
+  .hm-brand-card {
+    display: flex;
+    min-height: 310px;
+    padding: 24px;
+    flex-direction: column;
+    border: 1px solid #d7dee8;
+    border-radius: 6px;
     background: #fff;
-  }
-  .material-card--link {
     color: inherit;
-    text-decoration: none;
     cursor: pointer;
+    text-decoration: none;
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+  .hm-brand-card:hover {
+    border-color: rgba(20, 110, 245, 0.55);
+    box-shadow: 0 12px 28px rgba(15, 39, 66, 0.08);
+  }
+  .hm-brand-card:focus-visible,
+  .hm-standard-intro a:focus-visible,
+  .hm-quote-output > a:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  .hm-brand-card header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .hm-brand-card header small {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .hm-brand-card header > span {
+    color: var(--color-primary);
+    font-size: 18px;
+  }
+  .hm-brand-card h3 {
+    margin: 0 0 11px;
+    color: #0f172a;
+    font-size: 20px;
+    line-height: 1.3;
+    text-transform: none;
+  }
+  .hm-brand-card > p {
+    margin: 0;
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .hm-brand-card > div {
+    display: grid;
+    gap: 5px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e2e8f0;
+  }
+  .hm-brand-card > div strong {
+    color: #0f2742;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .hm-brand-card > div span {
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .hm-brand-card footer {
+    margin-top: auto;
+    padding-top: 20px;
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .hm-brand-card--directory {
+    border-color: #0f2742;
+    background: #0f2742;
+  }
+  .hm-brand-card--directory header small,
+  .hm-brand-card--directory > p,
+  .hm-brand-card--directory > div span {
+    color: #b9c8d9;
+  }
+  .hm-brand-card--directory h3,
+  .hm-brand-card--directory > div strong {
+    color: #fff;
+  }
+  .hm-brand-card--directory > div {
+    border-top-color: rgba(255, 255, 255, 0.15);
+  }
+  .hm-brand-card--directory footer,
+  .hm-brand-card--directory header > span {
+    color: #79aef7;
+  }
+  .hm-applications-section {
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(rgba(15, 39, 66, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(15, 39, 66, 0.035) 1px, transparent 1px),
+      #fff;
+    background-size: 32px 32px;
+  }
+  .hm-applications-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+    gap: 56px;
+    align-items: end;
+    margin-bottom: 32px;
+  }
+  .hm-applications-heading h2 {
+    max-width: 760px;
+    margin: 8px 0 0;
+    color: #0f2742;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1.08;
+    text-transform: none;
+  }
+  .hm-applications-intro p {
+    margin: 0 0 14px;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.72;
+  }
+  .hm-applications-intro a {
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .industries-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .industry-card {
+    display: flex;
+    min-height: 330px;
+    padding: 26px;
+    flex-direction: column;
+    border: 1px solid #d7dee8;
+    border-radius: 6px;
+    background: #fff;
+    color: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+  .industry-card:hover {
+    border-color: rgba(20, 110, 245, 0.55);
+    box-shadow: 0 14px 30px rgba(15, 39, 66, 0.09);
+  }
+  .industry-card:focus-visible,
+  .hm-applications-intro a:focus-visible {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  .industry-card header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .industry-card header small {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+  .hm-industry-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(20, 110, 245, 0.1);
+    color: var(--color-primary);
+    font: 800 11px var(--font-title);
+    flex: none;
+  }
+  .industry-name {
+    margin: 0 0 12px;
+    color: #0f172a;
+    font: 650 20px/1.3 var(--font-title);
+    text-transform: none;
+  }
+  .industry-summary {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.68;
+  }
+  .industry-focus {
+    display: grid;
+    gap: 5px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid #e2e8f0;
+  }
+  .industry-focus strong {
+    color: #0f2742;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .industry-focus span {
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .industry-card footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+    margin-top: auto;
+    padding-top: 22px;
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .industry-card footer span:first-child {
+    max-width: 230px;
+  }
+  .industry-card footer span:last-child {
+    font-size: 18px;
+    line-height: 1;
+  }
+  .hm-applications-note {
+    max-width: 880px;
+    margin: 22px 0 0;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.65;
+  }
+  .hm-technical-section {
+    padding-top: 76px;
+    background: #0f2742;
+  }
+  .hm-technical-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+    gap: 40px;
+    align-items: end;
+    margin-bottom: 30px;
+  }
+  .hm-technical-heading h2 {
+    max-width: 760px;
+    margin: 8px 0 14px;
+    color: #fff;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1.08;
+    text-transform: none;
+  }
+  .hm-technical-heading > div:first-child > p:last-child {
+    max-width: 780px;
+    margin: 0;
+    color: #c5d2e1;
+    line-height: 1.75;
+  }
+  .hm-technical-section .hm-kicker {
+    color: #79aef7;
+  }
+  .hm-technical-status {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+  .hm-technical-status span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 34px;
+    padding: 7px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+    color: #d8e3ef;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .hm-technical-status i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  .status-confirmed {
+    background: #22c55e;
+  }
+  .status-conditional {
+    background: #f59e0b;
+  }
+  .status-open {
+    background: #94a3b8;
+  }
+  .hm-technical-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .hm-technical-grid > article {
+    min-height: 270px;
+    padding: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
     transition:
       border-color 0.2s ease,
       box-shadow 0.2s ease;
   }
-  .material-card--link:hover {
-    border-color: rgba(20, 110, 245, 0.45);
-    box-shadow: 0 5px 18px rgba(20, 110, 245, 0.08);
+  .hm-technical-grid > article:hover {
+    border-color: rgba(121, 174, 247, 0.72);
+    box-shadow: 0 14px 34px rgba(3, 12, 24, 0.22);
   }
-  .material-card--link:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-  }
-  .material-name {
-    font-size: 22px;
-    margin: 0 0 14px;
-  }
-  .material-grades {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #536071;
-    margin: 0;
-  }
-  .industries-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  .industry-card {
-    min-height: 150px;
-    padding: 24px;
-    border: 1px solid var(--color-stroke);
-    background: #fff;
+  .hm-technical-grid header {
     display: flex;
     align-items: center;
-    gap: 18px;
-    text-decoration: none;
-    color: inherit;
-    transition:
-      border-color 0.2s,
-      transform 0.2s;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 24px;
   }
-  .industry-card:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-2px);
-  }
-  .hm-industry-number {
+  .hm-technical-grid header span {
     display: grid;
     place-items: center;
-    width: 54px;
-    height: 54px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
     background: rgba(20, 110, 245, 0.1);
     color: var(--color-primary);
-    font: 600 13px var(--font-title);
-    flex: none;
+    font: 800 11px var(--font-title);
   }
-  .industry-name {
-    font: 600 18px var(--font-title);
+  .hm-technical-grid header small {
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-align: right;
   }
-  .hm-technical-section {
-    padding-top: 60px;
+  .hm-technical-grid h3 {
+    margin: 0 0 11px;
+    color: #0f172a;
+    font-size: 19px;
+    line-height: 1.3;
+    text-transform: none;
   }
-  .hm-technical-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border-top: 1px solid var(--color-stroke);
-    border-left: 1px solid var(--color-stroke);
+  .hm-technical-grid article > p {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.68;
   }
-  .hm-technical-grid > div {
-    min-height: 118px;
-    padding: 22px;
-    border-right: 1px solid var(--color-stroke);
-    border-bottom: 1px solid var(--color-stroke);
+  .hm-technical-grid footer {
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid #e2e8f0;
+    color: #475569;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  .hm-technical-actions {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
+    gap: 30px;
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
   }
-  .hm-technical-grid span {
-    color: var(--color-primary);
-    font: 600 12px var(--font-title);
+  .hm-technical-actions p {
+    max-width: 680px;
+    margin: 0;
+    color: #c5d2e1;
+    font-size: 13px;
+    line-height: 1.65;
   }
-  .hm-technical-grid strong {
-    font-size: 15px;
+  .hm-technical-actions > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px 22px;
+  }
+  .hm-technical-actions a {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .hm-technical-actions a:hover {
+    color: #79aef7;
   }
   .home-rfq-hub-card {
-    padding: 40px;
+    /* padding: 40px; */
     background: var(--color-background);
-    border: 1px solid var(--color-stroke);
+    /* border: 1px solid var(--color-stroke); */
   }
   .home-rfq-hub-title {
     margin: 0 0 12px;
@@ -887,93 +2085,401 @@ const faqs = [
   .hm-evidence-section {
     background: #f5f7fa;
   }
-  .hm-evidence-grid {
+  .hm-evidence-heading {
     display: grid;
-    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    gap: 54px;
-    align-items: center;
+    grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+    gap: 56px;
+    align-items: end;
+    margin-bottom: 32px;
+  }
+  .hm-evidence-heading h2 {
+    max-width: 790px;
+    margin: 8px 0 0;
+    color: #0f2742;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    line-height: 1.08;
+    text-transform: none;
+  }
+  .hm-evidence-heading > div:last-child > p {
+    margin: 0 0 14px;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.72;
+  }
+  .hm-evidence-heading a {
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .hm-evidence-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
+    gap: 18px;
+    align-items: stretch;
+  }
+  .hm-evidence-visual {
+    display: flex;
+    padding: 18px;
+    flex-direction: column;
+    border: 1px solid #d7dee8;
+    border-radius: 7px;
+    background: #fff;
   }
   .hm-evidence-image img {
+    display: block;
     width: 100%;
-    aspect-ratio: 3/2;
+    aspect-ratio: 4 / 3;
+    border-radius: 4px;
     object-fit: cover;
   }
-  .hm-evidence-image p {
-    margin: 10px 0 0;
+  .hm-evidence-visual > p {
+    margin: 10px 2px 18px;
     color: #64748b;
+    font-size: 10px;
+    line-height: 1.5;
+  }
+  .hm-evidence-visual aside {
+    margin-top: auto;
+    padding: 18px;
+    border-radius: 4px;
+    background: #0f2742;
+    color: #fff;
+  }
+  .hm-evidence-visual aside strong {
+    display: block;
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 12px;
+  }
+  .hm-evidence-visual aside ul {
+    display: grid;
+    gap: 7px;
+    margin: 0;
+    padding-left: 18px;
+  }
+  .hm-evidence-visual aside li {
+    color: #c5d2e1;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  .hm-evidence-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .hm-evidence-options article {
+    display: flex;
+    min-height: 260px;
+    padding: 22px;
+    flex-direction: column;
+    border: 1px solid #d7dee8;
+    border-radius: 6px;
+    background: #fff;
+  }
+  .hm-evidence-options header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .hm-evidence-options header span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(20, 110, 245, 0.1);
+    color: var(--color-primary);
+    font: 800 11px var(--font-title);
+  }
+  .hm-evidence-options header small {
+    color: #64748b;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.07em;
+    text-align: right;
+  }
+  .hm-evidence-options h3 {
+    margin: 0 0 10px;
+    color: #0f172a;
+    font-size: 18px;
+    line-height: 1.35;
+    text-transform: none;
+  }
+  .hm-evidence-options p {
+    margin: 0;
+    color: #475569;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .hm-evidence-options footer {
+    margin-top: auto;
+    padding-top: 17px;
+    border-top: 1px solid #e2e8f0;
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  .hm-evidence-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    margin-top: 22px;
+    padding-top: 22px;
+    border-top: 1px solid #d7dee8;
+  }
+  .hm-evidence-actions > p {
+    max-width: 720px;
+    margin: 0;
+    color: #52657a;
+    font-size: 12px;
+    line-height: 1.65;
+  }
+  .hm-evidence-actions > div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px 20px;
+  }
+  .hm-evidence-actions a {
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .hm-faq-section {
+    background: #fff;
+  }
+  .hm-faq-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
+    gap: 26px;
+    align-items: start;
+  }
+  .hm-faq-guide {
+    padding: 32px;
+    border-radius: 8px;
+    background: #0f2742;
+    color: #fff;
+  }
+  .hm-faq-guide .hm-kicker {
+    color: #79aef7;
+  }
+  .hm-faq-guide h3 {
+    margin: 10px 0 14px;
+    color: #fff;
+    font-size: clamp(1.4rem, 2.6vw, 2rem);
+    line-height: 1.2;
+    text-transform: none;
+  }
+  .hm-faq-guide > p:not(.hm-kicker) {
+    margin: 0;
+    color: #c5d2e1;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .hm-faq-guide ol {
+    display: grid;
+    gap: 1px;
+    margin: 24px 0;
+    padding: 1px;
+    list-style: none;
+    background: rgba(255, 255, 255, 0.15);
+  }
+  .hm-faq-guide li {
+    display: grid;
+    gap: 4px;
+    padding: 15px 16px;
+    background: #132f50;
+  }
+  .hm-faq-guide li strong {
+    color: #fff;
+    font-size: 13px;
+  }
+  .hm-faq-guide li span {
+    color: #b8c8da;
     font-size: 12px;
     line-height: 1.5;
   }
-  .hm-evidence-copy h2 {
-    margin: 10px 0 18px;
-  }
-  .hm-evidence-copy > p:not(.hm-kicker),
-  .hm-evidence-copy li {
-    color: #536071;
-    line-height: 1.7;
-  }
-  .hm-evidence-copy ul {
-    padding-left: 20px;
-  }
-  .hm-evidence-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 24px;
-    margin-top: 24px;
-  }
-  .hm-evidence-links a {
-    color: var(--color-primary);
-    font-weight: 600;
+  .hm-faq-guide > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 18px;
+    border-radius: 4px;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
     text-decoration: none;
+    transition: background-color 180ms ease;
+  }
+  .hm-faq-guide > a:hover {
+    background: #0c5ed7;
   }
   .hm-faq-list {
-    max-width: 920px;
-    margin: 0 auto;
-    border-top: 1px solid var(--color-stroke);
+    display: grid;
+    gap: 10px;
   }
   .hm-faq-list details {
-    border-bottom: 1px solid var(--color-stroke);
+    border: 1px solid var(--color-stroke);
+    border-radius: 6px;
+    background: #fff;
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+  .hm-faq-list details[open] {
+    border-color: rgba(20, 110, 245, 0.5);
+    box-shadow: 0 12px 28px rgba(15, 39, 66, 0.08);
   }
   .hm-faq-list summary {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 14px;
+    align-items: center;
+    position: relative;
+    padding: 20px 58px 20px 20px;
     cursor: pointer;
     list-style: none;
-    padding: 22px 44px 22px 0;
-    position: relative;
-    font: 600 18px/1.4 var(--font-title);
+    color: #0f172a;
+    font: 650 17px/1.45 var(--font-title);
+  }
+  .hm-faq-list summary::-webkit-details-marker {
+    display: none;
+  }
+  .hm-faq-list summary > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(20, 110, 245, 0.1);
+    color: var(--color-primary);
+    font-size: 11px;
+    font-weight: 800;
   }
   .hm-faq-list summary::after {
     content: "+";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     position: absolute;
-    right: 8px;
+    right: 20px;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #eef4fb;
     color: var(--color-primary);
-    font-size: 24px;
+    font: 500 22px/1 var(--font-title);
   }
   .hm-faq-list details[open] summary::after {
     content: "−";
   }
-  .hm-faq-list p {
+  .hm-faq-answer {
+    padding: 0 28px 22px 70px;
+  }
+  .hm-faq-answer p {
     margin: 0;
-    padding: 0 50px 22px 0;
     color: #536071;
-    line-height: 1.7;
+    font-size: 14px;
+    line-height: 1.72;
+  }
+  .hm-faq-answer a {
+    display: inline-block;
+    margin-top: 12px;
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .hm-faq-guide > a:focus-visible,
+  .hm-faq-answer a:focus-visible,
+  .hm-technical-actions a:focus-visible {
+    outline: 3px solid #79aef7;
+    outline-offset: 3px;
   }
   @media (max-width: 991px) {
     .quote-standard-grid,
-    .materials-grid,
+    .hm-brand-grid,
+    .hm-product-grid,
+    .hm-workflow-grid,
     .hm-technical-grid {
       grid-template-columns: repeat(2, 1fr);
     }
     .industries-grid {
       grid-template-columns: repeat(2, 1fr);
     }
-    .hm-evidence-grid {
+    .hm-evidence-heading,
+    .hm-evidence-layout {
       grid-template-columns: 1fr;
-      gap: 28px;
+      gap: 20px;
+    }
+    .hm-standard-heading,
+    .hm-brands-heading,
+    .hm-standard-layout,
+    .hm-products-heading,
+    .hm-workflow-heading,
+    .hm-applications-heading {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .hm-standard-intro,
+    .hm-brands-intro,
+    .hm-products-intro,
+    .hm-workflow-intro {
+      max-width: 760px;
+    }
+    .hm-applications-intro {
+      max-width: 720px;
+    }
+    .hm-faq-layout,
+    .hm-technical-heading {
+      grid-template-columns: 1fr;
+    }
+    .hm-technical-status {
+      justify-content: flex-start;
+    }
+    .hm-technical-actions {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    .hm-technical-actions > div {
+      justify-content: flex-start;
+    }
+    .hm-workflow-actions {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    .hm-workflow-actions > div {
+      justify-content: flex-start;
+    }
+    .hm-evidence-image img {
+      aspect-ratio: 16 / 8;
+    }
+    .hm-evidence-actions {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    .hm-evidence-actions > div {
+      justify-content: flex-start;
     }
   }
   @media (max-width: 650px) {
     .quote-standard-grid,
-    .materials-grid,
+    .hm-brand-grid,
+    .hm-product-grid,
+    .hm-workflow-grid,
+    .hm-evidence-options,
     .industries-grid,
     .hm-technical-grid,
     .home-rfq-hub-catalog-grid {
@@ -981,6 +2487,32 @@ const faqs = [
     }
     .home-rfq-hub-card {
       padding: 24px;
+      
+    }
+    .hero-section > .container,
+    .hm-products-section > .container,
+    .hm-workflow-section > .container,
+    .quote-standard-section > .container,
+    .hm-brands-section > .container,
+    .hm-applications-section > .container,
+    .hm-evidence-section > .container,
+    .hm-faq-section > .container,
+    .hm-technical-section > .container,
+    .home-rfq-hub > .container {
+      padding-right: 16px;
+      padding-left: 16px;
+    }
+    .hm-products-section.section-gap.bottom,
+    .hm-workflow-section.section-gap.bottom,
+    .quote-standard-section.section-gap.bottom,
+    .hm-brands-section.section-gap.bottom,
+    .hm-applications-section.section-gap.bottom,
+    .hm-evidence-section.section-gap.bottom,
+    .hm-faq-section.section-gap.bottom,
+    .hm-technical-section.section-gap.bottom,
+    .home-rfq-hub.section-gap.bottom {
+      padding-top: 56px;
+      padding-bottom: 56px;
     }
     .hero-title br {
       display: none;
@@ -995,9 +2527,64 @@ const faqs = [
       align-items: flex-start;
       flex-direction: column;
     }
+    .hm-quote-output {
+      padding: 24px;
+    }
+    .hm-evidence-image img {
+      aspect-ratio: 4 / 3;
+    }
+    .hm-evidence-options article {
+      min-height: 0;
+      padding: 20px;
+    }
+    .quote-standard-card,
+    .hm-brand-card,
+    .hm-workflow-card {
+      min-height: 0;
+      padding: 22px;
+    }
+    .industry-card {
+      min-height: 0;
+      padding: 22px;
+    }
+    .industry-card footer {
+      margin-top: 24px;
+    }
+    .hm-faq-guide {
+      padding: 24px;
+    }
+    .hm-faq-list summary {
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 12px;
+      padding: 18px 48px 18px 14px;
+      font-size: 15px;
+    }
+    .hm-faq-list summary > span {
+      width: 28px;
+      height: 28px;
+    }
+    .hm-faq-list summary::after {
+      right: 14px;
+    }
+    .hm-faq-answer {
+      padding: 0 18px 18px 56px;
+    }
+    .hm-technical-section {
+      padding-top: 58px;
+    }
+    .hm-technical-grid > article {
+      min-height: 0;
+    }
   }
   @media (prefers-reduced-motion: reduce) {
-    .hero-secondary-cta {
+    .hero-secondary-cta,
+    .hm-product-card,
+    .hm-product-image img,
+    .hm-brand-card,
+    .industry-card,
+    .hm-faq-guide > a,
+    .hm-faq-list details,
+    .hm-technical-grid > article {
       transition: none;
     }
   }

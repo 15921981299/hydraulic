@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /thank-you/
+Disallow: /search/
+Disallow: /api/
+Disallow: /llm-instructions/
 
 Sitemap: https://hydraulicmatch.com/sitemap-index.xml

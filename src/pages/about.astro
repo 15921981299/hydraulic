@@ -22,6 +22,18 @@ const pageDescription =
   "Learn how Hydraulic Match structures model verification, supplier review, inspection requirements and export inquiries for hydraulic distributors, repair companies and MRO buyers.";
 const phoneHref = `tel:${site.phone.replace(/\D/g, "")}`;
 const whatsappHref = `https://wa.me/${site.whatsapp.replace(/\D/g, "")}`;
+const hasPublishedLegalIdentity = Boolean(
+  site.company.verifiedLegalName && site.company.registrationNumber,
+);
+const publishedAddress = [
+  site.company.streetAddress,
+  site.company.addressLocality,
+  site.company.addressRegion,
+  site.company.postalCode,
+  site.company.addressCountry,
+]
+  .filter(Boolean)
+  .join(", ");
 
 const inquirySteps = [
   {
@@ -53,7 +65,7 @@ const companyStandards = [
 const buyerScenarios = [
   {
     title: "Hydraulic distributors",
-    text: "Line-by-line RFQ review, neutral packing, repeat stock supply and supporting files for resale and customer approval.",
+    text: "Line-by-line RFQ review, neutral packing, repeat sourcing and supporting files for resale and customer approval.",
   },
   {
     title: "Repair and service companies",
@@ -226,15 +238,37 @@ const proofCards = [
             <p class="about-legal-kicker">
               Brand identity &amp; public contact
             </p>
-            <p class="about-legal-name">{site.company.legalNameEn}</p>
-            <p class="about-legal-aka">Pre-launch website brand</p>
-            <p class="about-legal-detail">
-              China-based hydraulic component sourcing, technical coordination,
-              inspection, export packing and after-sales support for business
-              buyers worldwide. The legal contracting entity, beneficiary,
-              Incoterm and order-specific conditions are stated on the formal
-              quotation and order documents.
+            <p class="about-legal-name">
+              {
+                hasPublishedLegalIdentity
+                  ? site.company.verifiedLegalName
+                  : site.company.legalNameEn
+              }
             </p>
+            <p class="about-legal-aka">
+              {
+                hasPublishedLegalIdentity
+                  ? `Registration: ${site.company.registrationNumber}`
+                  : "Pre-launch website brand — legal entity details not yet published"
+              }
+            </p>
+            {
+              hasPublishedLegalIdentity ? (
+                <p class="about-legal-detail">
+                  Contracting identity verified for public display. The
+                  beneficiary, Incoterm and order-specific conditions remain
+                  controlled by the formal quotation and order documents.
+                </p>
+              ) : (
+                <p class="about-legal-detail">
+                  Hydraulic Match currently describes a China-based sourcing
+                  workflow. It does not yet publish a verified legal entity
+                  name, registration number or office address. These details
+                  must be confirmed in the formal quotation before payment or
+                  order release.
+                </p>
+              )
+            }
             <address class="about-nap">
               <a href={`mailto:${site.email}`}>{site.email}</a>
               <span aria-hidden="true">·</span>
@@ -244,8 +278,10 @@ const proofCards = [
                 >WhatsApp</a
               >
               <span class="about-nap-address">
-                China-based sourcing contact · supplier, inspection and export
-                coordination
+                {
+                  publishedAddress ||
+                    "China-based sourcing contact · supplier, inspection and export coordination"
+                }
               </span>
             </address>
           </div>
@@ -279,14 +315,84 @@ const proofCards = [
                 <a href="/contact/?source=about-scope">Reference-driven RFQs</a>
               </h3>
               <p>
-                Single urgent items, obsolete models, repeat stock orders and
-                multi-line Excel inquiries.
+                Single urgent items, obsolete models, repeat line-item orders
+                and multi-line Excel inquiries.
               </p>
             </article>
           </div>
 
+          <section
+            id="about-origin"
+            class="about-origin-panel fade-in"
+            aria-labelledby="about-origin-heading"
+          >
+            <p class="about-seo-kicker">WHY THIS SITE EXISTS</p>
+            <h2 id="about-origin-heading">
+              Built from the supply-chain side of hydraulic procurement
+            </h2>
+            <p>
+              Hydraulic Match is being built around the work that happens
+              between an incomplete buyer RFQ and a defensible purchase
+              decision: reading worn nameplates, separating a series from a
+              complete model, comparing supplier replies, recording what is
+              still unknown and defining the evidence needed before shipment.
+            </p>
+            <p>
+              The recurring problem is simple: a buyer sends a partial code or a
+              photo, several sources reply “same,” and critical differences only
+              appear after price has taken over the conversation. We started
+              this site to keep the original reference, proposed route,
+              technical differences and open checks in one reviewable record.
+            </p>
+            <p>
+              The current research base draws on three existing specialist source
+              sites: Rexroth Replacements, RestoPower and Hydraulic Pump Supply.
+              Because their public pages identify
+              different operators and business roles, every imported model keeps
+              its source. Their team history, facility, inventory and warranty
+              statements are not silently converted into Hydraulic Match company
+              claims.
+              <a href="/manufacturing-partners/"
+                >Review the three-source disclosure</a
+              >.
+            </p>
+            <div class="about-origin-grid">
+              <article>
+                <h3>Our supply-chain background</h3>
+                <p>
+                  The working perspective is sourcing coordination: turning
+                  nameplates and line-item lists into questions that a supplier
+                  must answer, then connecting the answer to inspection, packing
+                  and order documents. It is not presented as ownership of every
+                  factory or product shown.
+                </p>
+              </article>
+              <article>
+                <h3>How we screen a factory</h3>
+                <p>
+                  We look for a traceable business identity, relevant product
+                  capability, model-code literacy, usable technical data,
+                  inspection access and a workable corrective-action response. A
+                  marketplace listing alone is not enough.
+                </p>
+                <a href="/manufacturing-partners/"
+                  >See the partner review stages →</a
+                >
+              </article>
+              <article>
+                <h3>Who the workflow is for</h3>
+                <p>
+                  Distributors, hydraulic repair companies, factory MRO teams
+                  and equipment manufacturers that need the supply route and its
+                  limitations documented—not only a fast price.
+                </p>
+              </article>
+            </div>
+          </section>
+
           <nav class="about-jump-nav" aria-label="On this page">
             <a href="#about-mission" class="about-jump-link">Company focus</a>
+            <a href="#about-origin" class="about-jump-link">Why we started</a>
             <a href="#about-different" class="about-jump-link">Why choose us</a>
             <a href="#about-proof" class="about-jump-link">Commercial proof</a>
             <a href="#about-standards" class="about-jump-link">Standards</a>
@@ -548,11 +654,11 @@ const proofCards = [
         <div class="who-we-are-wrapper fade-in">
           <div class="who-we-are-content-block">
             <p class="who-we-are-text">
-              Hydraulic Match coordinates stock, supplier communication,
-              inspection, protective packing and export delivery from China.
-              Express, air and freight options are reviewed according to product
-              size, urgency and destination. For downtime requirements, include
-              the destination and deadline in your first
+              Hydraulic Match coordinates availability checks, supplier
+              communication, inspection, protective packing and export delivery
+              from China. Express, air and freight options are reviewed
+              according to product size, urgency and destination. For downtime
+              requirements, include the destination and deadline in your first
               <a href="/contact/?source=about-delivery">hydraulic inquiry</a>.
             </p>
             <p class="who-we-are-text about-disclaimer">
@@ -807,6 +913,57 @@ const proofCards = [
     color: #475569;
     font-size: 14px;
     line-height: 1.65;
+  }
+  .about-origin-panel {
+    margin: 0 0 24px;
+    padding: clamp(24px, 4vw, 40px);
+    border: 1px solid rgba(20, 110, 245, 0.18);
+    border-radius: 12px;
+    background: linear-gradient(135deg, rgba(20, 110, 245, 0.07), #fff 65%);
+  }
+  .about-origin-panel > h2 {
+    max-width: 760px;
+    margin: 8px 0 14px;
+    font-size: clamp(1.55rem, 3vw, 2.25rem);
+    line-height: 1.2;
+    text-transform: none;
+  }
+  .about-origin-panel > p {
+    max-width: 82ch;
+    margin: 0 0 12px;
+    color: #334155;
+    line-height: 1.75;
+  }
+  .about-origin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 24px;
+  }
+  .about-origin-grid article {
+    padding: 20px;
+    border: 1px solid var(--color-stroke);
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.88);
+  }
+  .about-origin-grid h3 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    text-transform: none;
+  }
+  .about-origin-grid p {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+  .about-origin-grid a {
+    display: inline-block;
+    margin-top: 12px;
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
   }
   .about-jump-nav {
     display: flex;
@@ -1103,6 +1260,7 @@ const proofCards = [
   }
   @media (max-width: 991px) {
     .about-scope-grid,
+    .about-origin-grid,
     .about-standards-layout {
       grid-template-columns: 1fr;
     }

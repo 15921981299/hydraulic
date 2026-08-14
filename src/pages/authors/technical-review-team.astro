@@ -5,6 +5,10 @@ import DetailRfqStrip from "../../components/DetailRfqStrip.astro";
 import { breadcrumbSchema, site } from "../../data/site";
 
 const pageUrl = `${site.url}/authors/technical-review-team/`;
+const reviewer = site.technicalReviewer;
+const hasNamedReviewer = Boolean(
+  reviewer.name && reviewer.jobTitle && reviewer.background,
+);
 const teamSchema = {
   "@context": "https://schema.org",
   "@type": "ProfilePage",
@@ -12,22 +16,36 @@ const teamSchema = {
   description:
     "Editorial and technical review scope for Hydraulic Match model-code, compatibility, application and sourcing content.",
   url: pageUrl,
-  mainEntity: {
-    "@type": "Organization",
-    name: "Hydraulic Match Editorial Review",
-    parentOrganization: {
-      "@type": "Organization",
-      name: site.name,
-      url: site.url,
-    },
-    knowsAbout: [
-      "Hydraulic valve model codes",
-      "Hydraulic pump identification",
-      "Hydraulic component cross-reference",
-      "Application compatibility review",
-      "Pre-shipment verification",
-    ],
-  },
+  mainEntity: hasNamedReviewer
+    ? {
+        "@type": "Person",
+        name: reviewer.name,
+        jobTitle: reviewer.jobTitle,
+        description: reviewer.background,
+        url: pageUrl,
+        ...(reviewer.linkedin ? { sameAs: [reviewer.linkedin] } : {}),
+        worksFor: {
+          "@type": "Organization",
+          name: site.name,
+          url: site.url,
+        },
+      }
+    : {
+        "@type": "Organization",
+        name: "Hydraulic Match Editorial Review",
+        parentOrganization: {
+          "@type": "Organization",
+          name: site.name,
+          url: site.url,
+        },
+        knowsAbout: [
+          "Hydraulic valve model codes",
+          "Hydraulic pump identification",
+          "Hydraulic component cross-reference",
+          "Application compatibility review",
+          "Pre-shipment verification",
+        ],
+      },
 };
 ---
 
@@ -57,16 +75,28 @@ const teamSchema = {
       <header class="review-team__intro">
         <p>HOW CONTENT IS REVIEWED</p>
         <h2>
-          A defined review function for model, application and sourcing
-          information.
+          {
+            hasNamedReviewer
+              ? `${reviewer.name} — ${reviewer.jobTitle}`
+              : "A defined review function for model, application and sourcing information."
+          }
         </h2>
         <span>
-          Hydraulic Match uses an organizational review label rather than
-          inventing an individual author. This page describes a publishing
-          process; it does not claim named engineers, professional licenses,
-          academic qualifications or third-party accreditation that have not
-          been publicly documented.
+          {
+            hasNamedReviewer
+              ? reviewer.background
+              : "Hydraulic Match uses an organizational review label rather than inventing an individual author. This page describes a publishing process; it does not claim named engineers, professional licenses, academic qualifications or third-party accreditation that have not been publicly documented."
+          }
         </span>
+        {
+          hasNamedReviewer && reviewer.linkedin && (
+            <p class="review-team__profile-link">
+              <a href={reviewer.linkedin} rel="me noopener" target="_blank">
+                Verify professional profile
+              </a>
+            </p>
+          )
+        }
       </header>
 
       <div class="review-team__scope">
@@ -139,10 +169,11 @@ const teamSchema = {
         <h2>Scope and accountability</h2>
         <div>
           <p>
-            No individual reviewer biography or credential is currently
-            published. Readers should evaluate each technical statement from its
-            cited source, stated assumptions and limitations—not from the
-            organizational byline alone.
+            {
+              hasNamedReviewer
+                ? `${reviewer.name} is identified as the reviewer for the scope described above. Readers should still evaluate each technical statement from its cited source, assumptions and limitations; a reviewer byline is not a blanket compatibility approval.`
+                : "No individual reviewer biography or credential is currently published. Readers should evaluate each technical statement from its cited source, stated assumptions and limitations—not from the organizational byline alone."
+            }
           </p>
           <p>
             A published article or model page supports research and RFQ
@@ -197,6 +228,13 @@ const teamSchema = {
   .review-team__intro span {
     color: #536071;
     line-height: 1.75;
+  }
+  .review-team__profile-link {
+    margin: 18px 0 0;
+  }
+  .review-team__profile-link a {
+    color: var(--color-primary);
+    font-weight: 700;
   }
   .review-team__scope {
     display: grid;

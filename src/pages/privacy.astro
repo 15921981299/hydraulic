@@ -1,18 +1,128 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import BreadcrumbHero from '../components/BreadcrumbHero.astro';
-import { site } from '../data/site';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../components/BreadcrumbHero.astro";
+import { site } from "../data/site";
 ---
-<BaseLayout title="Privacy Policy" description="How Hydraulic Match handles contact details, hydraulic product data and files submitted through RFQ forms." currentPath="/privacy" noindex>
-  <BreadcrumbHero title="Privacy Policy" trail={[{ label: 'Home', href: '/' }, { label: 'Privacy' }]} variant="5" />
+
+<BaseLayout
+  title="Privacy Policy"
+  description="How Hydraulic Match handles contact details, hydraulic product data and files submitted through RFQ forms."
+  currentPath="/privacy"
+  noindex
+>
+  <BreadcrumbHero
+    title="Privacy Policy"
+    trail={[{ label: "Home", href: "/" }, { label: "Privacy" }]}
+    variant="5"
+  />
   <article class="hm-policy container">
-    <p class="hm-policy__date">Effective: July 25, 2026</p>
-    <h2>Information we collect</h2><p>We collect the contact, company, destination, product, model-code, application and file information you submit through our RFQ forms, email or messaging channels.</p>
-    <h2>How we use it</h2><p>Information is used to review the inquiry, communicate with you, contact relevant suppliers, prepare a quotation, coordinate inspection and shipping, maintain order records and improve the website.</p>
-    <h2>Technical files</h2><p>Nameplate photos, product photos, drawings, datasheets and RFQ lists are used only for the relevant sourcing and quotation workflow unless you authorize another use.</p>
-    <h2>Sharing</h2><p>Relevant product and technical information may be shared with suppliers, inspection providers or logistics partners needed to process the inquiry. We do not sell inquiry data.</p>
-    <h2>Retention and security</h2><p>Records are retained as reasonably needed for quotations, repeat orders, legal obligations and dispute handling. No online transmission or storage method can be guaranteed completely secure.</p>
-    <h2>Your choices</h2><p>To request access, correction or deletion of submitted information, contact <a href={`mailto:${site.email}`}>{site.email}</a>. Some records may be retained where legally or commercially required.</p>
+    <p class="hm-policy__date">Effective: August 2, 2026</p>
+    <p class="hm-policy__notice">
+      Hydraulic Match is a pre-launch sourcing brand. A verified contracting
+      entity is identified in a formal quotation before a transaction. Privacy
+      questions and data requests can be sent to <a
+        href={`mailto:${site.email}`}>{site.email}</a
+      >.
+    </p>
+
+    <h2>Information we collect</h2>
+    <p>
+      We collect the contact name, business email, company, phone, destination,
+      buyer role, product reference, model code, quantity, application details
+      and files you choose to submit. Website security systems may also process
+      IP address, browser and request data needed to prevent abuse.
+    </p>
+
+    <h2>Why we use it</h2>
+    <p>
+      We use submitted information to identify the requested component, review a
+      possible supply route, communicate with you, prepare a quotation,
+      coordinate inspection or shipping when requested, maintain transaction
+      records and protect the inquiry service. We do not use uploaded technical
+      files for public marketing or model-database content without separate
+      permission.
+    </p>
+
+    <h2>Technical files and confidential information</h2>
+    <p>
+      Nameplates, product photos, drawings, datasheets and RFQ lists may contain
+      confidential information. Upload only material you are authorized to
+      share. Do not submit passwords, payment-card data, government identifiers
+      or unrelated personal records. Files are checked for permitted type and
+      size, but no internet transfer is risk-free.
+    </p>
+
+    <h2>Service providers and supply-chain recipients</h2>
+    <p>
+      Cloudflare may process website, security and private file-storage data;
+      Resend may process inquiry-email delivery. Relevant technical details may
+      be shared with candidate manufacturers, suppliers, inspection providers or
+      logistics partners only where needed to answer the inquiry or perform an
+      accepted order. Those recipients may be located in China or another
+      country involved in the requested supply route. We do not sell inquiry
+      data.
+    </p>
+
+    <h2>Retention</h2>
+    <p>
+      Unsuccessful or inactive RFQ records are normally retained for up to 24
+      months, and uploaded technical files for up to 12 months. Records tied to
+      a quotation, order, warranty, legal duty or dispute may be kept longer for
+      the applicable business or legal period. Backup and email copies can take
+      additional time to expire. You may request earlier deletion where no
+      overriding obligation applies.
+    </p>
+
+    <h2>Security controls</h2>
+    <p>
+      The inquiry endpoint limits file count and size, checks permitted
+      extensions and file signatures, uses bot verification when configured, and
+      can archive files in private object storage. Access should be limited to
+      people involved in quotation and order handling. These controls reduce
+      risk but cannot guarantee absolute security.
+    </p>
+
+    <h2>Your choices</h2>
+    <p>
+      To request access, correction or deletion, or to withdraw an inquiry,
+      email <a href={`mailto:${site.email}`}>{site.email}</a> with enough information
+      to identify the submission. We may need to verify the request and may retain
+      records required for fraud prevention, legal compliance, transaction evidence
+      or dispute handling.
+    </p>
+
+    <h2>Policy changes</h2>
+    <p>
+      We will update the effective date when this policy changes materially.
+      Before launch, the published legal identity, actual service configuration
+      and retention operations must be checked against this notice.
+    </p>
   </article>
 </BaseLayout>
-<style>.hm-policy{max-width:900px;padding-top:75px;padding-bottom:100px}.hm-policy__date{color:#667181}.hm-policy h2{margin:44px 0 12px;font-size:28px}.hm-policy p{color:#536071;line-height:1.75;font-size:17px}.hm-policy a{color:var(--color-primary)}</style>
+<style>
+  .hm-policy {
+    max-width: 900px;
+    padding-top: 75px;
+    padding-bottom: 100px;
+  }
+  .hm-policy__date {
+    color: #667181;
+  }
+  .hm-policy__notice {
+    padding: 22px 24px;
+    border-left: 3px solid var(--color-primary);
+    background: #f5f8fc;
+  }
+  .hm-policy h2 {
+    margin: 44px 0 12px;
+    font-size: 28px;
+  }
+  .hm-policy p {
+    color: #536071;
+    line-height: 1.75;
+    font-size: 17px;
+  }
+  .hm-policy a {
+    color: var(--color-primary);
+  }
+</style>

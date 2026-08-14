@@ -50,7 +50,10 @@
   background: var(--color-white);
   text-decoration: none;
   cursor: pointer;
-  transition: border-color 0.2s, background 0.2s, color 0.2s;
+  transition:
+    border-color 0.2s,
+    background 0.2s,
+    color 0.2s;
 }
 
 .resource-nav-link:hover,
@@ -189,7 +192,7 @@
 }
 
 .resource-checklist li::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 3px;
@@ -391,7 +394,9 @@ a.hub-card:hover .hub-card-title {
   background: var(--color-background);
   border: 1px solid var(--color-stroke);
   border-radius: 8px;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .hub-card:hover {
@@ -731,7 +736,7 @@ a.hub-card:hover .hub-card-title {
   overflow: hidden;
 }
 
-.detail-page-hero :global(img) {
+.detail-page-hero img {
   width: 100%;
   height: auto;
   display: block;
@@ -743,7 +748,7 @@ a.hub-card:hover .hub-card-title {
   overflow: hidden;
 }
 
-.detail-page-figure :global(img) {
+.detail-page-figure img {
   width: 100%;
   height: auto;
   display: block;
@@ -760,8 +765,8 @@ a.hub-card:hover .hub-card-title {
   align-items: start;
 }
 
-.detail-page-sidebar :global(.service-sidebar),
-.detail-page-sidebar :global(.service-details-sidebar) {
+.detail-page-sidebar .service-sidebar,
+.detail-page-sidebar .service-details-sidebar {
   position: sticky;
   top: 88px;
 }
@@ -770,7 +775,7 @@ a.hub-card:hover .hub-card-title {
   margin-top: 24px;
 }
 
-.detail-page-variant :global(h3) {
+.detail-page-variant h3 {
   margin: 0 0 16px;
   font-size: 20px;
   font-weight: 600;
@@ -782,7 +787,7 @@ a.hub-card:hover .hub-card-title {
     grid-template-columns: 1fr;
   }
 
-  .detail-page-sidebar :global(.service-sidebar) {
+  .detail-page-sidebar .service-sidebar {
     position: static;
   }
 }
@@ -975,7 +980,9 @@ a.hub-card:hover .hub-card-title {
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  transition: opacity 0.2s ease, background-color 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    background-color 0.2s ease;
 }
 
 .detail-rfq-link:hover {
@@ -1017,7 +1024,9 @@ a.hub-card:hover .hub-card-title {
   color: var(--color-primary);
   text-decoration: none;
   text-align: center;
-  transition: background 0.2s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
 }
 
 .sidebar-rfq-link:hover {

@@ -2,17 +2,81 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import BreadcrumbHero from "../../components/BreadcrumbHero.astro";
 import DetailRfqStrip from "../../components/DetailRfqStrip.astro";
-import { modelRecords } from "../../data/model-records";
+import {
+  modelRecords,
+  modelSearchIntent,
+} from "../../data/model-records";
+import { brandCoverage } from "../../data/brand-coverage";
+import { seriesRecords } from "../../data/series-records";
 import { breadcrumbSchema, itemListSchema, site } from "../../data/site";
 import "../../styles/resource-page.css";
 
 const pageUrl = `${site.url}/models/`;
-const commercialCount = modelRecords.filter((record) => record.commercial).length;
+const normalizeKey = (value: string) =>
+  value.toLowerCase().replace(/[^a-z0-9]/g, "");
+const brandFor = (brand: string) => {
+  const key = normalizeKey(brand);
+  return brandCoverage.find((candidate) =>
+    [candidate.name, ...candidate.aliases].some((name) => {
+      const candidateKey = normalizeKey(name);
+      return key.includes(candidateKey) || candidateKey.includes(key);
+    }),
+  );
+};
+const seriesFor = (brand: string, series: string) => {
+  const brandKey = normalizeKey(brand);
+  const seriesKey = normalizeKey(series);
+  return seriesRecords.find(
+    (candidate) =>
+      normalizeKey(candidate.series) === seriesKey &&
+      (normalizeKey(candidate.brand).includes(brandKey) ||
+        brandKey.includes(normalizeKey(candidate.brand)) ||
+        brandFor(brand)?.slug === brandFor(candidate.brand)?.slug),
+  );
+};
+const databaseRows = modelRecords.map((record) => ({
+  record,
+  searchIntent: modelSearchIntent(record),
+  brandPage: brandFor(record.brand),
+  seriesPage: seriesFor(record.brand, record.series),
+  searchKey: [
+    record.brand,
+    record.series,
+    record.model,
+    record.materialNumber,
+    record.productType,
+    record.sourceSite,
+    record.sourceLabel,
+    record.alternativeReview?.status,
+    record.alternativeReview?.proposedModel,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase(),
+}));
+const modelRows = databaseRows;
+const representedBrands = new Set(
+  databaseRows.map(({ brandPage, record }) => brandPage?.slug ?? record.brand),
+).size;
+const representedSeries = new Set(
+  databaseRows.map(({ record }) => `${record.brand}:${record.series}`),
+).size;
+const publishedAlternativeCount = modelRecords.filter(
+  (record) => record.alternativeReview?.proposedModel,
+).length;
+const sourceNetworkNames = new Set([
+  "Rexroth Replacements",
+  "RestoPower",
+  "Hydraulic Pump Supply",
+]);
+const sourceNetworkRecordCount = modelRecords.filter((record) =>
+  sourceNetworkNames.has(record.sourceSite ?? ""),
+).length;
 ---
 
 <BaseLayout
-  title="Hydraulic Model Codes & Replacement Records"
-  description="Browse exact hydraulic model references with code-group explanations, commercial availability and conditional replacement review requirements."
+  title="Hydraulic Model Database & Alternative Status"
+  description="Browse hydraulic brands, series and exact model records with source evidence, review requirements and an explicit published or not-yet-published alternative status."
   currentPath="/alternatives"
   jsonLd={[
     breadcrumbSchema([
@@ -20,7 +84,7 @@ const commercialCount = modelRecords.filter((record) => record.commercial).lengt
       { name: "Model Records", url: pageUrl },
     ]),
     itemListSchema(
-      modelRecords.map((record) => ({
+      modelRows.map(({ record }) => ({
         name: `${record.brand} ${record.model}`,
         url: `${pageUrl}${record.slug}/`,
       })),
@@ -35,27 +99,177 @@ const commercialCount = modelRecords.filter((record) => record.commercial).lengt
   <section class="model-index">
     <div class="container">
       <header class="model-index__intro">
-        <p>EXACT REFERENCE SEARCH</p>
-        <h2>Model-level pages for high-intent hydraulic inquiries.</h2>
+        <p>BRAND → SERIES → MODEL → ALTERNATIVE STATUS</p>
+        <h2>A model database, not a category-page collection.</h2>
         <span>
-          Each record starts with a complete manufacturer reference. It
-          explains what the code identifies, which commercial and technical
-          details still require confirmation and when a matched product can be
-          described as directly compatible.
+          Each row preserves the original reference, connects it to a brand and
+          series, and states whether an alternative model has actually been
+          published. “No public alternative” is intentional: a plausible
+          cross-reference is not promoted to a replacement until the evidence
+          supports it.
         </span>
       </header>
       <div class="model-index__notice">
-        <strong>{modelRecords.length} exact records</strong>
+        <strong>{modelRows.length} model records published for search</strong>
         <p>
-          {commercialCount} records include commercial availability details.
-          Exact physical inventory, price and lead time are reconfirmed against
-          the submitted code before order acceptance.
+          {representedBrands} brand groups · {representedSeries} series groups ·
+          {" "}{sourceNetworkRecordCount} records from the operator-identified
+          source sites · {publishedAlternativeCount} public alternatives.
+          Every published record is eligible for search indexing.
         </p>
       </div>
+      <section
+        class="database-method"
+        aria-labelledby="database-method-heading"
+      >
+        <div>
+          <p>HOW A RECORD EARNS A RELATIONSHIP</p>
+          <h2 id="database-method-heading">
+            The hierarchy keeps different claims separate.
+          </h2>
+        </div>
+        <ol>
+          <li>
+            <strong>Brand</strong><span>Who issued the original reference?</span
+            >
+          </li>
+          <li>
+            <strong>Series</strong><span
+              >Which product family and code logic apply?</span
+            >
+          </li>
+          <li>
+            <strong>Model</strong><span
+              >What does the complete identifier describe?</span
+            >
+          </li>
+          <li>
+            <strong>Alternative</strong><span
+              >Is a proposed model documented, conditional or not published?</span
+            >
+          </li>
+        </ol>
+      </section>
+
+      <section
+        class="database-browser"
+        aria-labelledby="database-browser-heading"
+      >
+        <div class="database-browser__heading">
+          <div>
+            <p>STRUCTURED MODEL LIBRARY</p>
+            <h2 id="database-browser-heading">Search the relationship table</h2>
+          </div>
+          <label>
+            <span>Search brand, series or model</span>
+            <input
+              id="model-database-search"
+              type="search"
+              placeholder="e.g. Rexroth, A10VO, R900..."
+              autocomplete="off"
+            />
+          </label>
+        </div>
+        <p
+          id="model-database-result"
+          class="database-browser__result"
+          aria-live="polite"
+        >
+          Showing all {databaseRows.length} records.
+        </p>
+        <div class="database-table-wrap">
+          <table class="database-table">
+            <thead>
+              <tr>
+                <th scope="col">Brand</th>
+                <th scope="col">Series</th>
+                <th scope="col">Original model</th>
+                <th scope="col">Source record</th>
+                <th scope="col">Evidence status</th>
+                <th scope="col">Alternative status</th>
+                <th scope="col">Proposed alternative</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                databaseRows.map(
+                  ({
+                    record,
+                    brandPage,
+                    seriesPage,
+                    searchKey,
+                    searchIntent,
+                  }) => (
+                    <tr data-model-record data-search-key={searchKey}>
+                      <td>
+                        {brandPage ? (
+                          <a href={`/brands/${brandPage.slug}/`}>
+                            {record.brand}
+                          </a>
+                        ) : (
+                          record.brand
+                        )}
+                      </td>
+                      <td>
+                        <span
+                          class:list={[
+                            "database-status",
+                            "database-status--reviewed",
+                          ]}
+                        >
+                          {searchIntent.label}
+                        </span>
+                      </td>
+                      <td>
+                        {seriesPage ? (
+                          <a href={`/series/${seriesPage.slug}/`}>
+                            {record.series}
+                          </a>
+                        ) : (
+                          record.series
+                        )}
+                      </td>
+                      <td>
+                        <a href={`/models/${record.slug}/`}>{record.model}</a>
+                        {record.materialNumber && (
+                          <small>{record.materialNumber}</small>
+                        )}
+                      </td>
+                      <td>
+                        <a
+                          href={record.sourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {record.sourceSite ?? record.sourceLabel}
+                        </a>
+                        <small>{record.sourceLabel}</small>
+                      </td>
+                      <td>
+                        <span class="database-status">
+                          {record.alternativeReview?.status ??
+                            "No public alternative"}
+                        </span>
+                      </td>
+                      <td>{record.alternativeReview?.proposedModel ?? "—"}</td>
+                    </tr>
+                  ),
+                )
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <h2 class="model-grid-heading">Detailed model review records</h2>
       <div class="model-grid">
         {
-          modelRecords.map((record) => (
-            <article class="model-card">
+          modelRows.map(({ record, searchKey, searchIntent }) => (
+            <article
+              class="model-card"
+              data-model-card
+              data-search-key={searchKey}
+            >
               <div class="model-card__image">
                 <img
                   src={record.image}
@@ -77,32 +291,25 @@ const commercialCount = modelRecords.filter((record) => record.commercial).lengt
                   <span>Material number: {record.materialNumber}</span>
                 )}
                 <dl>
-                  {record.commercial && (
-                    <div>
-                      <dt>Commercial status</dt>
-                      <dd>
-                        {record.commercial.status}
-                        {record.commercial.price
-                          ? ` · ${record.commercial.price}`
-                          : " · price on request"}
-                      </dd>
-                    </div>
-                  )}
                   <div>
-                    <>
-                      <dt>Matched route</dt>
-                      <dd>{record.matchedRoute}</dd>
-                    </>
+                    <dt>Evidence status</dt>
+                    <dd>{searchIntent.label}</dd>
                   </div>
                   <div>
-                    <>
-                      <dt>Compatibility</dt>
-                      <dd>{record.compatibilityStatus}</dd>
-                    </>
+                    <dt>Series</dt>
+                    <dd>{record.series}</dd>
+                  </div>
+                  <div>
+                    <dt>Alternative status</dt>
+                    <dd>{record.alternativeReview?.status}</dd>
+                  </div>
+                  <div>
+                    <dt>Review note</dt>
+                    <dd>{record.alternativeReview?.note}</dd>
                   </div>
                 </dl>
                 <a class="model-card__link" href={`/models/${record.slug}/`}>
-                  Open model review →
+                  Open reviewed record →
                 </a>
               </div>
             </article>
@@ -112,13 +319,47 @@ const commercialCount = modelRecords.filter((record) => record.commercial).lengt
       <DetailRfqStrip
         quoteHref="/contact/?source=model-index"
         title="Cannot find the exact model?"
-        text="Send the complete code or upload the nameplate. New model records are published only after the reference and review fields can be documented."
+        text="Send the complete code or upload the nameplate. New model records are published as the reference and review fields are completed."
         modalContext="Exact model inquiry"
         modalSource="model-index"
       />
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const searchInput = document.querySelector<HTMLInputElement>(
+    "#model-database-search",
+  );
+  const resultText = document.querySelector<HTMLElement>(
+    "#model-database-result",
+  );
+  const tableRows = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-model-record]"),
+  );
+  const modelCards = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-model-card]"),
+  );
+
+  searchInput?.addEventListener("input", () => {
+    const query = searchInput.value.trim().toLowerCase();
+    let visibleCount = 0;
+
+    tableRows.forEach((row) => {
+      const matches = !query || row.dataset.searchKey?.includes(query);
+      row.hidden = !matches;
+      if (matches) visibleCount += 1;
+    });
+    modelCards.forEach((card) => {
+      card.hidden = Boolean(query) && !card.dataset.searchKey?.includes(query);
+    });
+    if (resultText) {
+      resultText.textContent = query
+        ? `${visibleCount} matching record${visibleCount === 1 ? "" : "s"}.`
+        : `Showing all ${tableRows.length} records.`;
+    }
+  });
+</script>
 
 <style>
   .model-index {
@@ -159,6 +400,164 @@ const commercialCount = modelRecords.filter((record) => record.commercial).lengt
     margin: 0;
     color: #536071;
     line-height: 1.6;
+  }
+  .database-method {
+    display: grid;
+    grid-template-columns: minmax(250px, 0.8fr) 1.6fr;
+    gap: 28px;
+    margin: 0 0 28px;
+    padding: clamp(24px, 4vw, 38px);
+    color: #fff;
+    background: #0f2742;
+  }
+  .database-method p,
+  .database-browser__heading p {
+    margin: 0 0 8px;
+    color: #79aef7;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+  }
+  .database-method h2,
+  .database-browser h2,
+  .model-grid-heading {
+    margin: 0;
+    text-transform: none;
+  }
+  .database-method h2 {
+    color: #fff;
+    font-size: clamp(24px, 3vw, 34px);
+    line-height: 1.2;
+  }
+  .database-method ol {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: database-step;
+  }
+  .database-method li {
+    position: relative;
+    min-height: 105px;
+    padding: 18px 18px 18px 52px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.05);
+    counter-increment: database-step;
+  }
+  .database-method li::before {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    color: #79aef7;
+    font-weight: 800;
+    content: counter(database-step, decimal-leading-zero);
+  }
+  .database-method strong,
+  .database-method span {
+    display: block;
+  }
+  .database-method span {
+    margin-top: 6px;
+    color: #c5d2e1;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .database-browser {
+    margin-bottom: 34px;
+    padding: 26px;
+    border: 1px solid var(--color-stroke);
+    background: #fff;
+  }
+  .database-browser__heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .database-browser__heading p {
+    color: var(--color-primary);
+  }
+  .database-browser__heading label {
+    display: grid;
+    gap: 7px;
+    min-width: min(100%, 340px);
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .database-browser__heading input {
+    min-height: 46px;
+    padding: 10px 13px;
+    border: 1px solid #b8c4d2;
+    border-radius: 4px;
+    background: #fff;
+    color: #0f172a;
+    font: inherit;
+    font-size: 14px;
+  }
+  .database-browser__heading input:focus {
+    border-color: var(--color-primary);
+    outline: 3px solid rgba(20, 110, 245, 0.14);
+  }
+  .database-browser__result {
+    margin: 16px 0 10px;
+    color: #64748b;
+    font-size: 13px;
+  }
+  .database-table-wrap {
+    overflow-x: auto;
+  }
+  .database-table {
+    width: 100%;
+    min-width: 860px;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .database-table th,
+  .database-table td {
+    padding: 13px 12px;
+    border: 1px solid var(--color-stroke);
+    text-align: left;
+    vertical-align: top;
+  }
+  .database-table th {
+    color: #334155;
+    background: #f1f5f9;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .database-table a {
+    color: var(--color-title);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .database-table a:hover {
+    color: var(--color-primary);
+  }
+  .database-table small {
+    display: block;
+    margin-top: 4px;
+    color: #64748b;
+  }
+  .database-status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 999px;
+    color: #92400e;
+    background: #fff7ed;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .database-status--reviewed {
+    color: #075985;
+    background: #e0f2fe;
+  }
+  .model-grid-heading {
+    margin-bottom: 18px;
+    font-size: clamp(25px, 3vw, 34px);
   }
   .model-grid {
     display: grid;
@@ -249,6 +648,9 @@ const commercialCount = modelRecords.filter((record) => record.commercial).lengt
     outline-offset: 3px;
   }
   @media (max-width: 1050px) {
+    .database-method {
+      grid-template-columns: 1fr;
+    }
     .model-grid {
       grid-template-columns: 1fr;
     }
@@ -260,6 +662,16 @@ const commercialCount = modelRecords.filter((record) => record.commercial).lengt
     .model-index__notice {
       grid-template-columns: 1fr;
       gap: 6px;
+    }
+    .database-method ol {
+      grid-template-columns: 1fr;
+    }
+    .database-browser {
+      padding: 20px 16px;
+    }
+    .database-browser__heading {
+      align-items: stretch;
+      flex-direction: column;
     }
     .model-card {
       grid-template-columns: 1fr;

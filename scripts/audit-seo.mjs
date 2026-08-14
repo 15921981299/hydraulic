@@ -108,11 +108,21 @@ for (const file of htmlFiles) {
   });
 }
 
+const sitemapFiles = (await readdir(distDir)).filter((file) =>
+  /^sitemap.*\.xml$/i.test(file),
+);
+const sitemapXml = (
+  await Promise.all(
+    sitemapFiles.map((file) => readFile(path.join(distDir, file), "utf8")),
+  )
+).join("\n");
+
 const paths = new Set(pages.map((page) => page.pathname));
 const inbound = new Map([...paths].map((pathname) => [pathname, new Set()]));
 for (const page of pages) {
   for (const href of page.hrefs) {
-    if (paths.has(href) && href !== page.pathname) inbound.get(href).add(page.pathname);
+    if (paths.has(href) && href !== page.pathname)
+      inbound.get(href).add(page.pathname);
   }
 }
 
@@ -130,35 +140,53 @@ const descriptionGroups = Map.groupBy(
 for (const page of pages) {
   if (page.pathname === "/404.html") continue;
   if (!page.title) errors.push(`${page.pathname}: missing title`);
-  if (!page.description) errors.push(`${page.pathname}: missing meta description`);
+  if (!page.description)
+    errors.push(`${page.pathname}: missing meta description`);
   if (!page.canonical) errors.push(`${page.pathname}: missing canonical`);
   else {
     const expected = `${siteOrigin}${page.pathname}`;
     if (page.canonical !== expected) {
-      errors.push(`${page.pathname}: canonical is ${page.canonical}, expected ${expected}`);
+      errors.push(
+        `${page.pathname}: canonical is ${page.canonical}, expected ${expected}`,
+      );
     }
   }
-  if (page.h1Count !== 1) errors.push(`${page.pathname}: H1 count is ${page.h1Count}`);
+  if (page.h1Count !== 1)
+    errors.push(`${page.pathname}: H1 count is ${page.h1Count}`);
   if (page.missingAlt) {
     errors.push(`${page.pathname}: ${page.missingAlt} image(s) missing alt`);
   }
   for (const issue of page.jsonLdErrors) {
     errors.push(`${page.pathname}: invalid JSON-LD ${issue}`);
   }
-  if (!page.noindex && page.pathname !== "/" && inbound.get(page.pathname).size === 0) {
+  if (
+    !page.noindex &&
+    page.pathname !== "/" &&
+    inbound.get(page.pathname).size === 0
+  ) {
     errors.push(`${page.pathname}: indexable orphan page`);
+  }
+  if (page.noindex && sitemapXml.includes(`${siteOrigin}${page.pathname}`)) {
+    errors.push(`${page.pathname}: noindex URL is present in the sitemap`);
   }
   if (!page.noindex && page.title.length > 65) {
     warnings.push(`${page.pathname}: title length ${page.title.length}`);
   }
-  if (!page.noindex && (page.description.length < 90 || page.description.length > 170)) {
-    warnings.push(`${page.pathname}: description length ${page.description.length}`);
+  if (
+    !page.noindex &&
+    (page.description.length < 90 || page.description.length > 170)
+  ) {
+    warnings.push(
+      `${page.pathname}: description length ${page.description.length}`,
+    );
   }
 }
 
 for (const group of titleGroups.values()) {
   if (group.length > 1) {
-    errors.push(`duplicate title: ${group.map((page) => page.pathname).join(", ")}`);
+    errors.push(
+      `duplicate title: ${group.map((page) => page.pathname).join(", ")}`,
+    );
   }
 }
 for (const group of descriptionGroups.values()) {

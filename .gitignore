@@ -4,6 +4,9 @@ dist/
 .astro/
 .env
 .env.*
+!.env.example
+config/launch-readiness.json
+worker-configuration.d.ts
 _ref_home_body.html
 
 # Local training videos (not for repo)
@@ -15,6 +18,11 @@ videocourse/
 # Local ops docs (transcripts scratch — markdown plans can be committed)
 docs/*
 !docs/**/*.md
+
+# Local Cloudflare deployment previews and logs
+tmp/wrangler-dry-run/
+tmp/xdg-config/
+tmp/wrangler.log
 
 # AI / IDE tools
 .agent/

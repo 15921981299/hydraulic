@@ -2,18 +2,19 @@
 interface Props {
   title: string;
   subtitle: string;
+  id?: string;
 }
 
-const { title, subtitle } = Astro.props;
+const { title, subtitle, id } = Astro.props;
 ---
 
 <div class="section-heading-block">
   <div class="section-title-block">
-    <h2 class="section-title mobile-middle">{title}</h2>
+    <h2 class="section-title mobile-middle" id={id}>{title}</h2>
   </div>
   <div class="section-subtitle-block">
-    <div class="subtitle-dot"></div>
+    <div class="subtitle-dot" aria-hidden="true"></div>
     <div class="section-subtitle">{subtitle}</div>
-    <div class="subtitle-dot"></div>
+    <div class="subtitle-dot" aria-hidden="true"></div>
   </div>
 </div>

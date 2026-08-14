@@ -1,3 +1,6 @@
+import { modelRecords } from "./model-records";
+import { seriesRecords } from "./series-records";
+
 /**
  * Public evidence shown on the pre-launch site.
  *
@@ -6,8 +9,14 @@
  * customer references must not be invented or inferred from another business.
  */
 export const inventoryMetrics = [
-  { value: "37", label: "published exact-model research records" },
-  { value: "23", label: "published series review pages" },
+  {
+    value: String(modelRecords.length),
+    label: "published exact-model research records",
+  },
+  {
+    value: String(seriesRecords.length),
+    label: "published series review pages",
+  },
   { value: "16", label: "manufacturer reference groups" },
   { value: "6", label: "core product categories" },
 ];

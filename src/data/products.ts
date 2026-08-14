@@ -198,6 +198,10 @@ export const products: HydraulicProduct[] = [
         text: "A replacement is matched against the full original code and installation details—not the series name alone. The quotation states whether the route is direct-compatible or requires a disclosed change.",
       },
       {
+        title: "Variable displacement pump review",
+        text: "Variable displacement pumps—axial piston and vane types included—adjust output flow through a swashplate, yoke or compensator control. The control type, displacement range, pressure rating, rotation and flange are confirmed from the complete code before an option is quoted.",
+      },
+      {
         title: "How hydraulic pump price is set",
         text: "Price depends on pump family, displacement, control, shaft, flange, port arrangement, condition, quantity and destination. Submit the nameplate for an exact commercial offer.",
       },
@@ -286,7 +290,7 @@ export const products: HydraulicProduct[] = [
       },
       {
         title: "Replacement cylinder review",
-        text: "For an installed cylinder, we compare closed length, stroke, bore, rod, mounting, ports and operating duty before classifying an offered replacement.",
+        text: "Hydraulic cylinder replacement review compares closed length, stroke, bore, rod, mounting, ports and operating duty before classifying an offered replacement.",
       },
       {
         title: "Commercial confirmation",

@@ -1,17 +1,734 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import BreadcrumbHero from '../../components/BreadcrumbHero.astro';
-import { site } from '../../data/site';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../components/BreadcrumbHero.astro";
+import { breadcrumbSchema, site } from "../../data/site";
+
+const pageUrl = `${site.url}/terms/`;
+const pageTitle =
+  "Terms of Use & Hydraulic Inquiry | Hydraulic Match";
+const pageDescription =
+  "Terms for using Hydraulic Match content, submitting RFQs, reviewing model references, and receiving hydraulic valve, pump and cylinder quotations.";
+
+const sections = [
+  {
+    id: "service-scope",
+    title: "Independent information and sourcing service",
+    body: "Hydraulic Match provides hydraulic component identification, technical comparison, supplier review and quotation support for business buyers. Website content is general information. It is not an engineering approval, installation instruction or safety sign-off for a specific machine or circuit.",
+  },
+  {
+    id: "website-use",
+    title: "Website and content use",
+    body: "You may use the site to review product categories, model references, technical guides and inquiry resources. Do not scrape, republish or misrepresent site content as manufacturer authorization, stock confirmation or a binding offer without a written quotation.",
+  },
+  {
+    id: "model-references",
+    title: "Model and brand references",
+    body: "Manufacturer names, trademarks and model numbers are used only for identification and cross-reference. No affiliation, authorization, dealership status or endorsement is implied unless explicitly stated in writing for a specific order.",
+  },
+  {
+    id: "rfq-information",
+    title: "RFQ and inquiry information",
+    body: "When you submit an RFQ, email, drawing or nameplate photo, you confirm that the information is provided for sourcing review and that you have the right to share it with Hydraulic Match and relevant suppliers, inspectors or logistics partners needed to process the inquiry.",
+  },
+  {
+    id: "compatibility",
+    title: "Compatibility and customer approval",
+    body: "Compatibility depends on the complete model code, technical parameters, interfaces and application conditions—not a series name or visual similarity alone. The customer remains responsible for final approval, safe installation, commissioning, regulatory compliance and acceptance testing.",
+  },
+  {
+    id: "quotations",
+    title: "Quotations and commercial terms",
+    body: "Unit price, MOQ, lead time, warranty scope, inspection, packing, Incoterms, shipping method and quotation validity are governed by the written quotation or order confirmation. Availability, supplier identity and lead time can change until an order is accepted in writing.",
+  },
+  {
+    id: "inspection-shipping",
+    title: "Inspection, packing and shipping",
+    body: "Inspection scope, photos, test records and export documentation depend on the quoted product, supplier capability and agreed commercial terms. Representative process pages on the website do not by themselves prove that a specific order was inspected or tested.",
+  },
+  {
+    id: "accuracy",
+    title: "Accuracy and updates",
+    body: "We aim to keep general content accurate and current, but model revisions, supplier availability and commercial terms change. Product-specific confirmation in the quotation takes priority over general website wording.",
+  },
+  {
+    id: "limitation",
+    title: "Limitation of liability",
+    body: "To the extent permitted by applicable law, Hydraulic Match is not liable for downtime, consequential loss or installation decisions made without the confirmations recorded in the accepted quotation. Disputes should be raised promptly with the contact details below.",
+  },
+];
+
+const relatedLinks = [
+  { href: "/privacy/", label: "Privacy Policy" },
+  { href: "/editorial-policy/", label: "Editorial Policy" },
+  { href: "/warranty/", label: "Warranty Terms" },
+  { href: "/trust/", label: "Trust Center" },
+  { href: "/commercial-proof/", label: "Commercial Proof" },
+];
 ---
-<BaseLayout title="Terms of Use and Inquiry" description="Terms for using Hydraulic Match content, model references, RFQ information and quotations." currentPath="/terms" noindex>
-  <BreadcrumbHero title="Terms of Use and Inquiry" trail={[{ label: 'Home', href: '/' }, { label: 'Terms' }]} variant="5" />
-  <article class="hm-terms container">
-    <h2>Independent information service</h2><p>Hydraulic Match provides sourcing, identification and quotation support. Website content is general information and is not an engineering approval for a specific installation.</p>
-    <h2>Model and brand references</h2><p>Manufacturer names, trademarks and model numbers are used only for identification and cross-reference. No affiliation, authorization or endorsement is implied.</p>
-    <h2>Compatibility and customer approval</h2><p>Compatibility depends on the complete model code, technical data and application. The customer is responsible for final approval, safe installation, commissioning and compliance.</p>
-    <h2>Quotations</h2><p>Price, MOQ, lead time, warranty, inspection, packing, shipping and validity are governed by the written quotation. Availability and lead time can change until an order is accepted.</p>
-    <h2>Accuracy</h2><p>We aim to keep content accurate but do not guarantee that every general page applies to every model or revision. Product-specific confirmation takes priority.</p>
-    <h2>Contact</h2><p>Questions may be sent to <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
-  </article>
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  currentPath="/terms"
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Terms", url: pageUrl },
+    ]),
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: pageTitle,
+      description: pageDescription,
+      url: pageUrl,
+      isPartOf: {
+        "@type": "WebSite",
+        name: site.name,
+        url: site.url,
+      },
+      about: {
+        "@type": "Organization",
+        name: site.company.legalNameEn,
+        url: site.url,
+      },
+    },
+  ]}
+>
+  <BreadcrumbHero
+    title="Terms of Use and Inquiry"
+    trail={[{ label: "Home", href: "/" }, { label: "Terms" }]}
+    variant="5"
+  />
+
+  <section class="hm-terms" aria-labelledby="terms-intro-heading">
+    <div class="container hm-terms__layout">
+      <header class="hm-terms__intro">
+        <p class="hm-terms__kicker">LEGAL &amp; INQUIRY TERMS</p>
+        <h2 id="terms-intro-heading">
+          Terms for distributors, repair shops and MRO buyers using Hydraulic
+          Match.
+        </h2>
+        <p class="hm-terms__lead">
+          These terms explain how website content, model references, RFQ
+          submissions and written quotations should be interpreted. They support
+          transparent hydraulic sourcing—not blanket compatibility claims.
+        </p>
+        <div class="hm-terms__meta-row">
+          <span class="hm-terms__badge">Effective July 25, 2026</span>
+          <span class="hm-terms__meta-note">Applies to website use and RFQ inquiries</span>
+        </div>
+      </header>
+
+      <nav class="hm-terms__toc" aria-label="Terms sections">
+        <p class="hm-terms__toc-label">On this page</p>
+        <ol>
+          {
+            sections.map((section, index) => (
+              <li>
+                <a href={`#${section.id}`}>
+                  <span class="hm-terms__toc-num" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span>{section.title}</span>
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href="#terms-contact">
+              <span class="hm-terms__toc-num" aria-hidden="true">
+                {String(sections.length + 1).padStart(2, "0")}
+              </span>
+              <span>Contact</span>
+            </a>
+          </li>
+        </ol>
+      </nav>
+
+      <article class="hm-terms__body">
+        {
+          sections.map((section, index) => (
+            <section id={section.id} class="hm-terms__section">
+              <div class="hm-terms__section-head">
+                <span class="hm-terms__section-num" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3>{section.title}</h3>
+              </div>
+              <p>{section.body}</p>
+            </section>
+          ))
+        }
+
+        <section id="terms-contact" class="hm-terms__section hm-terms__contact">
+          <div class="hm-terms__section-head">
+            <span class="hm-terms__section-num" aria-hidden="true">
+              {String(sections.length + 1).padStart(2, "0")}
+            </span>
+            <h3>Contact</h3>
+          </div>
+          <p>
+            Questions about these terms, a quotation scope or compatibility
+            wording may be sent to{" "}
+            <a href={`mailto:${site.email}`}>{site.email}</a>.
+          </p>
+          <div class="hm-terms__cta-row">
+            <a class="hm-terms__cta" href="/request-a-quote/?source=terms">
+              Request a Match
+            </a>
+            <a class="hm-terms__cta hm-terms__cta--ghost" href="/contact/">
+              Contact page
+            </a>
+          </div>
+        </section>
+      </article>
+
+      <aside class="hm-terms__aside" aria-label="Related policies">
+        <p class="hm-terms__aside-kicker">POLICY LINKS</p>
+        <h2 class="hm-terms__aside-title">Related policies</h2>
+        <nav class="hm-terms__related">
+          {
+            relatedLinks.map((link) => (
+              <a href={link.href}>
+                <span>{link.label}</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M5 12h14m0 0-5-5m5 5-5 5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+                </svg>
+              </a>
+            ))
+          }
+        </nav>
+      </aside>
+    </div>
+  </section>
 </BaseLayout>
-<style>.hm-terms{max-width:900px;padding-top:75px;padding-bottom:100px}.hm-terms h2{margin:44px 0 12px;font-size:28px}.hm-terms p{color:#536071;line-height:1.75;font-size:17px}.hm-terms a{color:var(--color-primary)}</style>
+
+<style>
+  /*
+    Terms page — SEO + moderate visual polish
+    - Horizontal inset aligned with navbar (global .container is 0)
+    - Prose ~68ch; body ≥16px; visible focus; scroll-margin on anchors
+  */
+  .hm-terms {
+    margin-bottom: 40px;
+    padding: 28px 0 26px;
+    background:
+      radial-gradient(
+        920px 300px at 18% -8%,
+        rgba(20, 110, 245, 0.08),
+        transparent 68%
+      ),
+      radial-gradient(
+        640px 220px at 92% 12%,
+        rgba(20, 110, 245, 0.04),
+        transparent 70%
+      ),
+      linear-gradient(180deg, #f8fafc 0%, #f1f5f9 38%, #fff 100%);
+  }
+
+  .hm-terms > .container {
+    width: 100%;
+    max-width: 1880px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+  }
+
+  .hm-terms__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(250px, 292px);
+    gap: 32px 52px;
+    align-items: start;
+  }
+
+  .hm-terms__intro,
+  .hm-terms__toc,
+  .hm-terms__body {
+    grid-column: 1;
+  }
+
+  .hm-terms__intro {
+    max-width: 68ch;
+    padding: 28px 30px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 16px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      0 14px 36px rgba(15, 23, 42, 0.05);
+  }
+
+  .hm-terms__kicker {
+    margin: 0 0 10px;
+    color: var(--color-primary);
+    font-family: var(--font-title);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .hm-terms__intro h2 {
+    margin: 0 0 14px;
+    color: #0f172a;
+    font-size: clamp(1.45rem, 2.4vw, 2rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    text-transform: none;
+  }
+
+  .hm-terms__lead {
+    margin: 0;
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .hm-terms__meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    margin-top: 18px;
+  }
+
+  .hm-terms__badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 6px 12px;
+    border: 1px solid rgba(20, 110, 245, 0.22);
+    border-radius: 999px;
+    background: rgba(20, 110, 245, 0.06);
+    color: #1e40af;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .hm-terms__meta-note {
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .hm-terms__toc {
+    max-width: 68ch;
+    padding: 22px 24px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+  }
+
+  .hm-terms__toc-label {
+    margin: 0 0 14px;
+    color: #64748b;
+    font-family: var(--font-title);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .hm-terms__toc ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 4px;
+  }
+
+  .hm-terms__toc a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    color: #334155;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .hm-terms__toc a:hover {
+    background: rgba(20, 110, 245, 0.06);
+    color: var(--color-primary);
+  }
+
+  .hm-terms__toc a:focus-visible {
+    outline: 3px solid rgba(20, 110, 245, 0.28);
+    outline-offset: 2px;
+  }
+
+  .hm-terms__toc-num {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: rgba(20, 110, 245, 0.08);
+    color: var(--color-primary);
+    font: 700 11px/1 var(--font-title);
+    letter-spacing: 0.04em;
+    flex: none;
+  }
+
+  .hm-terms__body {
+    max-width: 68ch;
+    padding: 8px 30px 34px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 16px;
+    background: #fff;
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.04),
+      0 16px 40px rgba(15, 23, 42, 0.05);
+  }
+
+  .hm-terms__section {
+    scroll-margin-top: 120px;
+    padding: 24px 0;
+  }
+
+  .hm-terms__section:target {
+    animation: hm-terms-highlight 0.6s ease;
+  }
+
+  @keyframes hm-terms-highlight {
+    from {
+      background: rgba(20, 110, 245, 0.08);
+    }
+    to {
+      background: transparent;
+    }
+  }
+
+  .hm-terms__section + .hm-terms__section {
+    margin-top: 0;
+    padding-top: 24px;
+    border-top: 1px solid #e8edf3;
+  }
+
+  .hm-terms__section-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .hm-terms__section-num {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    margin-top: 2px;
+    border-radius: 10px;
+    background: rgba(20, 110, 245, 0.08);
+    color: var(--color-primary);
+    font: 700 12px/1 var(--font-title);
+    letter-spacing: 0.04em;
+    flex: none;
+  }
+
+  .hm-terms__section h3 {
+    margin: 0;
+    color: #0f172a;
+    font-size: 1.15rem;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    text-transform: none;
+  }
+
+  .hm-terms__section p {
+    margin: 0;
+    padding-left: 50px;
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.75;
+  }
+
+  .hm-terms__body a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(20, 110, 245, 0.28);
+    transition: border-color 0.2s ease;
+  }
+
+  .hm-terms__body a:hover {
+    border-color: var(--color-primary);
+  }
+
+  .hm-terms__body a:focus-visible {
+    outline: 3px solid rgba(20, 110, 245, 0.28);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  .hm-terms__contact {
+    margin-top: 8px;
+    padding: 22px 20px 24px;
+    border: 1px solid rgba(20, 110, 245, 0.16);
+    border-radius: 12px;
+    background: linear-gradient(
+      180deg,
+      rgba(20, 110, 245, 0.04) 0%,
+      rgba(20, 110, 245, 0.02) 100%
+    );
+  }
+
+  .hm-terms__contact .hm-terms__section-head {
+    margin-bottom: 10px;
+  }
+
+  .hm-terms__contact p {
+    padding-left: 50px;
+  }
+
+  .hm-terms__cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 12px;
+    margin-top: 18px;
+    padding-left: 50px;
+  }
+
+  .hm-terms__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: var(--color-primary);
+    color: #fff;
+    font-family: var(--font-title);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(20, 110, 245, 0.22);
+    transition:
+      background-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .hm-terms__cta:first-child{
+    color: #fff!important;
+  }
+
+  .hm-terms__cta:hover {
+    background: #1058c9;
+    box-shadow: 0 8px 22px rgba(20, 110, 245, 0.28);
+    transform: translateY(-1px);
+  }
+
+  .hm-terms__cta--ghost {
+    border: 1px solid rgba(20, 110, 245, 0.28);
+    background: #fff;
+    color: var(--color-primary);
+    box-shadow: none;
+  }
+
+  .hm-terms__cta--ghost:hover {
+    background: rgba(20, 110, 245, 0.06);
+    box-shadow: none;
+    transform: none;
+  }
+
+  .hm-terms__cta:focus-visible {
+    outline: 3px solid rgba(20, 110, 245, 0.35);
+    outline-offset: 3px;
+  }
+
+  .hm-terms__aside {
+    grid-column: 2;
+    grid-row: 1 / span 4;
+    position: sticky;
+    top: 120px;
+    padding: 26px 22px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 16px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+  }
+
+  .hm-terms__aside-kicker {
+    margin: 0 0 8px;
+    color: var(--color-primary);
+    font-family: var(--font-title);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .hm-terms__aside-title {
+    margin: 0 0 16px;
+    color: #0f172a;
+    font-size: 1.05rem;
+    line-height: 1.3;
+    text-transform: none;
+  }
+
+  .hm-terms__related {
+    display: grid;
+    gap: 8px;
+  }
+
+  .hm-terms__related a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 48px;
+    padding: 10px 14px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 10px;
+    background: #fff;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .hm-terms__related a svg {
+    color: var(--color-primary);
+    flex: none;
+    opacity: 0.85;
+    transition: transform 0.2s ease;
+  }
+
+  .hm-terms__related a:hover {
+    border-color: rgba(20, 110, 245, 0.35);
+    color: var(--color-primary);
+    background: rgba(20, 110, 245, 0.03);
+    box-shadow: 0 6px 16px rgba(20, 110, 245, 0.08);
+  }
+
+  .hm-terms__related a:hover svg {
+    transform: translateX(2px);
+  }
+
+  .hm-terms__related a:focus-visible {
+    outline: 3px solid rgba(20, 110, 245, 0.28);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 1100px) {
+    .hm-terms > .container {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .hm-terms__layout {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .hm-terms__aside {
+      grid-column: 1;
+      grid-row: auto;
+      position: static;
+    }
+
+    .hm-terms__related {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 767px) {
+    .hm-terms > .container {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    .hm-terms {
+      padding-top: 32px;
+      padding-bottom: 72px;
+    }
+
+    .hm-terms__intro {
+      padding: 22px 20px;
+    }
+
+    .hm-terms__body {
+      padding: 4px 18px 26px;
+    }
+
+    .hm-terms__section p,
+    .hm-terms__contact p,
+    .hm-terms__cta-row {
+      padding-left: 0;
+    }
+
+    .hm-terms__section-head {
+      flex-direction: row;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .hm-terms > .container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    .hm-terms__related {
+      grid-template-columns: 1fr;
+    }
+
+    .hm-terms__cta-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .hm-terms__cta {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hm-terms__toc a,
+    .hm-terms__body a,
+    .hm-terms__related a,
+    .hm-terms__related a svg,
+    .hm-terms__cta {
+      transition: none;
+    }
+
+    .hm-terms__section:target {
+      animation: none;
+    }
+
+    .hm-terms__cta:hover {
+      transform: none;
+    }
+
+    .hm-terms__related a:hover svg {
+      transform: none;
+    }
+  }
+</style>

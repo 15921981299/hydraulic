@@ -1,3 +1,5 @@
+import { importedModelRecords } from "./imported-model-records.ts";
+
 export type HydraulicModelRecord = {
   slug: string;
   brand: string;
@@ -13,14 +15,55 @@ export type HydraulicModelRecord = {
   warranty: string;
   sourceLabel: string;
   sourceUrl: string;
+  /** Add document metadata only when the cited source supports it. */
+  sourceDocument?: string;
+  sourceRevision?: string;
+  sourceReviewedAt?: string;
+  published?: string;
+  modified?: string;
+  reviewedBy?: string;
   codeGroups: { label: string; value: string; review: string }[];
   requiredChecks: string[];
   applications: string[];
   relatedHref: string;
   recordKind?:
-    "engineering-review" | "owned-site-catalog" | "external-catalog-reference";
+    | "engineering-review"
+    | "owned-site-catalog"
+    | "external-catalog-reference";
   sourceSite?: string;
   evidenceNote?: string;
+  procurementSpecs?: {
+    label: string;
+    value: string;
+    basis: string;
+  }[];
+  compatibleApplication?: string;
+  incompatibleApplications?: string[];
+  knownDifferences?: string[];
+  evidenceAssets?: {
+    kind: "nameplate" | "drawing" | "comparison" | "inspection" | "test";
+    label: string;
+    url: string;
+    disclosure?: string;
+  }[];
+  inquiryFields?: string[];
+  replacementCase?: {
+    title: string;
+    originalModel: string;
+    replacementModel: string;
+    application: string;
+    verification: string;
+    outcome: string;
+    disclosure: string;
+  };
+  alternativeReview?: {
+    status:
+      | "No public alternative"
+      | "Candidate under review"
+      | "Order-specific alternative approved";
+    proposedModel?: string;
+    note: string;
+  };
   commercial?: {
     status: "Available" | "Quote required" | "Reconfirm";
     price?: string;
@@ -29,6 +72,74 @@ export type HydraulicModelRecord = {
     condition: string;
   };
 };
+
+export type ModelContentLevel =
+  | "catalog-reference"
+  | "identification-reviewed"
+  | "comparison-ready"
+  | "verified-case";
+
+/** Content maturity label derived from record-specific evidence. */
+export function getModelContentLevel(
+  record: HydraulicModelRecord,
+): ModelContentLevel {
+  if (record.replacementCase) return "verified-case";
+  if (
+    record.alternativeReview?.proposedModel &&
+    record.alternativeReview.status !== "No public alternative" &&
+    (record.procurementSpecs?.length ?? 0) >= 6 &&
+    record.compatibleApplication
+  ) {
+    return "comparison-ready";
+  }
+  if (
+    record.recordKind !== "external-catalog-reference" &&
+    (record.codeGroups?.length ?? 0) >= 4 &&
+    (record.procurementSpecs?.length ?? 0) >= 6 &&
+    Boolean(record.compatibleApplication) &&
+    /^https?:\/\//.test(record.sourceUrl)
+  ) {
+    return "identification-reviewed";
+  }
+  return "catalog-reference";
+}
+
+export function modelSearchIntent(record: HydraulicModelRecord) {
+  const level = getModelContentLevel(record);
+  if (level === "verified-case") {
+    return {
+      level,
+      label: "Documented replacement case",
+      title: `${record.model} Replacement Case`,
+      heading: `${record.model} Replacement Case`,
+    };
+  }
+  if (level === "comparison-ready") {
+    return {
+      level,
+      label: "Replacement comparison",
+      title: `${record.model} Replacement Match`,
+      heading: `${record.model} Replacement Comparison`,
+    };
+  }
+  if (level === "identification-reviewed") {
+    return {
+      level,
+      label: "Reviewed identification record",
+      title: `${record.model} Specifications`,
+      heading: `${record.model} Specifications & Identification`,
+    };
+  }
+  const shortModel =
+    record.materialNumber ??
+    (record.model.length > 30 ? record.series : record.model);
+  return {
+    level,
+    label: "External catalog lead",
+    title: `${shortModel} Sourcing Reference`,
+    heading: `${record.model} Sourcing Reference`,
+  };
+}
 
 /**
  * Search landing records for exact model references documented by the original
@@ -82,6 +193,37 @@ const reviewedModelRecords: HydraulicModelRecord[] = [
         review: "Confirm connector orientation and plug requirement",
       },
     ],
+    procurementSpecs: [
+      {
+        label: "Original model",
+        value: "4WE 6 D6X/EG24N9K4",
+        basis: "Bosch Rexroth exact offer drawing",
+      },
+      {
+        label: "Material number",
+        value: "R900561274",
+        basis: "Bosch Rexroth exact offer drawing",
+      },
+      {
+        label: "Nominal size",
+        value: "NG6 directional spool valve",
+        basis: "WE 6 code group",
+      },
+      { label: "Spool", value: "D spool symbol", basis: "D code group" },
+      {
+        label: "Design series",
+        value: "Series 60–69",
+        basis: "6X code group; exact drawing controls dimensions",
+      },
+      { label: "Solenoid", value: "Wet-pin, 24 VDC", basis: "EG24 code group" },
+      {
+        label: "Operator / connector",
+        value: "Manual override and DIN connector configuration",
+        basis: "N9K4 code group",
+      },
+    ],
+    compatibleApplication:
+      "NG6 industrial hydraulic circuits requiring the documented D spool function, 24 VDC wet-pin solenoid and N9K4 operator/connector configuration. Pressure, flow, fluid, mounting and the machine schematic still control final approval.",
     requiredChecks: [
       "Clear original nameplate and connector photos",
       "Working and peak pressure",
@@ -143,6 +285,41 @@ const reviewedModelRecords: HydraulicModelRecord[] = [
         review: "Confirm connector and environmental requirement",
       },
     ],
+    procurementSpecs: [
+      {
+        label: "Original model",
+        value: "4WE 10 E5X/EG24N9K4/M",
+        basis: "Bosch Rexroth exact product record",
+      },
+      {
+        label: "Material number",
+        value: "R901278761",
+        basis: "Bosch Rexroth exact product record",
+      },
+      {
+        label: "Nominal size",
+        value: "NG10 direct-operated directional spool valve",
+        basis: "WE 10 code group",
+      },
+      {
+        label: "Spool",
+        value: "E spool, three positions",
+        basis: "E code group",
+      },
+      {
+        label: "Design series",
+        value: "Series 50–59",
+        basis: "5X code group; drawing controls interfaces",
+      },
+      { label: "Solenoid", value: "Wet-pin, 24 VDC", basis: "EG24 code group" },
+      {
+        label: "Operator / connector",
+        value: "Manual override, DIN connector and corrosion option",
+        basis: "N9K4/M code group",
+      },
+    ],
+    compatibleApplication:
+      "NG10 industrial hydraulic circuits requiring the documented three-position E spool, 24 VDC wet-pin solenoid and N9K4/M option group. Center function, pressure, flow, mounting and environmental exposure must be confirmed for the machine.",
     requiredChecks: [
       "Complete nameplate and material number",
       "Hydraulic schematic or required spool function",
@@ -177,6 +354,74 @@ const reviewedModelRecords: HydraulicModelRecord[] = [
     sourceLabel: "Bosch Rexroth official product record",
     sourceUrl:
       "https://www.boschrexroth.com/en/nz/p/axial-piston-pump-r910948472/",
+    procurementSpecs: [
+      {
+        label: "Original model",
+        value: "A10VSO 18 DRG/31R-VPA12N00",
+        basis: "Bosch Rexroth exact product record R910948472",
+      },
+      {
+        label: "Displacement",
+        value: "18 cm³/rev",
+        basis: "Exact material-number attribute",
+      },
+      {
+        label: "Working pressure",
+        value: "280 bar",
+        basis: "Exact material-number attribute",
+      },
+      {
+        label: "Rotation",
+        value: "Clockwise, viewed on shaft end",
+        basis: "Exact material-number attribute",
+      },
+      {
+        label: "Rated data point",
+        value: "1500 rpm · maximum flow 27 L/min",
+        basis: "Exact material-number attributes",
+      },
+      {
+        label: "Control",
+        value: "DR remote-controlled pressure control",
+        basis: "Exact material-number attribute",
+      },
+      {
+        label: "Shaft",
+        value: "ISO shaft with key",
+        basis: "Exact material-number attribute",
+      },
+      {
+        label: "Mounting",
+        value: "ISO 3019-2 metric, 2-hole flange",
+        basis: "Exact material-number attribute",
+      },
+      {
+        label: "Working ports",
+        value: "B and S metric flange configuration",
+        basis:
+          "Exact material-number attribute; drawing still controls dimensions",
+      },
+      {
+        label: "Seal material",
+        value: "FKM",
+        basis: "Exact material-number attribute",
+      },
+      {
+        label: "Published weight",
+        value: "13.17 kg",
+        basis: "Exact material-number attribute",
+      },
+    ],
+    compatibleApplication:
+      "Open-circuit industrial hydraulic systems that require an 18 cm³/rev variable axial-piston pump, DR remote pressure control, clockwise shaft rotation, ISO 3019-2 metric 2-hole mounting and the stated shaft and port configuration. Final application approval still requires operating pressure, speed, fluid, duty cycle and installation comparison.",
+    inquiryFields: [
+      "Photo of the complete original nameplate and material number R910948472",
+      "Required quantity and destination",
+      "Machine type and current pump failure or replacement reason",
+      "Working and peak pressure, drive speed and required flow",
+      "Shaft, flange and port-side installation photos",
+      "Whether an original unit, aftermarket replacement or either route is acceptable",
+    ],
     codeGroups: [
       {
         label: "A10VSO",
@@ -264,6 +509,40 @@ const reviewedModelRecords: HydraulicModelRecord[] = [
         review: "Confirm voltage, frequency and series revision",
       },
     ],
+    procurementSpecs: [
+      {
+        label: "Original model",
+        value: "DG4V-3-6C-M-U-H7-60",
+        basis: "Eaton official product-guide reference",
+      },
+      {
+        label: "Product family",
+        value: "Solenoid-operated directional valve",
+        basis: "DG4V code group",
+      },
+      {
+        label: "Frame / mounting group",
+        value: "Size group 3",
+        basis: "3 code group; mounting drawing still required",
+      },
+      {
+        label: "Spool configuration",
+        value: "6C",
+        basis: "Exact code; verify flow paths against the circuit",
+      },
+      {
+        label: "Operator / connection",
+        value: "M-U option group",
+        basis: "Exact code; confirm physical operator and connection",
+      },
+      {
+        label: "Solenoid / design series",
+        value: "H7-60 configuration",
+        basis: "Exact code; voltage and frequency require confirmation",
+      },
+    ],
+    compatibleApplication:
+      "Industrial directional-control duties that match the DG4V size-group 3 mounting, 6C spool function and the documented operator, connection and design-series options. Voltage, pressure, flow, fluid and the circuit symbol remain required before approval.",
     requiredChecks: [
       "Complete model and part number",
       "Nameplate, connector and mounting photos",
@@ -319,6 +598,40 @@ const reviewedModelRecords: HydraulicModelRecord[] = [
         review: "Confirm 24 VDC coil, connector and installed option",
       },
     ],
+    procurementSpecs: [
+      {
+        label: "Original model",
+        value: "D1VW020BNJW",
+        basis: "Parker approved-component reference",
+      },
+      {
+        label: "Product family",
+        value: "Direct-operated directional valve",
+        basis: "D1VW code group",
+      },
+      {
+        label: "Mounting family",
+        value: "NG06",
+        basis: "D1VW family identification; drawing controls dimensions",
+      },
+      {
+        label: "Spool function",
+        value: "020 code",
+        basis: "Exact model code; verify against the schematic",
+      },
+      {
+        label: "Operator / spring group",
+        value: "B configuration",
+        basis: "Exact model code",
+      },
+      {
+        label: "Electrical / option group",
+        value: "NJW configuration",
+        basis: "Exact model code; confirm coil and connector label",
+      },
+    ],
+    compatibleApplication:
+      "NG06 industrial hydraulic circuits requiring the D1VW 020 spool function and the documented B and NJW option groups. The hydraulic symbol, de-energized position, voltage, pressure, flow and mounting face must be confirmed before replacement approval.",
     requiredChecks: [
       "Complete nameplate and product photos",
       "Required spool and de-energized condition",
@@ -354,7 +667,7 @@ type OwnedCatalogInput = {
   materialNumber?: string;
 };
 
-const catalogRecord = (item: OwnedCatalogInput): HydraulicModelRecord => ({
+export const catalogRecord = (item: OwnedCatalogInput): HydraulicModelRecord => ({
   ...item,
   recordKind: "external-catalog-reference",
   description: `${item.brand} ${item.model} ${item.productType} reference record derived from the cited external catalog and requiring independent commercial confirmation.`,
@@ -368,6 +681,10 @@ const catalogRecord = (item: OwnedCatalogInput): HydraulicModelRecord => ({
   warranty: "Only the terms stated in an accepted quotation apply",
   evidenceNote:
     "The cited third-party page supports the reference only. It does not establish that Hydraulic Match owns the source site, controls its inventory or can supply the item.",
+  alternativeReview: {
+    status: "No public alternative",
+    note: "No replacement model is published from this external reference alone. A candidate requires a separate code, interface and application review.",
+  },
   commercial: {
     status: item.status ?? "Reconfirm",
     price: item.price,
@@ -426,7 +743,7 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     series: "A10VO",
     image: "/images/owned-network/rexroth-a10v.webp",
     sourceSite: "Rexroth Replacements",
-    sourceLabel: "Owned product record",
+    sourceLabel: "External catalog reference",
     sourceUrl:
       "https://www.rexrothreplacements.com/products/a10vo28dr-31r-psc61k40",
     status: "Available",
@@ -451,7 +768,7 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
       series,
       image: "/images/owned-network/rexroth-a10v.webp",
       sourceSite: "Rexroth Replacements",
-      sourceLabel: "Owned product record",
+      sourceLabel: "External catalog reference",
       sourceUrl: `https://www.rexrothreplacements.com/products/${slug}`,
       status: "Reconfirm",
       condition: "New aftermarket",
@@ -473,7 +790,7 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
       series,
       image: "/images/owned-network/rexroth-a4v.png",
       sourceSite: "Rexroth Replacements",
-      sourceLabel: "Owned product record",
+      sourceLabel: "External catalog reference",
       sourceUrl: `https://www.rexrothreplacements.com/products/${slug}`,
       status: "Reconfirm",
       condition: "New aftermarket",
@@ -486,9 +803,9 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     materialNumber: "PVH74 / PVH81",
     productType: "Pump seal kit",
     series: "PVH",
-    image: "/images/owned-network/service-pvh74.jpg",
+    image: "/images/owned-network/service-pvh74.webp",
     sourceSite: "RestoPower",
-    sourceLabel: "Owned product record",
+    sourceLabel: "External catalog reference",
     sourceUrl: "https://restopower.com/products/vickers-pvh74-seal-kit",
     status: "Available",
     price: "USD 45.00",
@@ -501,9 +818,9 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     materialNumber: "PVH98 / PVH106",
     productType: "Pump seal kit",
     series: "PVH",
-    image: "/images/owned-network/service-pvh98.jpg",
+    image: "/images/owned-network/service-pvh98.webp",
     sourceSite: "RestoPower",
-    sourceLabel: "Owned product record",
+    sourceLabel: "External catalog reference",
     sourceUrl:
       "https://restopower.com/products/vickers-pvh98-pvh106-seal-kit-02-102264",
     status: "Available",
@@ -516,9 +833,9 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     model: "RSAP2D12",
     productType: "Pump seal kit",
     series: "AP2D",
-    image: "/images/owned-network/service-ap2d12.jpg",
+    image: "/images/owned-network/service-ap2d12.webp",
     sourceSite: "RestoPower",
-    sourceLabel: "Owned product record",
+    sourceLabel: "External catalog reference",
     sourceUrl: "https://restopower.com/products/rexroth-uchida-ap2d12-seal-kit",
     status: "Available",
     price: "USD 68.00",
@@ -531,9 +848,9 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     materialNumber: "A4VG90",
     productType: "Pump seal ring",
     series: "A4VG",
-    image: "/images/owned-network/service-a4vg90.jpg",
+    image: "/images/owned-network/service-a4vg90.webp",
     sourceSite: "RestoPower",
-    sourceLabel: "Owned product record",
+    sourceLabel: "External catalog reference",
     sourceUrl:
       "https://restopower.com/products/rexroth-r909152493-seal-ring-a4vg90",
     status: "Available",
@@ -547,9 +864,9 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     materialNumber: "A10V18",
     productType: "Check-valve hardware",
     series: "A10V",
-    image: "/images/owned-network/service-a10v18.jpg",
+    image: "/images/owned-network/service-a10v18.webp",
     sourceSite: "RestoPower",
-    sourceLabel: "Owned product record",
+    sourceLabel: "External catalog reference",
     sourceUrl:
       "https://restopower.com/products/r910185973-a10v18-check-valve-pin",
     status: "Available",
@@ -562,9 +879,9 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     model: "MCR03",
     productType: "Motor seal kit",
     series: "MCR",
-    image: "/images/owned-network/service-mcr03.jpg",
+    image: "/images/owned-network/service-mcr03.webp",
     sourceSite: "RestoPower",
-    sourceLabel: "Owned product record",
+    sourceLabel: "External catalog reference",
     sourceUrl: "https://restopower.com/products/poclain-seal-kit-mcr03",
     status: "Available",
     price: "USD 78.00",
@@ -631,7 +948,7 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
       series,
       image: "/images/owned-network/denison-t6dc.jpg",
       sourceSite: "Hydraulic Parts Source",
-      sourceLabel: "Owned item-detail record",
+      sourceLabel: "External item-detail reference",
       sourceUrl: `https://www.hydparts.com/itemdetail/?itemCode=${encodeURIComponent(code)}`,
       status: "Quote required",
       condition: code.endsWith("N") ? "New" : "HPS remanufactured",
@@ -646,7 +963,7 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     series: "CAT Piston Pump",
     image: "/images/owned-network/cat-piston-pump.png",
     sourceSite: "Hydraulic Pump Supply",
-    sourceLabel: "Owned product record",
+    sourceLabel: "External catalog reference",
     sourceUrl:
       "https://hydraulicpumpsupply.com/product/cat-169-4883-259-0815-295-9426-153-9426-10r3805-hydraulic-piston-pump/",
     status: "Quote required",
@@ -658,4 +975,12 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
 export const modelRecords: HydraulicModelRecord[] = [
   ...reviewedModelRecords,
   ...ownedCatalogRecords,
-];
+  ...importedModelRecords,
+].map((record) => ({
+  ...record,
+  recordKind: record.recordKind ?? "engineering-review",
+  alternativeReview: record.alternativeReview ?? {
+    status: "No public alternative",
+    note: "No alternative model is published for this record yet. Submit the complete code and application evidence for candidate review.",
+  },
+}));

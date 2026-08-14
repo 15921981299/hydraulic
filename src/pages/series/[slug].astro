@@ -25,12 +25,12 @@ const seoTitle = isMcr
   ? "MCR Replacement Motor & MCR03 Seal Kit"
   : isCatPump
     ? "Caterpillar Hydraulic Pump Replacement"
-    : `${record.brand} ${record.series} Series`;
+    : `${record.brand} ${record.series} Specifications`;
 const h1Title = isMcr
   ? "MCR Replacement Hydraulic Motors & Seal Kits"
   : isCatPump
     ? "Caterpillar Hydraulic Pump Replacement"
-    : `${record.series} Series Review`;
+    : `${record.series} Specifications & Model Codes`;
 const isValveSeries = /valve/i.test(record.productType);
 const isMotorSeries = /motor/i.test(record.productType);
 const isServiceSeries = /service|seal|cartridge|repair/i.test(
@@ -164,10 +164,8 @@ const minimumEvidence = isValveSeries
     </div>
 
     <section class="series-evidence">
-      <p>SERIES SUPPLY OVERVIEW</p>
-      <h2>
-        Commercially useful series information, not a generic keyword page.
-      </h2>
+      <p>SERIES IDENTIFICATION OVERVIEW</p>
+      <h2>Identify the family before comparing an exact replacement.</h2>
       <dl>
         <div>
           <dt>Series</dt>
@@ -183,8 +181,9 @@ const minimumEvidence = isValveSeries
         </div>
       </dl>
       <p>
-        Availability, condition, MOQ and lead time are confirmed for the exact
-        code and quantity stated in the quotation.
+        This page explains the series-level code and evidence fields. Candidate
+        replacements, current availability and order terms belong on exact-model
+        records and quotations.
       </p>
     </section>
 
@@ -279,7 +278,7 @@ const minimumEvidence = isValveSeries
 
     <section class="series-columns">
       <article class="resource-checklist-card">
-        <h2>Supply Routes</h2>
+        <h2>Record Types Linked to This Series</h2>
         <ul class="resource-list">
           {record.supplyRoutes.map((item) => <li>{item}</li>)}
         </ul>

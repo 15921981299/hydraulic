@@ -40,7 +40,7 @@ const standardApplications = [
   "Distributor and OEM support",
 ];
 
-const ownedSeries = (
+const seriesReference = (
   slug: string,
   brand: string,
   series: string,
@@ -55,23 +55,23 @@ const ownedSeries = (
   series,
   productType,
   image,
-  summary: `${brand} ${series} ${productType} sourcing hub combining exact product records, model-code review and a quotation-stage compatibility commitment.`,
+  summary: `${brand} ${series} ${productType} technical identification hub covering series scope, model-code evidence, configuration fields and linked exact records.`,
   reviewFocus: focus,
   applications: standardApplications,
   supplyRoutes: [
-    "Exact stock or catalog record",
-    "New aftermarket matched supply",
-    "Remanufactured route where identified",
-    "Repair parts and seal-kit route where applicable",
+    "Original identifier and catalog research",
+    "Supplier candidate requiring identity and technical evidence",
+    "Remanufactured route only when condition is documented",
+    "Repair-part or seal-kit route only when the assembly revision is known",
   ],
   sourceSite,
   sourceUrl,
   sourceNote:
-    "Status and commercial fields are reconfirmed for the current quotation.",
+    "The cited external source supports reference research only. Supplier identity, availability, condition and compatibility are confirmed for the specific quotation.",
 });
 
 export const seriesRecords: SeriesRecord[] = [
-  ownedSeries(
+  seriesReference(
     "a10vo",
     "Bosch Rexroth",
     "A10VO",
@@ -80,7 +80,7 @@ export const seriesRecords: SeriesRecord[] = [
     "Rexroth Replacements",
     "https://www.rexrothreplacements.com/collections/a10v-hydraulic-pump",
   ),
-  ownedSeries(
+  seriesReference(
     "a10vso",
     "Bosch Rexroth",
     "A10VSO",
@@ -89,7 +89,7 @@ export const seriesRecords: SeriesRecord[] = [
     "Rexroth Replacements",
     "https://www.rexrothreplacements.com/collections/a10v-hydraulic-pump",
   ),
-  ownedSeries(
+  seriesReference(
     "a4vso",
     "Bosch Rexroth",
     "A4VSO",
@@ -98,7 +98,7 @@ export const seriesRecords: SeriesRecord[] = [
     "Rexroth Replacements",
     "https://www.rexrothreplacements.com/collections/a4v-hydraulic-pump",
   ),
-  ownedSeries(
+  seriesReference(
     "aa10vo",
     "Bosch Rexroth",
     "AA10VO",
@@ -107,7 +107,7 @@ export const seriesRecords: SeriesRecord[] = [
     "Rexroth Replacements",
     "https://www.rexrothreplacements.com/collections/a10v-hydraulic-pump",
   ),
-  ownedSeries(
+  seriesReference(
     "aa10vso",
     "Bosch Rexroth",
     "AA10VSO",
@@ -116,53 +116,53 @@ export const seriesRecords: SeriesRecord[] = [
     "Rexroth Replacements",
     "https://www.rexrothreplacements.com/collections/a10v-hydraulic-pump",
   ),
-  ownedSeries(
+  seriesReference(
     "a4vg",
     "Bosch Rexroth",
     "A4VG",
     "closed-circuit axial piston pump and service parts",
-    "/images/owned-network/service-a4vg90.jpg",
+    "/images/owned-network/service-a4vg90.webp",
     "RestoPower",
     "https://restopower.com/products/rexroth-r909152493-seal-ring-a4vg90",
     serviceFocus,
   ),
-  ownedSeries(
+  seriesReference(
     "a10v",
     "Bosch Rexroth",
     "A10V",
     "axial piston pump and service parts",
-    "/images/owned-network/service-a10v18.jpg",
+    "/images/owned-network/service-a10v18.webp",
     "RestoPower",
     "https://restopower.com/products/r910185973-a10v18-check-valve-pin",
     serviceFocus,
   ),
-  ownedSeries(
+  seriesReference(
     "ap2d",
     "Bosch Rexroth / Uchida",
     "AP2D",
     "compact excavator pump and seal-kit family",
-    "/images/owned-network/service-ap2d12.jpg",
+    "/images/owned-network/service-ap2d12.webp",
     "RestoPower",
     "https://restopower.com/products/rexroth-uchida-ap2d12-seal-kit",
     serviceFocus,
   ),
-  ownedSeries(
+  seriesReference(
     "pvh",
     "Eaton / Vickers",
     "PVH",
     "piston pump and seal-kit family",
-    "/images/owned-network/service-pvh74.jpg",
+    "/images/owned-network/service-pvh74.webp",
     "RestoPower",
     "https://restopower.com/products/vickers-pvh74-seal-kit",
     serviceFocus,
   ),
   {
-    ...ownedSeries(
+    ...seriesReference(
       "mcr",
       "Poclain",
       "MCR",
       "radial piston motor and seal-kit family",
-      "/images/owned-network/service-mcr03.jpg",
+      "/images/owned-network/service-mcr03.webp",
       "RestoPower",
       "https://restopower.com/products/poclain-seal-kit-mcr03",
       serviceFocus,
@@ -178,7 +178,7 @@ export const seriesRecords: SeriesRecord[] = [
     ["m1d", "M1D", "vane motor family"],
     ["tmb", "TMB", "vane motor family"],
   ].map(([slug, series, productType]) =>
-    ownedSeries(
+    seriesReference(
       slug,
       "Parker Denison",
       series,
@@ -189,7 +189,7 @@ export const seriesRecords: SeriesRecord[] = [
       serviceFocus,
     ),
   ),
-  ownedSeries(
+  seriesReference(
     "cat-piston-pump",
     "Caterpillar reference",
     "CAT Piston Pump",
@@ -198,7 +198,7 @@ export const seriesRecords: SeriesRecord[] = [
     "Hydraulic Pump Supply",
     "https://hydraulicpumpsupply.com/product/cat-169-4883-259-0815-295-9426-153-9426-10r3805-hydraulic-piston-pump/",
   ),
-  ownedSeries(
+  seriesReference(
     "4we6",
     "Bosch Rexroth",
     "4WE6",
@@ -208,7 +208,7 @@ export const seriesRecords: SeriesRecord[] = [
     "/alternatives/rexroth/4we6/",
     valveFocus,
   ),
-  ownedSeries(
+  seriesReference(
     "4we10",
     "Bosch Rexroth",
     "4WE10",
@@ -218,7 +218,7 @@ export const seriesRecords: SeriesRecord[] = [
     "/alternatives/rexroth/4we10/",
     valveFocus,
   ),
-  ownedSeries(
+  seriesReference(
     "dg4v",
     "Eaton / Vickers",
     "DG4V",
@@ -228,7 +228,7 @@ export const seriesRecords: SeriesRecord[] = [
     "/alternatives/vickers/dg4v/",
     valveFocus,
   ),
-  ownedSeries(
+  seriesReference(
     "d1vw",
     "Parker",
     "D1VW",
@@ -238,7 +238,7 @@ export const seriesRecords: SeriesRecord[] = [
     "/alternatives/parker/d1vw/",
     valveFocus,
   ),
-  ownedSeries(
+  seriesReference(
     "pavc",
     "Parker",
     "PAVC",

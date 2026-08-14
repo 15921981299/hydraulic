@@ -4,6 +4,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import BreadcrumbHero from "../../components/BreadcrumbHero.astro";
 import DetailRfqStrip from "../../components/DetailRfqStrip.astro";
 import { brandCoverage } from "../../data/brand-coverage";
+import { brandCategoryPages } from "../../data/brand-category-pages";
 import {
   breadcrumbSchema,
   itemListSchema,
@@ -169,6 +170,29 @@ const brandSeo: Record<
       },
     ],
   },
+  kawasaki: {
+    title: "Kawasaki Hydraulic Pumps, Motors & Parts",
+    h1: "Kawasaki Hydraulic Pumps, Motors & Parts",
+    heading: "Kawasaki pump, motor and parts routes",
+    text: "Excavator pumps, swing motors, axial piston units, radial piston motors and service parts are reviewed by complete code, machine application and regulator configuration.",
+    links: [
+      {
+        href: "/products/hydraulic-pumps/",
+        title: "Hydraulic pumps",
+        text: "Pump selection and replacement checks.",
+      },
+      {
+        href: "/products/hydraulic-motors/",
+        title: "Hydraulic motors",
+        text: "Motor replacement and service parts.",
+      },
+      {
+        href: "/products/hydraulic-repair-kits/",
+        title: "Repair kits and parts",
+        text: "Seal kits, rotating groups and service parts.",
+      },
+    ],
+  },
 };
 const seo = brandSeo[brand.slug];
 const defaultBrandTitle = `${brand.name} Hydraulic Parts & Replacement`;
@@ -258,11 +282,13 @@ const verificationRule = (productType: string, reviewFocus: string) => {
     <div class="container">
       <header class="brand-detail__intro">
         <div>
-          <p>INDEPENDENT MODEL-CODE AND SOURCING REVIEW</p>
+          <p class="brand-detail__kicker">
+            INDEPENDENT MODEL-CODE AND SOURCING REVIEW
+          </p>
           <h2>{brand.name} references accepted for structured RFQ review.</h2>
-          <span>{brand.positioning}</span>
+          <p class="brand-detail__lead">{brand.positioning}</p>
         </div>
-        <aside>
+        <aside class="brand-detail__disclaimer">
           <strong>Relationship statement</strong>
           <p>
             Hydraulic Match is not affiliated with, authorized by or endorsed by {
@@ -273,7 +299,7 @@ const verificationRule = (productType: string, reviewFocus: string) => {
         </aside>
       </header>
 
-      <div class="brand-detail__route">
+      <div class="brand-detail__route" aria-label="Review summary">
         <div>
           <span>Published coverage</span>
           <strong>{brand.seriesReferences.length} series-level entries</strong>
@@ -298,15 +324,49 @@ const verificationRule = (productType: string, reviewFocus: string) => {
         </div>
       </section>
 
+      {
+        brandCategoryPages.filter((page) => page.brandSlug === brand.slug)
+          .length > 0 && (
+          <section class="brand-detail__section">
+            <div class="brand-detail__heading">
+              <p>CATEGORY ROUTES</p>
+              <h2>Review {brand.name} references by product category</h2>
+              <p class="brand-detail__section-lead">
+                Start from the product category that matches the installed
+                component, then submit the complete model code.
+              </p>
+            </div>
+            <div class="brand-seo-routes">
+              {
+                brandCategoryPages
+                  .filter((page) => page.brandSlug === brand.slug)
+                  .map((page) => (
+                    <a
+                      href={`/brands/${brand.slug}/${page.category}/`}
+                      class="brand-seo-route"
+                    >
+                      <strong>{page.categoryH1Label}</strong>
+                      <span>
+                        {page.series.length + page.models.length} references
+                        and exact records.
+                      </span>
+                    </a>
+                  ))
+              }
+            </div>
+          </section>
+        )
+      }
+
       <section class="brand-detail__section">
         <div class="brand-detail__heading">
           <p>IDENTIFICATION HIERARCHY</p>
           <h2>How a {brand.name} reference moves from a name to a decision</h2>
-          <span>
+          <p class="brand-detail__section-lead">
             Brand recognition is only the first routing step. The review narrows
             the inquiry from manufacturer name to product family, series,
             complete code and finally the installed interfaces and duty.
-          </span>
+          </p>
         </div>
         <ol class="brand-detail__decision-path">
           <li>
@@ -343,11 +403,11 @@ const verificationRule = (productType: string, reviewFocus: string) => {
             <div class="brand-detail__heading">
               <p>PRODUCT AND REPLACEMENT ROUTES</p>
               <h2>{seo.heading}</h2>
-              <span>{seo.text}</span>
+              <p class="brand-detail__section-lead">{seo.text}</p>
             </div>
             <div class="brand-seo-routes">
               {seo.links.map((link) => (
-                <a href={link.href}>
+                <a href={link.href} class="brand-seo-route">
                   <strong>{link.title}</strong>
                   <span>{link.text}</span>
                 </a>
@@ -361,12 +421,12 @@ const verificationRule = (productType: string, reviewFocus: string) => {
         <div class="brand-detail__heading">
           <p>SERIES DIRECTORY</p>
           <h2>Commonly submitted {brand.name} references</h2>
-          <span>
+          <p class="brand-detail__section-lead">
             The table is an inquiry-routing index, not a compatibility chart.
             Every suffix and installed interface remains subject to review.
-          </span>
+          </p>
         </div>
-        <div class="resource-table-wrap">
+        <div class="resource-table-wrap brand-detail__table">
           <table class="resource-table">
             <thead>
               <tr>
@@ -406,13 +466,13 @@ const verificationRule = (productType: string, reviewFocus: string) => {
         <div class="brand-detail__heading">
           <p>FAILURE-MODE REVIEW</p>
           <h2>Why the series rows need different evidence</h2>
-          <span>
+          <p class="brand-detail__section-lead">
             These checks explain the decision risk behind each published
             reference. They are review rules, not a claim that every listed
             configuration is available.
-          </span>
+          </p>
         </div>
-        <div class="resource-table-wrap">
+        <div class="resource-table-wrap brand-detail__table">
           <table class="resource-table">
             <thead>
               <tr>
@@ -468,15 +528,20 @@ const verificationRule = (productType: string, reviewFocus: string) => {
             Use the manufacturer portfolio to identify the family—not to infer
             an automatic replacement.
           </h2>
-          <span>
+          <p class="brand-detail__section-lead">
             The external source below provides manufacturer context for product
             identification. Hydraulic Match's page independently organizes
             customer-submitted references. It does not reproduce a full catalog,
             certify current production status or establish authorization,
             inventory or interchangeability.
-          </span>
+          </p>
         </div>
-        <a href={brand.officialUrl} rel="noopener noreferrer">
+        <a
+          class="brand-detail__official"
+          href={brand.officialUrl}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           {brand.officialLabel} →
         </a>
       </section>
@@ -513,229 +578,434 @@ const verificationRule = (productType: string, reviewFocus: string) => {
 </BaseLayout>
 
 <style>
+  /*
+    SEO / mobile-first layout:
+    - Align with navbar/breadcrumb horizontal inset (global .container is 0)
+    - Body copy ≥ 16px, section leads ≤ ~75ch
+    - Touch targets ≥ 44px on primary links
+  */
   .brand-detail {
-    padding: 80px 0 100px;
-    background: #fff;
+    padding: 64px 0 80px;
+    background:
+      radial-gradient(
+        900px 280px at 50% -8%,
+        rgba(20, 110, 245, 0.06),
+        transparent 70%
+      ),
+      linear-gradient(180deg, #f8fafc 0%, #fff 22%, #fff 100%);
   }
+
+  .brand-detail > .container {
+    width: 100%;
+    max-width: 1880px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 60px;
+    padding-right: 60px;
+    box-sizing: border-box;
+  }
+
   .brand-detail__intro {
     display: grid;
     grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.8fr);
-    gap: 40px;
+    gap: 32px;
     align-items: start;
+    margin-bottom: 32px;
   }
-  .brand-detail__intro > div > p,
+
+  .brand-detail__kicker,
   .brand-detail__heading > p,
   .brand-detail__columns section > p,
-  .brand-detail__source p {
-    margin: 0;
+  .brand-detail__source > div > p:first-child {
+    margin: 0 0 8px;
     color: var(--color-primary);
-    font-size: 11px;
+    font-family: var(--font-title);
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.11em;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
+
   .brand-detail__intro h2 {
-    margin: 10px 0 16px;
-    font-size: clamp(32px, 4vw, 48px);
-    line-height: 1.12;
+    margin: 0 0 16px;
+    max-width: 32ch;
+    color: #0f172a;
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+    line-height: 1.18;
+    letter-spacing: -0.02em;
     text-transform: none;
   }
-  .brand-detail__intro > div > span,
-  .brand-detail__heading > span,
-  .brand-detail__source span {
-    color: #536071;
+
+  .brand-detail__lead,
+  .brand-detail__section-lead {
+    margin: 0;
+    max-width: 72ch;
+    color: #475569;
+    font-size: 16px;
     line-height: 1.75;
   }
-  .brand-detail__intro aside {
+
+  .brand-detail__disclaimer {
     padding: 24px;
+    border: 1px solid rgba(20, 110, 245, 0.16);
     border-top: 3px solid var(--color-primary);
-    background: #f5f7fa;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
   }
-  .brand-detail__intro aside p {
-    margin: 8px 0 0;
-    color: #536071;
+
+  .brand-detail__disclaimer strong {
+    color: #0f172a;
+    font-size: 14px;
+  }
+
+  .brand-detail__disclaimer p {
+    margin: 10px 0 0;
+    color: #475569;
+    font-size: 14px;
     line-height: 1.65;
   }
+
   .brand-detail__route {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    margin: 34px 0 54px;
-    border: 1px solid var(--color-stroke);
-    background: #f8fafc;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0 0 48px;
+    padding: 0;
+    border: 0;
+    background: transparent;
   }
+
   .brand-detail__route div {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 96px;
     padding: 20px;
-    border-right: 1px solid var(--color-stroke);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
   }
-  .brand-detail__route div:last-child {
-    border-right: 0;
-  }
+
   .brand-detail__route span {
     display: block;
-    margin-bottom: 5px;
+    margin: 0;
     color: #64748b;
     font-size: 11px;
     font-weight: 700;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
   }
+
   .brand-detail__route strong {
-    color: var(--color-title);
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.35;
   }
+
   .brand-detail__section {
-    margin: 54px 0;
+    margin: 0 0 48px;
   }
+
   .brand-detail__heading {
-    max-width: 850px;
+    max-width: 72ch;
     margin-bottom: 20px;
   }
+
   .brand-detail__heading h2,
   .brand-detail__columns h2,
   .brand-detail__source h2 {
-    margin: 8px 0 12px;
-    font-size: 30px;
+    margin: 0 0 12px;
+    color: #0f172a;
+    font-size: clamp(1.35rem, 2vw, 1.75rem);
+    line-height: 1.25;
     text-transform: none;
   }
+
   .brand-detail__chips {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
   }
-  .brand-seo-routes {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-  .brand-seo-routes a {
-    display: grid;
-    gap: 8px;
-    padding: 20px;
-    border: 1px solid var(--color-stroke);
-    color: var(--color-title);
-    text-decoration: none;
-  }
-  .brand-seo-routes a:hover {
-    border-color: var(--color-primary);
-  }
-  .brand-seo-routes span {
-    color: #536071;
-    line-height: 1.55;
-  }
+
   .brand-detail__chips span {
-    padding: 10px 13px;
-    border: 1px solid #cbd5e1;
-    background: #f8fafc;
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 8px 14px;
+    border: 1px solid rgba(20, 110, 245, 0.14);
+    border-radius: 999px;
+    background: rgba(20, 110, 245, 0.05);
     color: #334155;
+    font-size: 13px;
     font-weight: 600;
   }
+
+  .brand-seo-routes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .brand-seo-route {
+    display: grid;
+    gap: 8px;
+    min-height: 120px;
+    padding: 22px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: #fff;
+    color: #0f172a;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .brand-seo-route:hover {
+    border-color: rgba(20, 110, 245, 0.32);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    transform: translateY(-2px);
+  }
+
+  .brand-seo-route strong {
+    font-size: 1.05rem;
+    line-height: 1.3;
+  }
+
+  .brand-seo-route span {
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
   .brand-detail__decision-path {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
     margin: 0;
-    padding: 1px;
-    background: var(--color-stroke);
+    padding: 0;
     list-style: none;
+    background: transparent;
   }
+
   .brand-detail__decision-path li {
     display: grid;
     align-content: start;
-    gap: 8px;
+    gap: 10px;
     padding: 22px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
     background: #fff;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
   }
+
   .brand-detail__decision-path strong {
-    color: var(--color-title);
+    color: #0f172a;
+    font-size: 15px;
   }
+
   .brand-detail__decision-path span {
-    color: #536071;
-    line-height: 1.6;
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.65;
   }
-  .resource-table a,
-  .resource-note a {
+
+  .brand-detail__table {
+    margin-bottom: 0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .brand-detail .resource-table a,
+  .brand-detail .resource-note a {
     color: var(--color-primary);
     font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
   }
+
+  .brand-detail .resource-table a:hover,
+  .brand-detail .resource-note a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
   .brand-detail__columns {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
-    margin: 54px 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0 0 48px;
   }
+
   .brand-detail__columns section {
     padding: 28px;
-    border: 1px solid var(--color-stroke);
-    background: #f8fafc;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 12px;
+    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
   }
+
   .brand-detail__columns ol,
   .brand-detail__columns ul {
-    margin: 18px 0 0;
+    margin: 16px 0 0;
     padding-left: 20px;
-    color: #536071;
+    color: #475569;
+    font-size: 15px;
   }
+
   .brand-detail__columns li {
     margin: 10px 0;
-    line-height: 1.6;
+    line-height: 1.65;
   }
+
   .brand-detail__source {
     display: flex;
     justify-content: space-between;
     gap: 32px;
     align-items: center;
-    margin: 54px 0 28px;
-    padding: 30px;
+    margin: 0 0 24px;
+    padding: 28px 32px;
+    border: 1px solid rgba(20, 110, 245, 0.14);
     border-left: 3px solid var(--color-primary);
-    background: #f5f7fa;
+    border-radius: 12px;
+    background: #f8fafc;
   }
+
   .brand-detail__source > div {
-    max-width: 760px;
+    max-width: 72ch;
   }
-  .brand-detail__source a {
+
+  .brand-detail__official {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     flex-shrink: 0;
     color: var(--color-primary);
     font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
   }
+
+  .brand-detail__official:hover {
+    border-color: var(--color-primary);
+  }
+
   .brand-detail__boundary {
     margin: 0 0 28px;
     padding: 24px;
-    border: 1px solid #f1c88b;
-    background: #fff9ef;
+    border: 1px solid rgba(217, 119, 6, 0.28);
+    border-radius: 12px;
+    background: #fffbeb;
   }
+
+  .brand-detail__boundary strong {
+    color: #0f172a;
+  }
+
   .brand-detail__boundary p {
-    margin: 8px 0 0;
-    color: #536071;
+    margin: 10px 0 0;
+    color: #475569;
+    font-size: 15px;
     line-height: 1.7;
   }
+
+  .brand-detail .resource-note {
+    margin: 0 0 28px;
+    border-radius: 12px;
+  }
+
   a:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 3px;
+    border-radius: 4px;
   }
+
+  @media (max-width: 1050px) {
+    .brand-detail > .container {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
   @media (max-width: 850px) {
+    .brand-detail {
+      padding: 56px 0 72px;
+    }
     .brand-detail__intro,
     .brand-detail__columns,
     .brand-seo-routes,
     .brand-detail__decision-path {
       grid-template-columns: 1fr;
     }
+    .brand-detail__intro {
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+    .brand-detail__intro h2 {
+      max-width: none;
+    }
     .brand-detail__route {
       grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 40px;
     }
-    .brand-detail__route div {
-      border-right: 0;
-      border-bottom: 1px solid var(--color-stroke);
+    .brand-detail__section {
+      margin-bottom: 40px;
     }
-    .brand-detail__route div:last-child {
-      border-bottom: 0;
+    .brand-detail__columns {
+      margin-bottom: 40px;
     }
     .brand-detail__source {
       align-items: flex-start;
       flex-direction: column;
+      gap: 16px;
+      padding: 24px;
     }
   }
+
   @media (max-width: 600px) {
     .brand-detail {
-      padding: 56px 0 72px;
+      padding: 48px 0 64px;
     }
+    .brand-detail > .container {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .brand-detail__lead,
+    .brand-detail__section-lead {
+      font-size: 16px;
+    }
+    .brand-detail__chips span {
+      min-height: 44px;
+    }
+    .brand-detail__table .resource-table,
     .resource-table {
-      min-width: 760px;
+      min-width: 720px;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .brand-detail > .container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-seo-route,
+    .brand-detail__official {
+      transition: none;
+    }
+    .brand-seo-route:hover {
+      transform: none;
     }
   }
 </style>

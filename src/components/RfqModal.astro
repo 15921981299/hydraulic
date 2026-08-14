@@ -1,5 +1,5 @@
 ---
-import { site } from '../data/site';
+import { site } from "../data/site";
 ---
 
 <div class="rfq-modal" id="rfq-modal" aria-hidden="true">
@@ -11,15 +11,30 @@ import { site } from '../data/site';
     aria-labelledby="rfq-modal-title"
     tabindex="-1"
   >
-    <button type="button" class="rfq-modal__close" data-rfq-close aria-label="Close inquiry form">&times;</button>
+    <button
+      type="button"
+      class="rfq-modal__close"
+      data-rfq-close
+      aria-label="Close inquiry form">&times;</button
+    >
     <div class="rfq-modal__header">
       <p class="rfq-modal__kicker">Quick match request</p>
       <h2 id="rfq-modal-title">Request a Model Review</h2>
-      <p>Send the original brand, complete model code, quantity, destination, and a nameplate photo when available.</p>
+      <p>
+        Send the original brand, complete model code, quantity, destination, and
+        a nameplate photo when available.
+      </p>
     </div>
 
-    <form class="rfq-modal__form" id="rfq-modal-form" data-endpoint="/api/rfq" data-fallback-email={site.email}>
-      <div class="rfq-modal__context" id="rfq-modal-context">Current page inquiry</div>
+    <form
+      class="rfq-modal__form"
+      id="rfq-modal-form"
+      data-endpoint="/api/rfq"
+      data-fallback-email={site.email}
+    >
+      <div class="rfq-modal__context" id="rfq-modal-context">
+        Current page inquiry
+      </div>
       <label>
         <span>Your Name *</span>
         <input type="text" name="name" autocomplete="name" required />
@@ -34,19 +49,38 @@ import { site } from '../data/site';
       </label>
       <label>
         <span>Destination Country *</span>
-        <input type="text" name="country" autocomplete="country-name" required />
+        <input
+          type="text"
+          name="country"
+          autocomplete="country-name"
+          required
+        />
       </label>
       <label>
         <span>Original Brand *</span>
-        <input type="text" name="brand" placeholder="e.g. Rexroth, Vickers, Parker" required />
+        <input
+          type="text"
+          name="brand"
+          placeholder="e.g. Rexroth, Vickers, Parker"
+          required
+        />
       </label>
       <label>
         <span>Full Model Code</span>
-        <input type="text" name="model" placeholder="Or upload a clear nameplate" />
+        <input
+          type="text"
+          name="model"
+          placeholder="Or upload a clear nameplate"
+        />
       </label>
       <label>
         <span>Quantity *</span>
-        <input type="text" name="quantity" placeholder="e.g. 2 pcs or 1 set" required />
+        <input
+          type="text"
+          name="quantity"
+          placeholder="e.g. 2 pcs or 1 set"
+          required
+        />
       </label>
       <label class="rfq-modal__full">
         <span>Application or Additional Details</span>
@@ -58,7 +92,12 @@ import { site } from '../data/site';
       </label>
       <label class="rfq-modal__upload rfq-modal__full">
         <span>Upload nameplates, drawings or an RFQ list</span>
-        <input type="file" name="attachments" accept=".pdf,.xls,.xlsx,.doc,.docx,.csv,.zip,.jpg,.jpeg,.png,.webp" multiple />
+        <input
+          type="file"
+          name="attachments"
+          accept=".pdf,.xls,.xlsx,.doc,.docx,.csv,.jpg,.jpeg,.png,.webp"
+          multiple
+        />
         <small>Up to 5 files, 5 MB each and 20 MB combined.</small>
       </label>
       <input type="hidden" name="source" value="Modal RFQ" />
@@ -66,75 +105,123 @@ import { site } from '../data/site';
       <input type="hidden" name="page_title" />
       <input type="hidden" name="rfq_context" />
       <div class="rfq-modal__hp" aria-hidden="true">
-        <label>Leave this field empty <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+        <label
+          >Leave this field empty <input
+            type="text"
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+          /></label
+        >
       </div>
-      <button type="submit" class="rfq-modal__submit">Send Match Request</button>
+      {
+        site.turnstileSiteKey && (
+          <div class="rfq-modal__turnstile rfq-modal__full">
+            <div
+              class="cf-turnstile"
+              data-sitekey={site.turnstileSiteKey}
+              data-theme="light"
+            />
+          </div>
+        )
+      }
+      <button type="submit" class="rfq-modal__submit">Send Match Request</button
+      >
       <p class="rfq-modal__note">
-        Prefer the full page? <a href="/request-a-quote/?source=modal-full-form">Open complete RFQ</a>
+        Prefer the full page? <a href="/request-a-quote/?source=modal-full-form"
+          >Open complete RFQ</a
+        >
       </p>
       <div class="form-result rfq-modal__result" aria-live="polite"></div>
     </form>
   </section>
 </div>
 
-<script>
-  import { fireAttributionLeadEvent, populateRfqAttributionFields } from '../scripts/attribution';
+{
+  site.turnstileSiteKey && (
+    <script
+      is:inline
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer
+    />
+  )
+}
 
-  const modal = document.getElementById('rfq-modal');
-  const panel = modal?.querySelector<HTMLElement>('.rfq-modal__panel');
-  const form = document.getElementById('rfq-modal-form') as HTMLFormElement | null;
-  const contextEl = document.getElementById('rfq-modal-context');
-  const submitBtn = form?.querySelector<HTMLButtonElement>('.rfq-modal__submit');
-  const resultEl = form?.querySelector<HTMLElement>('.rfq-modal__result');
+<script>
+  import {
+    fireAttributionLeadEvent,
+    populateRfqAttributionFields,
+  } from "../scripts/attribution";
+
+  const modal = document.getElementById("rfq-modal");
+  const panel = modal?.querySelector<HTMLElement>(".rfq-modal__panel");
+  const form = document.getElementById(
+    "rfq-modal-form",
+  ) as HTMLFormElement | null;
+  const contextEl = document.getElementById("rfq-modal-context");
+  const submitBtn =
+    form?.querySelector<HTMLButtonElement>(".rfq-modal__submit");
+  const resultEl = form?.querySelector<HTMLElement>(".rfq-modal__result");
   let lastFocus: HTMLElement | null = null;
   let formStarted = false;
 
   const setHidden = (name: string, value: string) => {
-    const input = form?.querySelector<HTMLInputElement>(`input[name="${name}"]`);
+    const input = form?.querySelector<HTMLInputElement>(
+      `input[name="${name}"]`,
+    );
     if (input) input.value = value;
   };
 
   const openModal = (trigger: HTMLAnchorElement) => {
     if (!modal || !form || !panel) return;
-    lastFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const context = trigger.dataset.rfqContext || trigger.dataset.rfqTitle || document.title;
-    const source = trigger.dataset.rfqSource || new URL(trigger.href, window.location.href).searchParams.get('source') || 'modal-rfq';
+    lastFocus =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    const context =
+      trigger.dataset.rfqContext || trigger.dataset.rfqTitle || document.title;
+    const source =
+      trigger.dataset.rfqSource ||
+      new URL(trigger.href, window.location.href).searchParams.get("source") ||
+      "modal-rfq";
 
     contextEl && (contextEl.textContent = context);
-    setHidden('source', source);
-    setHidden('page_url', window.location.href);
-    setHidden('page_title', document.title);
-    setHidden('rfq_context', context);
+    setHidden("source", source);
+    setHidden("page_url", window.location.href);
+    setHidden("page_title", document.title);
+    setHidden("rfq_context", context);
     populateRfqAttributionFields(form);
 
-    modal.classList.add('is-open');
-    modal.setAttribute('aria-hidden', 'false');
-    document.documentElement.classList.add('rfq-modal-lock');
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.documentElement.classList.add("rfq-modal-lock");
     panel.focus();
 
-    if (typeof window.gtag === 'function') {
-      window.gtag('event', 'rfq_modal_open', {
-        event_category: 'Funnel',
+    if (typeof window.gtag === "function") {
+      window.gtag("event", "rfq_modal_open", {
+        event_category: "Funnel",
         event_label: source,
-        funnel_stage: 'quote',
+        funnel_stage: "quote",
       });
     }
   };
 
   const closeModal = () => {
     if (!modal) return;
-    modal.classList.remove('is-open');
-    modal.setAttribute('aria-hidden', 'true');
-    document.documentElement.classList.remove('rfq-modal-lock');
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.documentElement.classList.remove("rfq-modal-lock");
     lastFocus?.focus();
   };
 
   const keepFocusInsideModal = (event: KeyboardEvent) => {
-    if (event.key !== 'Tab' || !modal?.classList.contains('is-open') || !panel) return;
+    if (event.key !== "Tab" || !modal?.classList.contains("is-open") || !panel)
+      return;
     const focusable = Array.from(
       panel.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-      )
+        'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
     ).filter((element) => element.offsetParent !== null);
     if (focusable.length === 0) {
       event.preventDefault();
@@ -152,111 +239,136 @@ import { site } from '../data/site';
     }
   };
 
-  document.querySelectorAll<HTMLAnchorElement>('[data-rfq-modal]').forEach((trigger) => {
-    trigger.addEventListener('click', (event) => {
-      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      event.preventDefault();
-      openModal(trigger);
+  document
+    .querySelectorAll<HTMLAnchorElement>("[data-rfq-modal]")
+    .forEach((trigger) => {
+      trigger.addEventListener("click", (event) => {
+        if (
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey
+        )
+          return;
+        event.preventDefault();
+        openModal(trigger);
+      });
     });
-  });
 
-  modal?.querySelectorAll<HTMLElement>('[data-rfq-close]').forEach((closeTrigger) => {
-    closeTrigger.addEventListener('click', closeModal);
-  });
+  modal
+    ?.querySelectorAll<HTMLElement>("[data-rfq-close]")
+    .forEach((closeTrigger) => {
+      closeTrigger.addEventListener("click", closeModal);
+    });
 
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && modal?.classList.contains('is-open')) {
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && modal?.classList.contains("is-open")) {
       closeModal();
       return;
     }
     keepFocusInsideModal(event);
   });
 
-  form?.querySelectorAll('input, textarea').forEach((field) => {
+  form?.querySelectorAll("input, textarea").forEach((field) => {
     field.addEventListener(
-      'focus',
+      "focus",
       () => {
-        if (formStarted || typeof window.gtag !== 'function') return;
+        if (formStarted || typeof window.gtag !== "function") return;
         formStarted = true;
-        window.gtag('event', 'form_start', {
-          event_category: 'Funnel',
-          event_label: 'rfq_modal',
-          funnel_stage: 'quote',
+        window.gtag("event", "form_start", {
+          event_category: "Funnel",
+          event_label: "rfq_modal",
+          funnel_stage: "quote",
         });
       },
-      { once: true }
+      { once: true },
     );
   });
 
-  form?.addEventListener('submit', async (event) => {
+  form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!form || !submitBtn || !resultEl) return;
     submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending...';
-    resultEl.className = 'form-result rfq-modal__result';
-    resultEl.innerHTML = '';
+    submitBtn.textContent = "Sending...";
+    resultEl.className = "form-result rfq-modal__result";
+    resultEl.innerHTML = "";
 
     populateRfqAttributionFields(form);
     const formData = new FormData(form);
-    const attachments = formData.getAll('attachments').filter((entry) => entry instanceof File && entry.size > 0) as File[];
-    const model = formData.get('model')?.toString().trim() ?? '';
+    const attachments = formData
+      .getAll("attachments")
+      .filter((entry) => entry instanceof File && entry.size > 0) as File[];
+    const model = formData.get("model")?.toString().trim() ?? "";
     const fileError =
       attachments.length > 5
-        ? 'Please upload no more than 5 files.'
+        ? "Please upload no more than 5 files."
         : attachments.some((file) => file.size > 5 * 1024 * 1024)
-          ? 'Each file must be 5 MB or smaller.'
-          : attachments.reduce((total, file) => total + file.size, 0) > 20 * 1024 * 1024
-            ? 'The combined attachment size must be 20 MB or smaller.'
+          ? "Each file must be 5 MB or smaller."
+          : attachments.reduce((total, file) => total + file.size, 0) >
+              20 * 1024 * 1024
+            ? "The combined attachment size must be 20 MB or smaller."
             : !model && attachments.length === 0
-              ? 'Enter the full model code or upload at least one clear reference file.'
-              : '';
+              ? "Enter the full model code or upload at least one clear reference file."
+              : "";
     if (fileError) {
-      resultEl.className = 'form-result rfq-modal__result is-visible is-error';
+      resultEl.className = "form-result rfq-modal__result is-visible is-error";
       resultEl.textContent = fileError;
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Send Match Request';
+      submitBtn.textContent = "Send Match Request";
       return;
     }
-    if (formData.get('website')) {
-      window.location.href = '/thank-you/?source=rfq-modal';
+    if (formData.get("website")) {
+      window.location.href = "/thank-you/?source=rfq-modal";
       return;
     }
 
     try {
       const endpoint = form.dataset.endpoint;
-      if (!endpoint) throw new Error('Missing form endpoint');
+      if (!endpoint) throw new Error("Missing form endpoint");
       const response = await fetch(endpoint, {
-        method: 'POST',
+        method: "POST",
         body: formData,
-        headers: { Accept: 'application/json' },
+        headers: { Accept: "application/json" },
       });
 
-      if (!response.ok) throw new Error('Server error');
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null);
+        throw new Error(
+          typeof payload?.message === "string"
+            ? payload.message
+            : "The form could not be sent.",
+        );
+      }
 
-      const source = formData.get('source')?.toString() || 'rfq_modal';
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'rfq_modal_submit', {
-          event_category: 'Funnel',
+      const source = formData.get("source")?.toString() || "rfq_modal";
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "rfq_modal_submit", {
+          event_category: "Funnel",
           event_label: source,
-          funnel_stage: 'quote',
-          has_attachment: attachments.length > 0 ? 'yes' : 'no',
+          funnel_stage: "quote",
+          has_attachment: attachments.length > 0 ? "yes" : "no",
         });
-        window.gtag('event', 'generate_lead', {
-          event_category: 'RFQ',
+        window.gtag("event", "generate_lead", {
+          event_category: "RFQ",
           event_label: source,
         });
         fireAttributionLeadEvent({
           lead_source: source,
-          url_source: formData.get('url_source')?.toString() || 'unspecified',
+          url_source: formData.get("url_source")?.toString() || "unspecified",
         });
       }
-      window.location.href = '/thank-you/?source=rfq-modal';
-    } catch {
-      const fallbackEmail = form.dataset.fallbackEmail ?? 'sales@hydraulicmatch.com';
-      resultEl.className = 'form-result rfq-modal__result is-visible is-error';
-      resultEl.innerHTML = `<p>Something went wrong. Please email <a href="mailto:${fallbackEmail}">${fallbackEmail}</a> or use the <a href="/contact/?source=modal-error">full contact form</a>.</p>`;
+      window.location.href = "/thank-you/?source=rfq-modal";
+    } catch (error) {
+      const fallbackEmail =
+        form.dataset.fallbackEmail ?? "sales@hydraulicmatch.com";
+      resultEl.className = "form-result rfq-modal__result is-visible is-error";
+      const message =
+        error instanceof Error ? error.message : "The form could not be sent.";
+      resultEl.textContent = `${message} If the problem continues, email ${fallbackEmail}.`;
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Send Match Request';
+      submitBtn.textContent = "Send Match Request";
     }
   });
 </script>
@@ -340,6 +452,9 @@ import { site } from '../data/site';
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
+  }
+  .rfq-modal__turnstile {
+    min-height: 65px;
   }
 
   .rfq-modal__context,

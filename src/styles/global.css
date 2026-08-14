@@ -1093,7 +1093,8 @@ blockquote {
 }
 
 .service-section {
-    overflow: clip
+    overflow: clip;
+    margin-top: 60px;
 }
 
 .service-wrapper {

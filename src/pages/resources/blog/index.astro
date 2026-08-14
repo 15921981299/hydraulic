@@ -1,0 +1,191 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import BreadcrumbHero from "../../../components/BreadcrumbHero.astro";
+import HydraulicProductSidebar from "../../../components/HydraulicProductSidebar.astro";
+import { sortedPosts, blogCategories } from "../../../data/blog-posts";
+import {
+  breadcrumbSchema,
+  itemListSchema,
+  site,
+} from "../../../data/site";
+import "../../../styles/resource-page.css";
+
+const pageTitle = "Hydraulic Sourcing & Technical Blog | Hydraulic Match";
+const pageDescription =
+  "Technical articles, sourcing guides and comparison resources for hydraulic component buyers. Covers pump, valve, cylinder and motor identification, cross-referencing and pre-shipment inspection.";
+const pageUrl = `${site.url}/resources/blog/`;
+const postsByCategory = new Map<string, typeof sortedPosts>();
+for (const post of sortedPosts) {
+  const list = postsByCategory.get(post.category) ?? [];
+  list.push(post);
+  postsByCategory.set(post.category, list);
+}
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  currentPath="/resources/blog"
+  image="/images/hydraulic/hydraulic-valves.webp"
+  jsonLd={[
+    breadcrumbSchema([
+      { name: "Home", url: site.url },
+      { name: "Resources", url: `${site.url}/resources/` },
+      { name: "Blog", url: pageUrl },
+    ]),
+    itemListSchema(
+      sortedPosts.map((post) => ({
+        name: post.title,
+        url: `${site.url}/resources/blog/${post.slug}/`,
+      })),
+    ),
+  ]}
+>
+  <BreadcrumbHero
+    title="Hydraulic Sourcing Blog"
+    trail={[
+      { label: "Home", href: "/" },
+      { label: "Resources", href: "/resources/" },
+      { label: "Blog" },
+    ]}
+    variant="3"
+  />
+
+  <section class="blog-details-section detail-page-section">
+    <div class="section-gap bottom">
+      <div class="container">
+        <article class="blog-details-content-block resource-page fade-in">
+          <p class="resource-intro">
+            Technical articles, sourcing guides and comparison resources for
+            hydraulic component buyers — covering model-code identification,
+            cross-referencing, supplier screening and pre-shipment inspection.
+          </p>
+
+          <div class="detail-page-layout has-sidebar">
+            <div class="detail-page-main">
+              <div class="blog-category-nav">
+                <span class="blog-category-label">Filter by category:</span>
+                {blogCategories.map((cat) => (
+                  <a href={`#${cat.slug}`} class="blog-category-link">
+                    {cat.label}
+                  </a>
+                ))}
+              </div>
+
+              {blogCategories.map((category) => {
+                const posts = postsByCategory.get(category.slug) ?? [];
+                if (!posts.length) return null;
+                return (
+                  <section id={category.slug}>
+                    <h2>{category.label}</h2>
+                    <p class="blog-category-desc">{category.description}</p>
+                    <div class="hub-grid">
+                      {posts.map((post) => (
+                        <a
+                          class="hub-card"
+                          href={`/resources/blog/${post.slug}/`}
+                        >
+                          <div class="hub-card-body">
+                            <p class="hub-card-meta">
+                              {post.published}
+                              {post.readingTime ? ` · ${post.readingTime}` : ""}
+                            </p>
+                            <h3 class="hub-card-title">{post.title}</h3>
+                            <p class="hub-card-summary">{post.description}</p>
+                            <span class="hub-card-link">Read article →</span>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </section>
+                );
+              })}
+
+              <div class="blog-rss-box">
+                <p>
+                  <strong>Stay updated</strong> — subscribe to the blog via{" "}
+                  <a href="/rss.xml">RSS feed</a> for new hydraulic sourcing
+                  articles and technical guides.
+                </p>
+              </div>
+            </div>
+
+            <aside class="detail-page-sidebar">
+              <HydraulicProductSidebar
+                activeSlug=""
+                quoteHref="/request-a-quote/?source=blog-index"
+              />
+            </aside>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-category-nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 32px;
+    padding: 16px 20px;
+    border: 1px solid var(--color-stroke);
+    border-radius: 8px;
+    background: #fff;
+  }
+  .blog-category-label {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .blog-category-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 4px 14px;
+    border: 1px solid rgba(20, 110, 245, 0.18);
+    border-radius: 999px;
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s;
+  }
+  .blog-category-link:hover {
+    background: rgba(20, 110, 245, 0.07);
+    border-color: rgba(20, 110, 245, 0.4);
+  }
+  .blog-category-desc {
+    color: #64748b;
+    margin-bottom: 16px;
+  }
+  .blog-rss-box {
+    margin-top: 40px;
+    padding: 24px;
+    border: 1px solid var(--color-stroke);
+    border-radius: 8px;
+    background: #f5f7fa;
+  }
+  .blog-rss-box p {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+  }
+  .blog-rss-box a {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .blog-rss-box a:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 767px) {
+    .blog-category-nav {
+      gap: 6px;
+      padding: 12px 14px;
+    }
+  }
+</style>

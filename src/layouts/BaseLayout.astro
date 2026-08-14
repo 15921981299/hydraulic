@@ -61,6 +61,23 @@ const schemas = [
     '@type': 'WebSite',
     name: site.name,
     url: site.url,
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${site.url}/search/?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+    hasPart: [
+      { '@type': 'SiteNavigationElement', name: 'Products', url: `${site.url}/products/` },
+      { '@type': 'SiteNavigationElement', name: 'Brands', url: `${site.url}/brands/` },
+      { '@type': 'SiteNavigationElement', name: 'Alternatives', url: `${site.url}/alternatives/` },
+      { '@type': 'SiteNavigationElement', name: 'Resources', url: `${site.url}/resources/` },
+      { '@type': 'SiteNavigationElement', name: 'Models', url: `${site.url}/models/` },
+      { '@type': 'SiteNavigationElement', name: 'About', url: `${site.url}/about/` },
+      { '@type': 'SiteNavigationElement', name: 'Contact', url: `${site.url}/contact/` },
+    ],
   },
   ...(jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []),
 ];
@@ -80,6 +97,7 @@ const schemas = [
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={canonical} />
     <link rel="alternate" hreflang="x-default" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title="Hydraulic Match Blog" href={`${Astro.url.origin}/rss.xml`} />
     {(site.gaMeasurementId || site.gtmContainerId) && (
       <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
     )}
