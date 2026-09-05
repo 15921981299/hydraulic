@@ -167,3 +167,69 @@ test("oversized declared request is rejected before parsing", async () => {
   );
   assert.equal(response.status, 413);
 });
+
+test("unsigned private download requests are rejected", async () => {
+  const response = await worker.fetch(
+    new Request(
+      "https://hydraulicmatch.com/api/rfq/download?key=rfq/example.pdf",
+    ),
+    { RFQ_DOWNLOAD_SECRET: "test-secret", R2_BUCKET: {} },
+  );
+  assert.equal(response.status, 403);
+  assert.match(response.headers.get("X-Robots-Tag"), /noindex/);
+});
+
+test("archived attachment receives a working seven-day private link", async () => {
+  const objects = new Map();
+  const bucket = {
+    async put(key, buffer, options) {
+      objects.set(key, { buffer, options });
+    },
+    async get(key) {
+      const item = objects.get(key);
+      if (!item) return null;
+      return {
+        body: item.buffer,
+        size: item.buffer.byteLength,
+        httpMetadata: item.options.httpMetadata,
+        customMetadata: item.options.customMetadata,
+      };
+    },
+  };
+  const emailPayloads = [];
+  await withMockFetch(
+    async (_url, init) => {
+      emailPayloads.push(JSON.parse(init.body));
+      return Response.json({ id: "email-id" });
+    },
+    async () => {
+      const response = await worker.fetch(
+        formRequest(
+          {},
+          {
+            name: "nameplate.pdf",
+            type: "application/pdf",
+            bytes: "%PDF-1.4 test",
+          },
+        ),
+        {
+          RESEND_API_KEY: "resend-test",
+          RFQ_DOWNLOAD_SECRET: "download-test",
+          R2_BUCKET: bucket,
+        },
+      );
+      assert.equal(response.status, 200);
+      const match = emailPayloads[0].text.match(
+        /https:\/\/hydraulicmatch\.com\/api\/rfq\/download\?[^\s]+/,
+      );
+      assert.ok(match, "sales email should contain a private download URL");
+      const download = await worker.fetch(new Request(match[0]), {
+        RFQ_DOWNLOAD_SECRET: "download-test",
+        R2_BUCKET: bucket,
+      });
+      assert.equal(download.status, 200);
+      assert.match(download.headers.get("Content-Disposition"), /nameplate\.pdf/);
+      assert.equal(await download.text(), "%PDF-1.4 test");
+    },
+  );
+});

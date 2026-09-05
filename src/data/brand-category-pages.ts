@@ -143,8 +143,6 @@ export type BrandCategoryPage = {
   parameterGroups: string[];
   applications: string[];
   requiredEvidence: string[];
-  officialLabel: string;
-  officialUrl: string;
   positioning: string;
 };
 
@@ -216,8 +214,6 @@ export const brandCategoryPages: BrandCategoryPage[] = brandCoverage.flatMap(
           parameterGroups: product.parameterGroups,
           applications: brand.applications,
           requiredEvidence: brand.requiredEvidence,
-          officialLabel: brand.officialLabel,
-          officialUrl: brand.officialUrl,
           positioning: brand.positioning,
         },
       ];

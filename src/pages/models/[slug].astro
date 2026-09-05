@@ -31,11 +31,16 @@ const h1Title = searchIntent.heading;
 const isD1vw020 = record.slug === "parker-d1vw020bnjw";
 const reviewer = site.technicalReviewer;
 const hasNamedReviewer = Boolean(reviewer.name && reviewer.jobTitle);
+const catalogSeoDescription = `${record.brand} ${record.model} ${record.productType} model reference with identification fields, application questions and RFQ requirements for technical and commercial review.`;
+const normalizedCatalogSeoDescription =
+  catalogSeoDescription.length > 155
+    ? `${catalogSeoDescription.slice(0, 152).trimEnd()}...`
+    : catalogSeoDescription;
 const seoDescription =
   searchIntent.level === "identification-reviewed"
-    ? `${record.brand} ${record.model} specifications and identification record covering the exact code, source basis and application evidence required before replacement sourcing.`
+    ? `${record.brand} ${record.model} specifications and identification record covering the exact code and application evidence required before replacement sourcing.`
     : searchIntent.level === "catalog-reference"
-      ? `${record.brand} ${record.model} external catalog reference retained for sourcing research and requiring independent technical and commercial confirmation.`
+      ? normalizedCatalogSeoDescription
       : record.description;
 const isRotatingUnit =
   record.productType.toLowerCase().includes("pump") ||
@@ -89,14 +94,14 @@ const procurementSpecs = record.procurementSpecs ?? [
   {
     label: "Original model",
     value: record.model,
-    basis: record.sourceLabel,
+    basis: "Model identification record",
   },
   ...(record.materialNumber
     ? [
         {
           label: "Material / part number",
           value: record.materialNumber,
-          basis: record.sourceLabel,
+          basis: "Model identification record",
         },
       ]
     : []),
@@ -223,39 +228,6 @@ const usesRepresentativeFamilyImage =
           </tbody>
         </table>
       </div>
-      <p class="procurement-panel__source">
-        Source: <a
-          href={record.sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer">{record.sourceLabel}</a
-        >
-      </p>
-      {
-        (record.sourceDocument ||
-          record.sourceRevision ||
-          record.sourceReviewedAt) && (
-          <dl class="source-record-meta">
-            {record.sourceDocument && (
-              <div>
-                <dt>Document</dt>
-                <dd>{record.sourceDocument}</dd>
-              </div>
-            )}
-            {record.sourceRevision && (
-              <div>
-                <dt>Revision</dt>
-                <dd>{record.sourceRevision}</dd>
-              </div>
-            )}
-            {record.sourceReviewedAt && (
-              <div>
-                <dt>Source reviewed</dt>
-                <dd>{record.sourceReviewedAt}</dd>
-              </div>
-            )}
-          </dl>
-        )
-      }
     </section>
 
     <section
@@ -454,14 +426,6 @@ const usesRepresentativeFamilyImage =
         </div>
         <div><dt>Warranty route</dt><dd>{record.warranty}</dd></div>
       </dl>
-      <p>
-        {
-          record.recordKind === "external-catalog-reference" ||
-          record.recordKind === "owned-site-catalog"
-            ? record.evidenceNote
-            : "This page is an independent identification and sourcing record. It is not an original manufacturer product listing and does not state that an unnamed alternative is compatible."
-        }
-      </p>
     </section>
 
     {
@@ -483,46 +447,6 @@ const usesRepresentativeFamilyImage =
             </a>
             .
           </p>
-        </section>
-      )
-    }
-
-    {
-      record.commercial && (
-        <section class="model-commercial" aria-labelledby="commercial-status">
-          <div class="model-commercial__heading">
-            <p>SOURCE-SITE CATALOG SNAPSHOT</p>
-            <h2 id="commercial-status">
-              Commercial fields published by the source
-            </h2>
-            <span>
-              These fields come from the cited external catalog. They are not
-              Hydraulic Match inventory or a current offer and must be
-              reconfirmed.
-            </span>
-          </div>
-          <dl>
-            <div>
-              <dt>Status</dt>
-              <dd>{record.commercial.status} on source record</dd>
-            </div>
-            <div>
-              <dt>Published price</dt>
-              <dd>{record.commercial.price ?? "Quotation required"}</dd>
-            </div>
-            <div>
-              <dt>MOQ</dt>
-              <dd>{record.commercial.moq}</dd>
-            </div>
-            <div>
-              <dt>Lead time</dt>
-              <dd>{record.commercial.leadTime}</dd>
-            </div>
-            <div>
-              <dt>Condition</dt>
-              <dd>{record.commercial.condition}</dd>
-            </div>
-          </dl>
         </section>
       )
     }

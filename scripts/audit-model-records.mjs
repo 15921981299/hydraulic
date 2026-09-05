@@ -29,7 +29,6 @@ for (const record of modelRecords) {
     "productType",
     "series",
     "description",
-    "sourceLabel",
     "compatibilityStatus",
   ]) {
     if (!record[key]?.trim()) errors.push(`${label}: missing ${key}.`);

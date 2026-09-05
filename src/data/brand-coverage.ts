@@ -13,8 +13,6 @@ export type HydraulicBrandCoverage = {
   }[];
   applications: string[];
   requiredEvidence: string[];
-  officialLabel: string;
-  officialUrl: string;
   detailedHref?: string;
 };
 
@@ -86,8 +84,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Electrical or pump-control details",
       "Machine and operating conditions",
     ],
-    officialLabel: "Bosch Rexroth product portfolio",
-    officialUrl: "https://www.boschrexroth.com/en/dc/products/",
     detailedHref: "/alternatives/rexroth/",
   },
   {
@@ -145,8 +141,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Fluid and seal requirement",
       "Known replacement reason",
     ],
-    officialLabel: "Danfoss PowerSource product information",
-    officialUrl: "https://powersource.danfoss.com/",
     detailedHref: "/alternatives/vickers/",
   },
   {
@@ -204,8 +198,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Mounting, shaft and port evidence",
       "Quantity and destination",
     ],
-    officialLabel: "Parker hydraulic products",
-    officialUrl: "https://ph.parker.com/us/en/hydraulics",
     detailedHref: "/alternatives/parker/",
   },
   {
@@ -268,8 +260,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Control and charge-circuit details",
       "Shaft, flange and port photos",
     ],
-    officialLabel: "Danfoss Power Solutions products",
-    officialUrl: "https://www.danfoss.com/en/products/dps/",
   },
   {
     slug: "denison",
@@ -321,8 +311,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Rotation, shaft and mounting",
       "Repair history when known",
     ],
-    officialLabel: "Parker hydraulic products",
-    officialUrl: "https://ph.parker.com/us/en/hydraulics",
   },
   {
     slug: "kawasaki",
@@ -374,8 +362,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Failure and replacement reason",
       "Required shipment scope",
     ],
-    officialLabel: "Kawasaki Precision Machinery products",
-    officialUrl: "https://www.kpm-usa.com/products/",
   },
   {
     slug: "yuken",
@@ -432,8 +418,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Subplate or mounting details",
       "Fluid and application",
     ],
-    officialLabel: "Yuken hydraulic product information",
-    officialUrl: "https://www.yuken.co.jp/en/",
   },
   {
     slug: "nachi",
@@ -490,9 +474,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Electrical data where applicable",
       "Operating pressure and fluid",
     ],
-    officialLabel: "NACHI hydraulic equipment catalog",
-    officialUrl:
-      "https://www.nachi-fujikoshi.co.jp/eng/web/hydraulic/index.html",
   },
   {
     slug: "linde",
@@ -544,8 +525,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Shaft and port arrangement",
       "Photos of installed interfaces",
     ],
-    officialLabel: "Linde Hydraulics products",
-    officialUrl: "https://www.linde-hydraulics.com/products/",
   },
   {
     slug: "atos",
@@ -602,8 +581,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Pressure and flow conditions",
       "Environment and certification requirement",
     ],
-    officialLabel: "Atos product portfolio",
-    officialUrl: "https://www.atos.com/en-it/",
   },
   {
     slug: "hawe",
@@ -660,8 +637,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Electrical and actuation details",
       "Machine schematic or photos",
     ],
-    officialLabel: "HAWE hydraulic products",
-    officialUrl: "https://www.hawe.com/en-us/products/",
   },
   {
     slug: "moog",
@@ -713,9 +688,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Fluid cleanliness and filtration",
       "Machine control and safety behavior",
     ],
-    officialLabel: "Moog industrial hydraulic products",
-    officialUrl:
-      "https://www.moog.com/products/servovalves-servo-proportional-valves/industrial.html",
   },
   {
     slug: "poclain",
@@ -767,8 +739,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Operating speed and pressure",
       "Installed photos and replacement reason",
     ],
-    officialLabel: "Poclain Hydraulics product information",
-    officialUrl: "https://poclain-hydraulics.com/",
   },
   {
     slug: "bucher",
@@ -820,8 +790,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Electrical and motor data",
       "Mounting and port information",
     ],
-    officialLabel: "Bucher Hydraulics products",
-    officialUrl: "https://www.bucherhydraulics.com/en/products",
   },
   {
     slug: "casappa",
@@ -878,8 +846,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Integrated-valve requirement",
       "Machine and duty",
     ],
-    officialLabel: "Casappa product portfolio",
-    officialUrl: "https://www.casappa.com/products/",
   },
   {
     slug: "hydac",
@@ -931,8 +897,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Certification requirement",
       "System function and environment",
     ],
-    officialLabel: "HYDAC products",
-    officialUrl: "https://www.hydac.com/shop/en/",
   },
   {
     slug: "caterpillar",
@@ -969,8 +933,6 @@ export const brandCoverage: HydraulicBrandCoverage[] = [
       "Pressure, flow or displacement details",
       "Application and operating conditions",
     ],
-    officialLabel: "Caterpillar product information",
-    officialUrl: "https://www.cat.com/en_US/products.html",
     detailedHref: "/series/cat-piston-pump/",
   },
 ];

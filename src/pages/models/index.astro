@@ -45,8 +45,6 @@ const databaseRows = modelRecords.map((record) => ({
     record.model,
     record.materialNumber,
     record.productType,
-    record.sourceSite,
-    record.sourceLabel,
     record.alternativeReview?.status,
     record.alternativeReview?.proposedModel,
   ]
@@ -63,14 +61,6 @@ const representedSeries = new Set(
 ).size;
 const publishedAlternativeCount = modelRecords.filter(
   (record) => record.alternativeReview?.proposedModel,
-).length;
-const sourceNetworkNames = new Set([
-  "Rexroth Replacements",
-  "RestoPower",
-  "Hydraulic Pump Supply",
-]);
-const sourceNetworkRecordCount = modelRecords.filter((record) =>
-  sourceNetworkNames.has(record.sourceSite ?? ""),
 ).length;
 ---
 
@@ -113,8 +103,7 @@ const sourceNetworkRecordCount = modelRecords.filter((record) =>
         <strong>{modelRows.length} model records published for search</strong>
         <p>
           {representedBrands} brand groups · {representedSeries} series groups ·
-          {" "}{sourceNetworkRecordCount} records from the operator-identified
-          source sites · {publishedAlternativeCount} public alternatives.
+          {" "}{publishedAlternativeCount} public alternatives.
           Every published record is eligible for search indexing.
         </p>
       </div>
@@ -182,10 +171,9 @@ const sourceNetworkRecordCount = modelRecords.filter((record) =>
             <thead>
               <tr>
                 <th scope="col">Brand</th>
+                <th scope="col">Record status</th>
                 <th scope="col">Series</th>
                 <th scope="col">Original model</th>
-                <th scope="col">Source record</th>
-                <th scope="col">Evidence status</th>
                 <th scope="col">Alternative status</th>
                 <th scope="col">Proposed alternative</th>
               </tr>
@@ -234,16 +222,6 @@ const sourceNetworkRecordCount = modelRecords.filter((record) =>
                         {record.materialNumber && (
                           <small>{record.materialNumber}</small>
                         )}
-                      </td>
-                      <td>
-                        <a
-                          href={record.sourceUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {record.sourceSite ?? record.sourceLabel}
-                        </a>
-                        <small>{record.sourceLabel}</small>
                       </td>
                       <td>
                         <span class="database-status">

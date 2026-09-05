@@ -59,6 +59,7 @@ The production Worker entry is copied from `cloudflare-worker.js` during `npm ru
 Store secrets in Cloudflare, never in `wrangler.jsonc` or committed files:
 
 - `RESEND_API_KEY`: required Resend API token.
+- `RFQ_DOWNLOAD_SECRET`: required HMAC secret for private attachment links that expire after 7 days.
 - `TURNSTILE_SECRET_KEY`: required together with `PUBLIC_TURNSTILE_SITE_KEY`.
 - `R2_BUCKET`: optional private R2 binding for uploaded files. Add the binding to `wrangler.jsonc` after the bucket exists, rather than configuring it only in the dashboard, and apply an `rfq/` lifecycle rule when enabled.
 - `SALES_EMAIL`: optional receiving-address override.

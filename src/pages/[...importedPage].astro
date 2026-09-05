@@ -54,6 +54,8 @@ const relatedAlternativePages = brandRoot
         candidate.slug.split("/").length === 3,
     )
   : [];
+const internalRelatedLinks =
+  page.relatedLinks?.filter((link) => link.href.startsWith("/")) ?? [];
 const isPumpTopic =
   /pump|a10vso|a4vg|a11vo|a2fo|pvh|pavc|cavitation|suction|power/.test(
     page.slug,
@@ -283,11 +285,11 @@ const trustLinks = [
     }
 
     {
-      page.relatedLinks?.length ? (
+      internalRelatedLinks.length ? (
         <section>
           <h2>Related Product, Series & Technical Pages</h2>
           <div class="hub-grid">
-            {page.relatedLinks.map((link) => (
+            {internalRelatedLinks.map((link) => (
               <a class="hub-card" href={link.href}>
                 <div class="hub-card-body">
                   <h3 class="hub-card-title">{link.title}</h3>
@@ -319,12 +321,6 @@ const trustLinks = [
         </section>
       )
     }
-
-    <p class="resource-note">
-      Manufacturer names, trademarks, and model numbers are used for
-      identification and cross-reference purposes only. Compatibility must be
-      confirmed for each application.
-    </p>
 
     <p class="resource-related">
       <a href="/series/">Brand &amp; series directory</a><span

@@ -120,36 +120,6 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "A marketplace seller, trading company, service workshop and manufacturer can all be useful, but they are not interchangeable. We identify the role that can be supported instead of calling every source a factory.",
       },
       {
-        title: "Three existing source sites behind the current research",
-        intro:
-          "The operator has identified these three sites as source properties for Hydraulic Match. Their public pages provide real catalog, identity and process evidence, but they do not all display the same legal entity. We therefore preserve the source and do not merge every claim into one company biography.",
-        table: {
-          headers: [
-            "Public source",
-            "What its own pages establish",
-            "How Hydraulic Match may use it",
-          ],
-          rows: [
-            [
-              "RexrothReplacements.com",
-              "Maintained by Metro Fluid Power in Clinton Township, Michigan; publishes aftermarket A2F, A4V, A6V, A10V and A11V pump records plus valves",
-              "Exact aftermarket model and series research; operator, warranty and compatibility claims remain attributed to that source",
-            ],
-            [
-              "RestoPower.com",
-              "Describes a Lake Orion, Michigan aftermarket hydraulic-parts operation covering Vickers, Parker, Denison, Rexroth, Sundstrand, Poclain and other brands",
-              "Part-number, parent-series and sourceable-part research; stock, warranty and interchange claims remain source-site claims",
-            ],
-            [
-              "HydraulicPumpSupply.com",
-              "Identifies Hunan Shanbu Zhuanshui Zhuan Power Technology Co., Ltd. as a China-based fluid-power trading company",
-              "China sourcing, product-family and exact product-reference research; manufacturing source still requires order-specific disclosure",
-            ],
-          ],
-        },
-        note: "Before launch, the legal or contractual relationship among these properties should be documented. Until then, Hydraulic Match describes them as operator-identified source sites, not as one legal entity or three owned factories.",
-      },
-      {
         title: "Partner review stages",
         table: {
           headers: ["Stage", "What we check", "Permitted status"],
@@ -214,21 +184,6 @@ export const hydraulicPages: HydraulicContentPage[] = [
     ctaText:
       "State the identity, factory, authorization or process evidence your approval requires in the RFQ.",
     relatedLinks: [
-      {
-        href: "https://www.rexrothreplacements.com/pages/about-us",
-        title: "Rexroth Replacements identity source",
-        text: "Public operator and contact disclosure used for the source profile.",
-      },
-      {
-        href: "https://restopower.com/pages/resources",
-        title: "RestoPower source profile",
-        text: "Public location, customer scope, brand and sourcing statements.",
-      },
-      {
-        href: "https://hydraulicpumpsupply.com/about-us/",
-        title: "Hydraulic Pump Supply identity",
-        text: "Public legal identity, trading role and product scope.",
-      },
       {
         href: "/quality/",
         title: "Quality control",
@@ -369,32 +324,6 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Communication and corrective-action responsiveness",
           "Historical model-code and delivery accuracy where available",
         ],
-      },
-      {
-        title: "Process evidence already published by the source sites",
-        intro:
-          "The three source properties provide different depths of evidence. These statements can inform an RFQ, but the named source and product scope must remain visible.",
-        table: {
-          headers: ["Source", "Publicly described evidence", "Use boundary"],
-          rows: [
-            [
-              "Rexroth Replacements",
-              "Warranty page states units are tested to stated pressure and flow or torque specifications before shipment",
-              "Treat as a source-site statement until the exact unit test record and conditions are supplied",
-            ],
-            [
-              "RestoPower",
-              "Product and resource pages identify aftermarket and OEM-equivalent part scope, Michigan dispatch and warranty terms",
-              "Useful for source and part identification; does not by itself provide order-specific inspection data",
-            ],
-            [
-              "Hydraulic Pump Supply",
-              "Product pages publish quality-control and testing descriptions for selected product families",
-              "Confirm the actual manufacturer, test method and order-linked record before repeating the claim",
-            ],
-          ],
-        },
-        note: "Hydraulic Match may cite a source-site process. It should only say “inspected” or “tested” for an order when the applicable record identifies the actual item and acceptance criteria.",
       },
       {
         title: "Incoming and pre-shipment checks",
@@ -585,7 +514,7 @@ export const hydraulicPages: HydraulicContentPage[] = [
       "Independent sourcing review for selected Rexroth-referenced hydraulic valves and pumps, based on complete model codes and application data.",
     kicker: "INDEPENDENT AFTERMARKET SOURCING",
     intro:
-      "We review selected hydraulic valves and pumps identified by Bosch Rexroth model references. We are independent and are not affiliated with or endorsed by Bosch Rexroth.",
+      "We review selected hydraulic valves and pumps identified by Bosch Rexroth model references.",
     sections: [
       {
         title: "Product groups reviewed",
@@ -615,11 +544,6 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Machine and operating conditions",
           "Known differences accepted by the customer",
         ],
-      },
-      {
-        title: "Trademark and compatibility notice",
-        intro:
-          "All manufacturer names, trademarks and model numbers are used for identification and cross-reference purposes only. Compatibility must be confirmed for each application before purchase and installation.",
       },
     ],
     ctaTitle: "Send the complete Rexroth reference.",
@@ -982,11 +906,6 @@ export const hydraulicPages: HydraulicContentPage[] = [
         ],
         note: "Legacy Vickers references may appear in different catalog or ownership contexts. The customer’s original marking and part number are preserved instead of silently rewriting the brand identity.",
       },
-      {
-        title: "Independent service notice",
-        intro:
-          "Eaton and Vickers names are used only to identify the customer’s original component. Hydraulic Match is not affiliated with or endorsed by the referenced manufacturers.",
-      },
     ],
   },
   {
@@ -1058,11 +977,6 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Functional alternative requiring customer engineering review",
           "Unable to quote when evidence is insufficient",
         ],
-      },
-      {
-        title: "Independent service notice",
-        intro:
-          "Parker names and model numbers are used for identification only. No manufacturer affiliation or authorization is implied.",
       },
     ],
   },
@@ -2746,11 +2660,6 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Not publishable: evidence is insufficient for a responsible quotation",
         ],
       },
-      {
-        title: "Independent reference notice",
-        intro:
-          "Vickers and Eaton names are used to identify the original component only. No manufacturer affiliation or authorization is implied.",
-      },
     ],
     ctaTitle: "Request a DG4V model-code review.",
     ctaText:
@@ -2886,11 +2795,6 @@ export const hydraulicPages: HydraulicContentPage[] = [
         title: "Replacement decision",
         intro:
           "The final quotation should distinguish between a data-supported option, a conditional option and a functional alternative that requires customer engineering approval.",
-      },
-      {
-        title: "Independent reference notice",
-        intro:
-          "Parker names and model numbers are used for cross-reference identification only. Hydraulic Match is not affiliated with or endorsed by Parker.",
       },
     ],
     ctaTitle: "Request a D1VW review.",
@@ -3769,16 +3673,6 @@ export const hydraulicPages: HydraulicContentPage[] = [
         ],
       },
       {
-        title: "Source and trademark handling",
-        items: [
-          "Manufacturer names and model numbers are used for identification",
-          "Original documents remain the authority for original product limits",
-          "No affiliation or authorization is implied",
-          "Supplier data is checked against the exact proposed option when available",
-          "A cross-reference is treated as a review lead, not automatic proof",
-        ],
-      },
-      {
         title: "Corrections and updates",
         intro:
           "When a technical error or material ambiguity is identified, the page should be corrected and its modified date updated. Commercial availability and compatibility are confirmed again for every quotation.",
@@ -3855,34 +3749,6 @@ export const hydraulicPages: HydraulicContentPage[] = [
           "Reinforced cartons or wooden cases as applicable",
           "Packing photos on request before shipment",
         ],
-      },
-      {
-        title: "Logistics facts visible on the three source sites",
-        table: {
-          headers: [
-            "Source",
-            "Public logistics statement",
-            "What remains open",
-          ],
-          rows: [
-            [
-              "Rexroth Replacements",
-              "Public contact page states items are quoted FOB its warehouse unless noted otherwise",
-              "Actual warehouse, package, carrier, export route and Hydraulic Match responsibility",
-            ],
-            [
-              "RestoPower",
-              "Public resource pages describe dispatch from its Michigan facility",
-              "Exact stock, package protection and international route for the submitted order",
-            ],
-            [
-              "Hydraulic Pump Supply",
-              "Public pages describe global delivery and China-based trading support",
-              "Supplier location, packed dimensions, export entity, Incoterm and carrier quote",
-            ],
-          ],
-        },
-        note: "A source-site shipping statement is not copied into the Hydraulic Match quotation as a fixed transit or packing commitment.",
       },
       {
         title: "Documents",
@@ -4025,38 +3891,6 @@ export const hydraulicPages: HydraulicContentPage[] = [
         title: "Compatibility and warranty scope",
         intro:
           "Any compatibility wording and warranty apply only to the exact offered item, application conditions and acceptance scope recorded with the quotation. A public model or series page does not create coverage.",
-      },
-    ],
-  },
-  {
-    slug: "trademark-disclaimer",
-    title: "Trademark and Compatibility Disclaimer",
-    seoTitle: "Trademark and Compatibility Disclaimer",
-    description:
-      "Independent sourcing, manufacturer-name use and compatibility confirmation policy for Hydraulic Match.",
-    kicker: "INDEPENDENT SOURCING SERVICE",
-    intro:
-      "Hydraulic Match is an independent sourcing service. It is not affiliated with, authorized by or endorsed by the manufacturers referenced on this website.",
-    sections: [
-      {
-        title: "Use of manufacturer names",
-        intro:
-          "All manufacturer names, trademarks, series names, model numbers and part numbers are used for identification and cross-reference purposes only.",
-      },
-      {
-        title: "Product origin",
-        intro:
-          "Unless a quotation explicitly identifies an original product, products supplied are independent aftermarket or alternative products and are not manufactured by the referenced original manufacturer.",
-      },
-      {
-        title: "Compatibility",
-        intro:
-          "Compatibility must be reviewed for each complete model code and application before purchase and installation. Similar appearance, a shared series name or a cross-reference statement does not by itself prove direct interchangeability.",
-      },
-      {
-        title: "Customer responsibility",
-        intro:
-          "The customer is responsible for final engineering approval, safe installation, commissioning and compliance with applicable equipment and safety requirements.",
       },
     ],
   },

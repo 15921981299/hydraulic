@@ -77,14 +77,6 @@ export const operationalEvidence = [
     sourceUrl: "/models/",
   },
   {
-    type: "Authorization and certification",
-    record:
-      "No manufacturer authorization or management-system certificate is currently posted for public verification.",
-    proof:
-      "Issuer, holder, scope, certificate number and validity are required",
-    sourceUrl: "/trademark-disclaimer/",
-  },
-  {
     type: "Customer evidence",
     record:
       "Anonymous process examples are not presented as independent reviews or endorsements.",

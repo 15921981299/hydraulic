@@ -2,7 +2,7 @@
  * Batch-import model records from a CSV into src/data/imported-model-records.ts.
  *
  * CSV columns:
- *   brand, model, productType, series, sourceSite, sourceLabel, sourceUrl,
+ *   brand, model, productType, series,
  *   status, price, condition, leadTime, materialNumber
  *
  * Run: node scripts/import-model-records.mjs <path-to.csv>
@@ -75,9 +75,6 @@ const required = [
   "model",
   "productType",
   "series",
-  "sourceSite",
-  "sourceLabel",
-  "sourceUrl",
 ];
 const errors = [];
 const slugs = new Set();
@@ -85,9 +82,6 @@ for (const [i, row] of rows.entries()) {
   const label = `row ${i + 2}`;
   for (const key of required) {
     if (!row[key]) errors.push(`${label}: missing ${key}`);
-  }
-  if (!/^https?:\/\//.test(row.sourceUrl || "")) {
-    errors.push(`${label}: sourceUrl must be a public URL`);
   }
   const slug = slugify(row.slug || row.model);
   if (slugs.has(slug)) errors.push(`${label}: duplicate model ${row.model}`);
@@ -115,9 +109,6 @@ ${rows
     productType: ${JSON.stringify(row.productType)},
     series: ${JSON.stringify(row.series)},
     image: ${JSON.stringify(row.image || "/images/hydraulic/hydraulic-pumps.webp")},
-    sourceSite: ${JSON.stringify(row.sourceSite)},
-    sourceLabel: ${JSON.stringify(row.sourceLabel)},
-    sourceUrl: ${JSON.stringify(row.sourceUrl)},
     status: ${JSON.stringify(row.status || "Reconfirm")},
     ${row.price ? `price: ${JSON.stringify(row.price)},` : ""}
     condition: ${JSON.stringify(row.condition || "As stated on approved quotation")},

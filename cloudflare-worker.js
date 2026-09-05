@@ -2,6 +2,8 @@ const MAX_FILES = 5;
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
 const MAX_TOTAL_BYTES = 20 * 1024 * 1024;
 const MAX_REQUEST_BYTES = 22 * 1024 * 1024;
+const DOWNLOAD_TTL_SECONDS = 7 * 24 * 60 * 60;
+const textEncoder = new TextEncoder();
 const ALLOWED_EXTENSIONS = new Set([
   "jpg",
   "jpeg",
@@ -75,6 +77,98 @@ function safeFilename(filename) {
 
 function extension(filename) {
   return filename.includes(".") ? filename.split(".").pop().toLowerCase() : "";
+}
+
+async function hmacKey(secret) {
+  return crypto.subtle.importKey(
+    "raw",
+    textEncoder.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign", "verify"],
+  );
+}
+
+async function createDownloadUrl(request, key, secret, now = Date.now()) {
+  const expires = String(Math.floor(now / 1000) + DOWNLOAD_TTL_SECONDS);
+  const signature = await crypto.subtle.sign(
+    "HMAC",
+    await hmacKey(secret),
+    textEncoder.encode(`${key}\n${expires}`),
+  );
+  const hex = Array.from(new Uint8Array(signature), (byte) =>
+    byte.toString(16).padStart(2, "0"),
+  ).join("");
+  const url = new URL("/api/rfq/download", request.url);
+  url.search = new URLSearchParams({ key, expires, signature: hex }).toString();
+  return url.toString();
+}
+
+async function downloadAttachment(request, env, now = Date.now()) {
+  const headers = {
+    "Cache-Control": "private, no-store",
+    "X-Robots-Tag": "noindex, nofollow, noarchive",
+    "Referrer-Policy": "no-referrer",
+    "X-Content-Type-Options": "nosniff",
+  };
+  const fail = (message, status) => new Response(message, { status, headers });
+  if (!["GET", "HEAD"].includes(request.method))
+    return fail("Method not allowed", 405);
+  if (!env.RFQ_DOWNLOAD_SECRET || !env.R2_BUCKET)
+    return fail("Download temporarily unavailable.", 503);
+
+  const url = new URL(request.url);
+  const key = url.searchParams.get("key") || "";
+  const expires = url.searchParams.get("expires") || "";
+  const signature = url.searchParams.get("signature") || "";
+  const nowSeconds = Math.floor(now / 1000);
+  if (
+    !key.startsWith("rfq/") ||
+    /[\r\n]/.test(key) ||
+    !/^\d{10}$/.test(expires) ||
+    !/^[a-f0-9]{64}$/.test(signature)
+  ) {
+    return fail("Invalid download link.", 403);
+  }
+  const valid = await crypto.subtle.verify(
+    "HMAC",
+    await hmacKey(env.RFQ_DOWNLOAD_SECRET),
+    Uint8Array.from(signature.match(/../g), (byte) => parseInt(byte, 16)),
+    textEncoder.encode(`${key}\n${expires}`),
+  );
+  if (!valid) return fail("Invalid download link.", 403);
+  if (
+    Number(expires) <= nowSeconds ||
+    Number(expires) > nowSeconds + DOWNLOAD_TTL_SECONDS + 60
+  ) {
+    return fail(
+      "This download link has expired. Contact sales@hydraulicmatch.com for assistance.",
+      410,
+    );
+  }
+
+  const object =
+    request.method === "HEAD"
+      ? await env.R2_BUCKET.head(key)
+      : await env.R2_BUCKET.get(key);
+  if (!object) return fail("File not found.", 404);
+  const filename = (
+    object.customMetadata?.originalFilename ||
+    key.split("/").pop() ||
+    "attachment"
+  ).replace(/[\r\n\u0000-\u001f\u007f/\\]/g, "_");
+  const encoded = encodeURIComponent(filename).replace(/[!'()*]/g, (char) =>
+    `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
+  );
+  return new Response(request.method === "HEAD" ? null : object.body, {
+    headers: {
+      ...headers,
+      "Content-Type":
+        object.httpMetadata?.contentType || "application/octet-stream",
+      "Content-Length": String(object.size),
+      "Content-Disposition": `attachment; filename="attachment"; filename*=UTF-8''${encoded}`,
+    },
+  });
 }
 
 function arrayBufferToBase64(buffer) {
@@ -158,6 +252,11 @@ export default {
     const url = new URL(request.url);
     const isRfqRoute =
       url.pathname === "/api/rfq" || url.pathname === "/api/rfq/";
+    const isDownloadRoute =
+      url.pathname === "/api/rfq/download" ||
+      url.pathname === "/api/rfq/download/";
+
+    if (isDownloadRoute) return downloadAttachment(request, env);
 
     if (!isRfqRoute) {
       if (env.ASSETS && typeof env.ASSETS.fetch === "function") {
@@ -306,6 +405,7 @@ export default {
 
       const attachments = [];
       const archiveKeys = [];
+      const downloadLinks = [];
       for (const file of rawFiles) {
         const buffer = await file.arrayBuffer();
         if (!fileContentMatches(file.name, buffer)) {
@@ -328,12 +428,23 @@ export default {
               contentType: file.type || "application/octet-stream",
             },
             customMetadata: {
+              originalFilename: file.name,
               source: fields.source || "website-rfq",
               receivedAt: new Date().toISOString(),
               retentionClass: "rfq-private",
             },
           });
           archiveKeys.push(key);
+          if (env.RFQ_DOWNLOAD_SECRET) {
+            downloadLinks.push({
+              filename: file.name,
+              url: await createDownloadUrl(
+                request,
+                key,
+                env.RFQ_DOWNLOAD_SECRET,
+              ),
+            });
+          }
         }
       }
 
@@ -378,6 +489,10 @@ export default {
         `Additional details: ${fields.details || fields.message || "-"}`,
         "",
         `Attachments: ${rawFiles.length ? rawFiles.map((file) => file.name).join(", ") : "None"}`,
+        `Private downloads (valid for 7 days):`,
+        downloadLinks.length
+          ? downloadLinks.map(({ filename, url }) => `- ${filename}: ${url}`).join("\n")
+          : "Private download links not enabled",
         `Private R2 archive keys: ${archiveKeys.length ? archiveKeys.join(", ") : "R2 archive not enabled"}`,
         `Source: ${fields.source || "-"}`,
         `Page title: ${fields.pageTitle || "-"}`,

@@ -9,12 +9,7 @@ const apiKey = process.env.KEYWORDS_EVERYWHERE_API_KEY?.trim();
 const budget = 500;
 const country = "us";
 const currency = "usd";
-const domains = [
-  "rexrothreplacements.com",
-  "hydraulicpumpsupply.com",
-  "restopower.com",
-  "hydparts.com",
-];
+const domains = [];
 
 if (!apiKey) {
   throw new Error("KEYWORDS_EVERYWHERE_API_KEY is missing from .env");

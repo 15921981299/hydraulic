@@ -96,14 +96,6 @@ const referenceTotal = page.series.length + page.models.length;
           <h2>{page.intro}</h2>
           <p class="brand-category__lead">{page.positioning}</p>
         </div>
-        <aside class="brand-category__disclaimer">
-          <strong>Relationship statement</strong>
-          <p>
-            Hydraulic Match is not affiliated with, authorized by or endorsed by{" "}
-            {page.brandName}. Names and codes are used only to identify the
-            customer&rsquo;s installed component.
-          </p>
-        </aside>
       </header>
 
       <div class="brand-category__route" aria-label="Review summary">
@@ -371,27 +363,6 @@ const referenceTotal = page.series.length + page.models.length;
     color: #475569;
     font-size: 16px;
     line-height: 1.75;
-  }
-
-  .brand-category__disclaimer {
-    padding: 24px;
-    border: 1px solid rgba(20, 110, 245, 0.16);
-    border-top: 3px solid var(--color-primary);
-    border-radius: 12px;
-    background: linear-gradient(180deg, #fff 0%, #f8fafc 100%);
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.03);
-  }
-
-  .brand-category__disclaimer strong {
-    color: #0f172a;
-    font-size: 14px;
-  }
-
-  .brand-category__disclaimer p {
-    margin: 10px 0 0;
-    color: #475569;
-    font-size: 14px;
-    line-height: 1.65;
   }
 
   .brand-category__route {

@@ -13,12 +13,6 @@ export type HydraulicModelRecord = {
   matchedRoute: string;
   compatibilityStatus: string;
   warranty: string;
-  sourceLabel: string;
-  sourceUrl: string;
-  /** Add document metadata only when the cited source supports it. */
-  sourceDocument?: string;
-  sourceRevision?: string;
-  sourceReviewedAt?: string;
   published?: string;
   modified?: string;
   reviewedBy?: string;
@@ -30,8 +24,6 @@ export type HydraulicModelRecord = {
     | "engineering-review"
     | "owned-site-catalog"
     | "external-catalog-reference";
-  sourceSite?: string;
-  evidenceNote?: string;
   procurementSpecs?: {
     label: string;
     value: string;
@@ -96,8 +88,7 @@ export function getModelContentLevel(
     record.recordKind !== "external-catalog-reference" &&
     (record.codeGroups?.length ?? 0) >= 4 &&
     (record.procurementSpecs?.length ?? 0) >= 6 &&
-    Boolean(record.compatibleApplication) &&
-    /^https?:\/\//.test(record.sourceUrl)
+    Boolean(record.compatibleApplication)
   ) {
     return "identification-reviewed";
   }
@@ -163,9 +154,6 @@ const reviewedModelRecords: HydraulicModelRecord[] = [
     compatibilityStatus:
       "Identification record; no offered replacement is approved on this page",
     warranty: "Only the terms stated in an accepted quotation apply",
-    sourceLabel: "Bosch Rexroth official offer drawing",
-    sourceUrl:
-      "https://www.boschrexroth.com/ics/content/UpToDate/CadGenerate/Ventile/4WE_6_D6X_EG24N9K4_Emm_MB_1.pdf",
     codeGroups: [
       {
         label: "WE 6",
@@ -255,9 +243,6 @@ const reviewedModelRecords: HydraulicModelRecord[] = [
     compatibilityStatus:
       "Identification record; hydraulic and electrical comparison still required",
     warranty: "Only the terms stated in an accepted quotation apply",
-    sourceLabel: "Bosch Rexroth official product record",
-    sourceUrl:
-      "https://www.boschrexroth.com/ics/Materialnumber/JumpToDatasheet.cfm?materialnumber=R901278761",
     codeGroups: [
       {
         label: "WE 10",
@@ -351,9 +336,6 @@ const reviewedModelRecords: HydraulicModelRecord[] = [
     compatibilityStatus:
       "Identification record; drawing, control and application review still required",
     warranty: "Only the terms stated in an accepted quotation apply",
-    sourceLabel: "Bosch Rexroth official product record",
-    sourceUrl:
-      "https://www.boschrexroth.com/en/nz/p/axial-piston-pump-r910948472/",
     procurementSpecs: [
       {
         label: "Original model",
@@ -479,9 +461,6 @@ const reviewedModelRecords: HydraulicModelRecord[] = [
     compatibilityStatus:
       "Identification record; function, mounting and solenoid review still required",
     warranty: "Only the terms stated in an accepted quotation apply",
-    sourceLabel: "Eaton official product guide",
-    sourceUrl:
-      "https://www.eaton.com/content/dam/eaton/markets/food-beverage/knowledge-center/brochure/Food%20processing%20products%20guide%20PDF.pdf",
     codeGroups: [
       {
         label: "DG4V",
@@ -573,9 +552,6 @@ const reviewedModelRecords: HydraulicModelRecord[] = [
     compatibilityStatus:
       "Identification record; no offered replacement is approved on this page",
     warranty: "Only the terms stated in an accepted quotation apply",
-    sourceLabel: "Parker official approved-component document",
-    sourceUrl:
-      "https://www.parker.com/content/dam/parker/emea/germany-austria-and-switzerland/about-parker/vw/main/Parker_Hannifin_GmbH_Freigabeliste_VW_Components-Gie%C3%9Ferei_Hydraulik_20250101_en.pdf",
     codeGroups: [
       {
         label: "D1VW",
@@ -656,9 +632,6 @@ type OwnedCatalogInput = {
   productType: string;
   series: string;
   image: string;
-  sourceSite: string;
-  sourceUrl: string;
-  sourceLabel: string;
   status?: "Available" | "Quote required" | "Reconfirm";
   price?: string;
   condition?: string;
@@ -670,7 +643,7 @@ type OwnedCatalogInput = {
 export const catalogRecord = (item: OwnedCatalogInput): HydraulicModelRecord => ({
   ...item,
   recordKind: "external-catalog-reference",
-  description: `${item.brand} ${item.model} ${item.productType} reference record derived from the cited external catalog and requiring independent commercial confirmation.`,
+  description: `${item.brand} ${item.model} ${item.productType} reference record for technical and commercial review.`,
   originalReference: item.materialNumber
     ? `${item.model} · ${item.materialNumber}`
     : item.model,
@@ -679,8 +652,6 @@ export const catalogRecord = (item: OwnedCatalogInput): HydraulicModelRecord => 
   compatibilityStatus:
     "Catalog reference only; no stock, ownership or direct-fit commitment",
   warranty: "Only the terms stated in an accepted quotation apply",
-  evidenceNote:
-    "The cited third-party page supports the reference only. It does not establish that Hydraulic Match owns the source site, controls its inventory or can supply the item.",
   alternativeReview: {
     status: "No public alternative",
     note: "No replacement model is published from this external reference alone. A candidate requires a separate code, interface and application review.",
@@ -742,10 +713,6 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     productType: "New aftermarket axial piston pump",
     series: "A10VO",
     image: "/images/owned-network/rexroth-a10v.webp",
-    sourceSite: "Rexroth Replacements",
-    sourceLabel: "External catalog reference",
-    sourceUrl:
-      "https://www.rexrothreplacements.com/products/a10vo28dr-31r-psc61k40",
     status: "Available",
     price: "USD 1,710.00",
     condition: "New aftermarket",
@@ -767,9 +734,6 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
       productType: "New aftermarket axial piston pump",
       series,
       image: "/images/owned-network/rexroth-a10v.webp",
-      sourceSite: "Rexroth Replacements",
-      sourceLabel: "External catalog reference",
-      sourceUrl: `https://www.rexrothreplacements.com/products/${slug}`,
       status: "Reconfirm",
       condition: "New aftermarket",
     }),
@@ -789,9 +753,6 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
       productType: "New aftermarket axial piston pump",
       series,
       image: "/images/owned-network/rexroth-a4v.png",
-      sourceSite: "Rexroth Replacements",
-      sourceLabel: "External catalog reference",
-      sourceUrl: `https://www.rexrothreplacements.com/products/${slug}`,
       status: "Reconfirm",
       condition: "New aftermarket",
     }),
@@ -804,9 +765,6 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     productType: "Pump seal kit",
     series: "PVH",
     image: "/images/owned-network/service-pvh74.webp",
-    sourceSite: "RestoPower",
-    sourceLabel: "External catalog reference",
-    sourceUrl: "https://restopower.com/products/vickers-pvh74-seal-kit",
     status: "Available",
     price: "USD 45.00",
     condition: "Service part",
@@ -819,10 +777,6 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     productType: "Pump seal kit",
     series: "PVH",
     image: "/images/owned-network/service-pvh98.webp",
-    sourceSite: "RestoPower",
-    sourceLabel: "External catalog reference",
-    sourceUrl:
-      "https://restopower.com/products/vickers-pvh98-pvh106-seal-kit-02-102264",
     status: "Available",
     price: "USD 45.00",
     condition: "Service part",
@@ -834,9 +788,6 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     productType: "Pump seal kit",
     series: "AP2D",
     image: "/images/owned-network/service-ap2d12.webp",
-    sourceSite: "RestoPower",
-    sourceLabel: "External catalog reference",
-    sourceUrl: "https://restopower.com/products/rexroth-uchida-ap2d12-seal-kit",
     status: "Available",
     price: "USD 68.00",
     condition: "Service part",
@@ -849,10 +800,6 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     productType: "Pump seal ring",
     series: "A4VG",
     image: "/images/owned-network/service-a4vg90.webp",
-    sourceSite: "RestoPower",
-    sourceLabel: "External catalog reference",
-    sourceUrl:
-      "https://restopower.com/products/rexroth-r909152493-seal-ring-a4vg90",
     status: "Available",
     price: "USD 4.35",
     condition: "Service part",
@@ -865,10 +812,6 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     productType: "Check-valve hardware",
     series: "A10V",
     image: "/images/owned-network/service-a10v18.webp",
-    sourceSite: "RestoPower",
-    sourceLabel: "External catalog reference",
-    sourceUrl:
-      "https://restopower.com/products/r910185973-a10v18-check-valve-pin",
     status: "Available",
     price: "USD 3.55",
     condition: "Service part",
@@ -880,9 +823,6 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     productType: "Motor seal kit",
     series: "MCR",
     image: "/images/owned-network/service-mcr03.webp",
-    sourceSite: "RestoPower",
-    sourceLabel: "External catalog reference",
-    sourceUrl: "https://restopower.com/products/poclain-seal-kit-mcr03",
     status: "Available",
     price: "USD 78.00",
     condition: "Service part",
@@ -947,9 +887,6 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
       productType,
       series,
       image: "/images/owned-network/denison-t6dc.jpg",
-      sourceSite: "Hydraulic Parts Source",
-      sourceLabel: "External item-detail reference",
-      sourceUrl: `https://www.hydparts.com/itemdetail/?itemCode=${encodeURIComponent(code)}`,
       status: "Quote required",
       condition: code.endsWith("N") ? "New" : "HPS remanufactured",
       leadTime: "Same-day route available when physical stock is reconfirmed",
@@ -962,10 +899,6 @@ const ownedCatalogRecords: HydraulicModelRecord[] = [
     productType: "Variable-displacement hydraulic piston pump",
     series: "CAT Piston Pump",
     image: "/images/owned-network/cat-piston-pump.png",
-    sourceSite: "Hydraulic Pump Supply",
-    sourceLabel: "External catalog reference",
-    sourceUrl:
-      "https://hydraulicpumpsupply.com/product/cat-169-4883-259-0815-295-9426-153-9426-10r3805-hydraulic-piston-pump/",
     status: "Quote required",
     condition: "OEM-spec replacement route; exact condition on quotation",
     leadTime: "Stock and production route reconfirmed",

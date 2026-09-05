@@ -36,8 +36,6 @@ const isMotorSeries = /motor/i.test(record.productType);
 const isServiceSeries = /service|seal|cartridge|repair/i.test(
   record.productType,
 );
-const sourceIsLink =
-  record.sourceUrl.startsWith("/") || /^https?:\/\//.test(record.sourceUrl);
 const evidenceForFocus = (focus: string) => {
   if (/voltage|connector|operator|spool|control function/i.test(focus)) {
     return {
@@ -197,51 +195,6 @@ const minimumEvidence = isValveSeries
             </div>
           ))
         }
-      </div>
-    </section>
-
-    <section>
-      <h2>{record.series} Evidence Basis and Page Boundary</h2>
-      <div class="resource-checklist-grid">
-        <article class="resource-checklist-card">
-          <h3>Source basis</h3>
-          <p>
-            This series entry is organized from{" "}
-            {
-              sourceIsLink ? (
-                <a href={record.sourceUrl}>{record.sourceSite}</a>
-              ) : (
-                record.sourceSite
-              )
-            }
-            , the linked exact records on this site and the review fields shown below.
-            {record.sourceNote}
-          </p>
-        </article>
-        <article class="resource-checklist-card">
-          <h3>What the series page establishes</h3>
-          <p>
-            It identifies {record.series} as a {record.productType} reference family
-            and records the information needed to begin a technical and commercial
-            review.
-          </p>
-        </article>
-        <article class="resource-checklist-card">
-          <h3>What it does not establish</h3>
-          <p>
-            A series name does not prove that two suffixes, part numbers or
-            machine installations are interchangeable. Direct compatibility
-            remains conditional on the exact-code and application review.
-          </p>
-        </article>
-        <article class="resource-checklist-card">
-          <h3>Commercial evidence boundary</h3>
-          <p>
-            A catalog or source record may show that a route exists. Current
-            stock, condition, included configuration, price, MOQ, lead time and
-            warranty require confirmation for the quoted item and quantity.
-          </p>
-        </article>
       </div>
     </section>
 
