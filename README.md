@@ -5,8 +5,8 @@ Hydraulic component sourcing and model-code review website built with [Astro](ht
 ## Local setup
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 Open `http://localhost:4321`.
@@ -16,14 +16,14 @@ Open `http://localhost:4321`.
 Run the complete code and content verification suite:
 
 ```bash
-npm run verify
+pnpm run verify
 ```
 
 It performs Astro diagnostics, a production build, RFQ Worker tests, model-record and content-readiness checks, SEO auditing, internal-link checking and encoding auditing.
 
 All published model records and case studies are eligible for search indexing. Record-specific evidence and source attribution remain visible on each page for buyers to review, but no record is withheld from the sitemap or marked `noindex` on the basis of a content-maturity gate.
 
-`npm run audit:launch` is deliberately separate. It must remain blocked until genuine company details and external production checks have been completed.
+`pnpm run audit:launch` is deliberately separate. It must remain blocked until genuine company details and external production checks have been completed.
 
 ## Site structure
 
@@ -54,7 +54,7 @@ The legal identity is omitted from public proof and structured data until the re
 
 ## Cloudflare Worker deployment
 
-The production Worker entry is copied from `cloudflare-worker.js` during `npm run build`. `wrangler.jsonc` routes only `/api/*` through the Worker first and serves the remaining static files through the `ASSETS` binding.
+The production Worker entry is copied from `cloudflare-worker.js` during `pnpm run build`. `wrangler.jsonc` routes only `/api/*` through the Worker first and serves the remaining static files through the `ASSETS` binding.
 
 Store secrets in Cloudflare, never in `wrangler.jsonc` or committed files:
 
@@ -68,7 +68,7 @@ Store secrets in Cloudflare, never in `wrangler.jsonc` or committed files:
 Before deployment, copy `config/launch-readiness.example.json` to the ignored `config/launch-readiness.json`, mark a confirmation `true` only after completing it, then run:
 
 ```bash
-npm run audit:launch
+pnpm run audit:launch
 ```
 
 The detailed operational checklist is in `docs/prelaunch-evidence-checklist.md`.
