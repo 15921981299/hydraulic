@@ -477,7 +477,7 @@ export default {
 
       const salesEmail = env.SALES_EMAIL || SALES_EMAIL;
       await deliverEmail(env, {
-        to: salesEmail,
+        to: 'admin@machiningsupplier.com',
         subject: `Hydraulic RFQ — ${fields.brand} ${fields.model || "reference file"} — ${fields.quantity}`,
         text: emailBody,
         replyTo: fields.email,
