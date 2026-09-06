@@ -4,8 +4,13 @@
   "main": "dist/_worker.js/index.js",
   "compatibility_date": "2026-08-01",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "vars": {
+    "ZOHO_SMTP_USER": "sales@hydraulicmatch.com",
+    "ZOHO_SMTP_HOST": "smtppro.zoho.com",
+    "ZOHO_SMTP_PORT": "465"
+  },
   "secrets": {
-    // "required": ["RESEND_API_KEY", "TURNSTILE_SECRET_KEY", "RFQ_DOWNLOAD_SECRET"],
+    // "required": ["ZOHO_SMTP_PASS", "TURNSTILE_SECRET_KEY", "RFQ_DOWNLOAD_SECRET"],
   },
   "build": {
     "command": "pnpm run build",

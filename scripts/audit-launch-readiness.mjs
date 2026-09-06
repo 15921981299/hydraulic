@@ -41,8 +41,8 @@ const confirmations = {
   legalDocumentsReviewed: "legal documents reviewed",
   quotationIdentityMatches: "quotation and website identities match",
   turnstileSecretConfigured: "TURNSTILE_SECRET_KEY configured in Cloudflare",
-  resendSecretConfigured: "RESEND_API_KEY configured in Cloudflare",
-  senderDomainVerified: "RFQ sender domain verified",
+  zohoSmtpPassConfigured: "ZOHO_SMTP_PASS configured in Cloudflare",
+  senderDomainVerified: "Zoho sender mailbox/domain verified",
   privacyWorkflowReviewed: "privacy and deletion workflow reviewed",
   r2LifecycleConfiguredOrDisabled:
     "R2 lifecycle configured or R2 deliberately disabled",

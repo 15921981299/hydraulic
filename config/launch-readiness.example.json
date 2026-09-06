@@ -2,7 +2,7 @@
   "legalDocumentsReviewed": false,
   "quotationIdentityMatches": false,
   "turnstileSecretConfigured": false,
-  "resendSecretConfigured": false,
+  "zohoSmtpPassConfigured": false,
   "senderDomainVerified": false,
   "privacyWorkflowReviewed": false,
   "r2LifecycleConfiguredOrDisabled": false,

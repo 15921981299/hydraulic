@@ -1,3 +1,5 @@
+import { SALES_EMAIL, isZohoSmtpConfigured, sendZohoEmail } from './zoho-smtp.js';
+
 const MAX_FILES = 5;
 const MAX_FILE_BYTES = 5 * 1024 * 1024;
 const MAX_TOTAL_BYTES = 20 * 1024 * 1024;
@@ -169,34 +171,6 @@ async function downloadAttachment(request, env, now = Date.now()) {
       "Content-Disposition": `attachment; filename="attachment"; filename*=UTF-8''${encoded}`,
     },
   });
-}
-
-function arrayBufferToBase64(buffer) {
-  const bytes = new Uint8Array(buffer);
-  const chunkSize = 0x8000;
-  let binary = "";
-  for (let offset = 0; offset < bytes.length; offset += chunkSize) {
-    binary += String.fromCharCode(
-      ...bytes.subarray(offset, offset + chunkSize),
-    );
-  }
-  return btoa(binary);
-}
-
-async function sendEmail(apiKey, payload) {
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    logEvent("error", "resend_delivery_failed", { status: response.status });
-    throw new Error("Email delivery failed");
-  }
 }
 
 function startsWith(bytes, signature, offset = 0) {
@@ -403,7 +377,6 @@ export default {
         return json({ ok: false, message: errors[0], errors }, 400, cors);
       }
 
-      const attachments = [];
       const archiveKeys = [];
       const downloadLinks = [];
       for (const file of rawFiles) {
@@ -419,7 +392,6 @@ export default {
           );
         }
         const filename = safeFilename(file.name);
-        attachments.push({ filename, content: arrayBufferToBase64(buffer) });
 
         if (env.R2_BUCKET) {
           const key = `rfq/${new Date().toISOString().slice(0, 10)}/${crypto.randomUUID()}-${filename}`;
@@ -448,7 +420,10 @@ export default {
         }
       }
 
-      if (!env.RESEND_API_KEY) {
+      const deliverEmail =
+        typeof env.__sendEmail === "function" ? env.__sendEmail : sendZohoEmail;
+
+      if (!env.__sendEmail && !isZohoSmtpConfigured(env)) {
         logEvent("error", "rfq_email_service_unconfigured");
         return json(
           {
@@ -500,16 +475,12 @@ export default {
         `RFQ context: ${fields.rfqContext || "-"}`,
       ].join("\n");
 
-      const salesEmail = env.SALES_EMAIL || "sales@hydraulicmatch.com";
-      const fromEmail =
-        env.RFQ_FROM_EMAIL || "Hydraulic Match <rfq@hydraulicmatch.com>";
-      await sendEmail(env.RESEND_API_KEY, {
-        from: fromEmail,
+      const salesEmail = env.SALES_EMAIL || SALES_EMAIL;
+      await deliverEmail(env, {
         to: salesEmail,
-        reply_to: fields.email,
         subject: `Hydraulic RFQ — ${fields.brand} ${fields.model || "reference file"} — ${fields.quantity}`,
         text: emailBody,
-        ...(attachments.length ? { attachments } : {}),
+        replyTo: fields.email,
       });
 
       const autoReplyBody = [
@@ -539,13 +510,12 @@ export default {
       ].join("\n");
 
       try {
-        await sendEmail(env.RESEND_API_KEY, {
-          from: fromEmail,
+        await deliverEmail(env, {
           to: fields.email,
-          reply_to: salesEmail,
           subject:
             "We received your hydraulic component request — Hydraulic Match",
           text: autoReplyBody,
+          replyTo: salesEmail,
         });
       } catch (error) {
         logEvent("error", "rfq_auto_reply_failed", {

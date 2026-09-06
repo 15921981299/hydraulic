@@ -40,6 +40,14 @@ async function withMockFetch(handler, callback) {
   }
 }
 
+function createEmailCapture() {
+  const emails = [];
+  const __sendEmail = async (_env, message) => {
+    emails.push(message);
+  };
+  return { emails, __sendEmail };
+}
+
 test("health endpoint is ready and not cacheable", async () => {
   const response = await worker.fetch(
     new Request("https://hydraulicmatch.com/api/rfq"),
@@ -57,72 +65,49 @@ test("incomplete RFQ is rejected before email delivery", async () => {
 });
 
 test("honeypot submission returns neutral success without side effects", async () => {
-  let fetchCalls = 0;
-  await withMockFetch(
-    async () => {
-      fetchCalls += 1;
-      return Response.json({ id: "unexpected" });
-    },
-    async () => {
-      const response = await worker.fetch(
-        formRequest({ website: "spam.example" }),
-        { RESEND_API_KEY: "test-secret" },
-      );
-      assert.equal(response.status, 200);
-      assert.equal(fetchCalls, 0);
-    },
+  const { emails, __sendEmail } = createEmailCapture();
+  const response = await worker.fetch(
+    formRequest({ website: "spam.example" }),
+    { __sendEmail },
   );
+  assert.equal(response.status, 200);
+  assert.equal(emails.length, 0);
 });
 
 test("valid model-code RFQ sends sales email and auto-reply", async () => {
-  const requests = [];
-  await withMockFetch(
-    async (url, init) => {
-      requests.push({ url: String(url), body: JSON.parse(init.body) });
-      return Response.json({ id: "email-id" });
-    },
-    async () => {
-      const response = await worker.fetch(formRequest(), {
-        RESEND_API_KEY: "test-secret",
-      });
-      assert.equal(response.status, 200);
-      assert.equal(requests.length, 2);
-      assert.ok(requests.every((item) => item.url.includes("api.resend.com")));
-      assert.equal(requests[0].body.reply_to, "buyer@example.com");
-    },
-  );
+  const { emails, __sendEmail } = createEmailCapture();
+  const response = await worker.fetch(formRequest(), { __sendEmail });
+  assert.equal(response.status, 200);
+  assert.equal(emails.length, 2);
+  assert.equal(emails[0].to, "sales@hydraulicmatch.com");
+  assert.equal(emails[0].replyTo, "buyer@example.com");
+  assert.equal(emails[1].to, "buyer@example.com");
+  assert.equal(emails[1].replyTo, "sales@hydraulicmatch.com");
 });
 
 test("attachment content must match its declared extension", async () => {
-  let fetchCalls = 0;
-  await withMockFetch(
-    async () => {
-      fetchCalls += 1;
-      return Response.json({ id: "unexpected" });
-    },
-    async () => {
-      const response = await worker.fetch(
-        formRequest(
-          {},
-          {
-            name: "nameplate.pdf",
-            type: "application/pdf",
-            bytes: "this is not a PDF",
-          },
-        ),
-        { RESEND_API_KEY: "test-secret" },
-      );
-      assert.equal(response.status, 400);
-      assert.match((await response.json()).message, /does not match/);
-      assert.equal(fetchCalls, 0);
-    },
+  const { emails, __sendEmail } = createEmailCapture();
+  const response = await worker.fetch(
+    formRequest(
+      {},
+      {
+        name: "nameplate.pdf",
+        type: "application/pdf",
+        bytes: "this is not a PDF",
+      },
+    ),
+    { __sendEmail },
   );
+  assert.equal(response.status, 400);
+  assert.match((await response.json()).message, /does not match/);
+  assert.equal(emails.length, 0);
 });
 
 test("Turnstile fails closed when its Worker secret is configured", async () => {
+  const { __sendEmail } = createEmailCapture();
   const response = await worker.fetch(formRequest(), {
     TURNSTILE_SECRET_KEY: "test-turnstile-secret",
-    RESEND_API_KEY: "test-resend-secret",
+    __sendEmail,
   });
   assert.equal(response.status, 403);
   assert.match((await response.json()).message, /Security verification failed/);
@@ -130,25 +115,24 @@ test("Turnstile fails closed when its Worker secret is configured", async () => 
 
 test("verified Turnstile request continues to email delivery", async () => {
   const request = formRequest({ "cf-turnstile-response": "valid-token" });
+  const { emails, __sendEmail } = createEmailCapture();
   let challengeCalls = 0;
-  let emailCalls = 0;
   await withMockFetch(
     async (url) => {
       if (String(url).includes("challenges.cloudflare.com")) {
         challengeCalls += 1;
         return Response.json({ success: true });
       }
-      emailCalls += 1;
-      return Response.json({ id: "email-id" });
+      return Response.json({ id: "unexpected" });
     },
     async () => {
       const response = await worker.fetch(request, {
         TURNSTILE_SECRET_KEY: "test-turnstile-secret",
-        RESEND_API_KEY: "test-resend-secret",
+        __sendEmail,
       });
       assert.equal(response.status, 200);
       assert.equal(challengeCalls, 1);
-      assert.equal(emailCalls, 2);
+      assert.equal(emails.length, 2);
     },
   );
 });
@@ -196,40 +180,32 @@ test("archived attachment receives a working seven-day private link", async () =
       };
     },
   };
-  const emailPayloads = [];
-  await withMockFetch(
-    async (_url, init) => {
-      emailPayloads.push(JSON.parse(init.body));
-      return Response.json({ id: "email-id" });
-    },
-    async () => {
-      const response = await worker.fetch(
-        formRequest(
-          {},
-          {
-            name: "nameplate.pdf",
-            type: "application/pdf",
-            bytes: "%PDF-1.4 test",
-          },
-        ),
-        {
-          RESEND_API_KEY: "resend-test",
-          RFQ_DOWNLOAD_SECRET: "download-test",
-          R2_BUCKET: bucket,
-        },
-      );
-      assert.equal(response.status, 200);
-      const match = emailPayloads[0].text.match(
-        /https:\/\/hydraulicmatch\.com\/api\/rfq\/download\?[^\s]+/,
-      );
-      assert.ok(match, "sales email should contain a private download URL");
-      const download = await worker.fetch(new Request(match[0]), {
-        RFQ_DOWNLOAD_SECRET: "download-test",
-        R2_BUCKET: bucket,
-      });
-      assert.equal(download.status, 200);
-      assert.match(download.headers.get("Content-Disposition"), /nameplate\.pdf/);
-      assert.equal(await download.text(), "%PDF-1.4 test");
+  const { emails, __sendEmail } = createEmailCapture();
+  const response = await worker.fetch(
+    formRequest(
+      {},
+      {
+        name: "nameplate.pdf",
+        type: "application/pdf",
+        bytes: "%PDF-1.4 test",
+      },
+    ),
+    {
+      __sendEmail,
+      RFQ_DOWNLOAD_SECRET: "download-test",
+      R2_BUCKET: bucket,
     },
   );
+  assert.equal(response.status, 200);
+  const match = emails[0].text.match(
+    /https:\/\/hydraulicmatch\.com\/api\/rfq\/download\?[^\s]+/,
+  );
+  assert.ok(match, "sales email should contain a private download URL");
+  const download = await worker.fetch(new Request(match[0]), {
+    RFQ_DOWNLOAD_SECRET: "download-test",
+    R2_BUCKET: bucket,
+  });
+  assert.equal(download.status, 200);
+  assert.match(download.headers.get("Content-Disposition"), /nameplate\.pdf/);
+  assert.equal(await download.text(), "%PDF-1.4 test");
 });
